@@ -7,7 +7,7 @@ import { PomodoroPreview } from "./PomodoroPreview";
 
 export function HeroSection() {
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden px-4">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 bg-warmNeutral">
       <BackgroundDots />
 
       <div className="relative z-10 max-w-7xl w-full mx-auto">

@@ -93,21 +93,6 @@ export function PomodoroPreview() {
               </div>
             </div>
           </div>
-
-          {/* Indicators */}
-          <motion.div
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2"
-            animate={{ opacity: hovered ? 1 : 0.5 }}
-          >
-            {[0, 1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className={`w-2 h-2 rounded-full ${
-                  i < 2 ? "bg-softBlue" : "bg-warmNeutralDark"
-                }`}
-              />
-            ))}
-          </motion.div>
         </motion.div>
       </div>
     </motion.div>

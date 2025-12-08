@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         softBlue: "#A3C9E0",
+        softBlueLight: "#D9ECF2",
         softPurple: "#C8B6E2",
         warmNeutral: "#f4f2ef",
         warmNeutralDark: "#e5d7cf",

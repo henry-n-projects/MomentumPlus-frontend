@@ -12,8 +12,10 @@ export function BackgroundDots() {
           className="absolute w-64 h-64 rounded-full opacity-20"
           style={{
             background: `radial-gradient(circle, ${
-              i % 2 === 0 ? "#A3C9E0" : "#C8B6E2"
+              i % 2 === 0 ? "#3E86B6" : "#8763C1"
             }, transparent)`,
+            left: `${20 + i * 15}%`,
+            top: `${30 + (i % 3) * 20}%`,
           }}
           animate={{
             scale: [1, 1.2, 1],
@@ -21,7 +23,11 @@ export function BackgroundDots() {
             y: (mouse.y - window.innerHeight / 2) * (0.01 + i * 0.002),
           }}
           transition={{
-            scale: { duration: 3 + i, repeat: Infinity, ease: "easeInOut" },
+            scale: {
+              duration: 3 + i,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
             x: { duration: 0.5 },
             y: { duration: 0.5 },
           }}

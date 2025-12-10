@@ -4,13 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        softBlue: "#A3C9E0",
-        softBlueLight: "#D9ECF2",
-        softPurple: "#C8B6E2",
-        warmNeutral: "#f4f2ef",
-        warmNeutralDark: "#e5d7cf",
-        textPrimary: "#2d3748",
-        textSecondary: "#718096",
+        softBlue: "var(--soft-blue)",
+        softBlueLight: "var(--soft-blue-light)",
+        softPurple: "var(--accent-purple)",
+        warmNeutral: "var(--warm-neutral)",
+        warmNeutralDark: "var(--warm-neutral-dark)",
+        textPrimary: "var(--text-primary)",
+        textSecondary: "var(--text-secondary)",
       },
     },
   },

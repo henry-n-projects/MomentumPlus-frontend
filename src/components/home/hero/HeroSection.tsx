@@ -1,11 +1,32 @@
 import { motion } from "motion/react";
-import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { BackgroundDots } from "./BackgroundDots";
 import { PomodoroPreview } from "./PomodoroPreview";
 
 export function HeroSection() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    console.log("Hero Auth Check URL:", `${import.meta.env.VITE_API_URL}/auth/me`);
+    fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+      credentials: "include",
+    })
+      .then((res) => {
+        setIsAuthenticated(res.ok);
+      })
+      .catch(() => {
+        setIsAuthenticated(false);
+      });
+  }, []);
+
+  const buttonLabel = isAuthenticated ? "Go to dashboard" : "Sign in and begin";
+
+  const buttonHref = isAuthenticated
+    ? "/dashboard"
+    : `${import.meta.env.VITE_API_URL}/auth/google`;
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 bg-warmNeutral">
       <BackgroundDots />
@@ -31,7 +52,6 @@ export function HeroSection() {
           and build lasting focus habits.
         </motion.p>
 
-        {/* Layout */}
         <div className="flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-24">
           <PomodoroPreview />
 
@@ -50,18 +70,21 @@ export function HeroSection() {
               stay consistent, and achieve more with less stress.
             </p>
 
-            <Link to="/login">
-              <motion.button
-                className="group relative px-10 py-5 text-xl bg-softBlue text-white rounded-full shadow-lg overflow-hidden"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span className="relative flex items-center justify-center gap-2">
-                  Sign in and begin
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </motion.button>
-            </Link>
+            {/* Auth-aware button */}
+            {isAuthenticated !== null && (
+              <a href={buttonHref}>
+                <motion.button
+                  className="group relative px-10 py-5 text-xl bg-softBlue text-white rounded-full shadow-lg overflow-hidden"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span className="relative flex items-center justify-center gap-2">
+                    {buttonLabel}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </motion.button>
+              </a>
+            )}
 
             <p className="mt-6 text-sm text-textSecondary">
               Free to use. No credit card required.

@@ -5,5 +5,6 @@ export function useCurrentUser() {
   return useQuery<UserObject>({
     queryKey: ["me"],
     queryFn: () => api.get("/auth/me"),
+    retry: false,
   });
 }

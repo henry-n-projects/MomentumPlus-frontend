@@ -1,11 +1,23 @@
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
-
 import { BackgroundDots } from "./BackgroundDots";
 import { PomodoroPreview } from "./PomodoroPreview";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export function HeroSection() {
+  const { data: user } = useCurrentUser();
+  const isAuthenticated = Boolean(user);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    } else {
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 bg-warmNeutral">
       <BackgroundDots />
@@ -50,12 +62,13 @@ export function HeroSection() {
             </p>
 
             <motion.button
+              onClick={handleClick}
               className="group relative px-10 py-5 text-xl bg-softBlue text-white rounded-full shadow-lg overflow-hidden"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <span className="relative flex items-center justify-center gap-2">
-                Sign in and begin
+                {isAuthenticated ? "Go to Dashboard" : "Sign in and begin"}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </motion.button>

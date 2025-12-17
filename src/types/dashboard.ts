@@ -12,10 +12,12 @@ export interface DashboardResponse {
       scheduled_count: number;
       completed_count: number;
     };
-    weekly_activities: {
-      date: string;
-      focus_minutes: number;
-    };
+    weekly_activities: [
+      {
+        date: string;
+        focus_minutes: number;
+      }
+    ];
     today: {
       date: string;
       sessions: [

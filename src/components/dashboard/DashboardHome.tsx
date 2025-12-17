@@ -10,7 +10,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useDashboard } from "../../hooks/useDashboard";
-
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { TodaySessionList } from "./TodaysSessionList";
 type session = {
   id: number;
   title: string;
@@ -25,16 +26,6 @@ type session = {
   };
 };
 
-type weeklyDay = {
-  date: string;
-  focus_minutes: number;
-};
-
-type weeklyProgress = {
-  scheduled_count: number;
-  completed_count: number;
-};
-
 function getWeekDay(dateString: string) {
   return new Date(dateString).toLocaleDateString("en-US", { weekday: "short" });
 }
@@ -46,21 +37,6 @@ function getStartAt(dateString: string) {
     hour12: true,
   });
 }
-
-const mockWeeklyData: weeklyDay[] = [
-  {
-    date: "2025-11-17",
-    focus_minutes: 16,
-  },
-  {
-    date: "2025-11-18",
-    focus_minutes: 25,
-  },
-  {
-    date: "2025-11-19",
-    focus_minutes: 40,
-  },
-];
 
 const mockTodaySession: session[] = [
   {
@@ -104,15 +80,8 @@ const mockTodaySession: session[] = [
   },
 ];
 
-const mockWeeklyProgress: weeklyProgress = {
-  scheduled_count: 3,
-  completed_count: 1,
-};
-const weeklyData = mockWeeklyData.map((item) => ({
-  ...item,
-  day: getWeekDay(item.date),
-}));
 export default function Dashboard() {
+  const { data: user } = useCurrentUser();
   //Time State
   const [currentTime, setCurrentTime] = useState(() => new Date());
 
@@ -143,28 +112,31 @@ export default function Dashboard() {
       day: "numeric",
     });
 
-  // Acculumate all session minutes for the week
-  const totalWeekMinutes = mockWeeklyData.reduce(
-    (sum, day) => sum + day.focus_minutes,
-    0
-  );
-
-  // Convert weekly progress to percentage
-  //   const weekProgress = Math.round(
-  //     (mockWeeklyProgress.completed_count / mockWeeklyProgress.scheduled_count) *
-  //       100
-  //   );
-
   const { data, isLoading, error } = useDashboard();
 
-  if (isLoading) return <p>Loading dashboard...</p>;
+  if (isLoading || !data) {
+    return null;
+  }
   if (error) return <p>Failed to load dashboard.</p>;
-  const user = data!.data.user;
 
   const weekProgress = data!.data.week_progress;
   const weeklyActivities = data!.data.weekly_activities;
   const today = data!.data.today;
+  const completionRate =
+    weekProgress.scheduled_count === 0
+      ? 0
+      : Math.round(
+          (weekProgress.completed_count / weekProgress.scheduled_count) * 100
+        );
+  const weeklyFocusMinutes = weeklyActivities.reduce(
+    (sum, day) => sum + day.focus_minutes,
+    0
+  );
 
+  const weeklyActivity = weeklyActivities.map((item) => ({
+    ...item,
+    day: getWeekDay(item.date),
+  }));
   return (
     // Page layout
     <div className="min-h-screen px-6">
@@ -176,7 +148,7 @@ export default function Dashboard() {
             <div className="flex items-start justify-between">
               <div>
                 <h1 className="text-3xl font-semibold mb-2 text-textPrimary">
-                  Welcome back (user name)
+                  Welcome back {user?.name}
                 </h1>
 
                 <p className="text-textSecondary">{formatDate(currentTime)}</p>
@@ -204,7 +176,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-
         {/* Stats grid*/}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {/* Week Progress */}
@@ -229,13 +200,11 @@ export default function Dashboard() {
                 className="mb-1 text-5xl font-bold"
                 style={{ color: "var(--accent-purple)" }}
               >
-                {(weekProgress.completed_count / weekProgress.scheduled_count) *
-                  100}
-                %
+                {completionRate}%
               </div>
               <p className="text-textSecondary">
-                {mockWeeklyProgress.completed_count} of{" "}
-                {mockWeeklyProgress.scheduled_count} days completed
+                {weekProgress.completed_count} of {weekProgress.scheduled_count}{" "}
+                days completed
               </p>
             </div>
 
@@ -246,7 +215,7 @@ export default function Dashboard() {
               <div
                 className="h-full transition-all duration-300"
                 style={{
-                  width: `${weekProgress}%`,
+                  width: `${completionRate}%`,
                   backgroundColor: "var(--accent-purple)",
                 }}
               />
@@ -275,7 +244,7 @@ export default function Dashboard() {
                 className="mb-1 text-5xl font-bold"
                 style={{ color: "var(--soft-blue)" }}
               >
-                {totalWeekMinutes}
+                {weeklyFocusMinutes}
               </div>
               <p className="text-textSecondary">total minutes this week</p>
             </div>
@@ -301,20 +270,19 @@ export default function Dashboard() {
             </div>
             <div className="mb-3">
               <div className="text-5xl font-bold mb-1 text-textPrimary">
-                {mockTodaySession.length}
+                {today.sessions.length}
               </div>
               <p className="text-textSecondary">sessions scheduled</p>
             </div>
           </div>
         </div>
-
         {/* Activity Graph */}
         <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] mb-10">
           <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
             This Week's Overview
           </h3>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={weeklyData}>
+            <BarChart data={weeklyActivity}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E5D7CF" />
               <XAxis dataKey="day" tick={{ fill: "var(--text-secondary)" }} />
               <YAxis
@@ -342,53 +310,14 @@ export default function Dashboard() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-
         {/* Scheduled Sessions */}
         <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
           <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
             Today's Sessions
           </h3>
+          {/*add "no schedueld sessions today , create one now" div if today.sessions.length === 0*/}
           <div className="space-y-4">
-            {mockTodaySession.map((session) => (
-              <div
-                key={session.id}
-                className="flex items-center justify-between p-5 rounded-2xl"
-                style={{ backgroundColor: "var(--warm-neutral)" }}
-              >
-                <div className="flex items-center gap-4">
-                  <div
-                    className="rounded-full p-3"
-                    style={{
-                      backgroundColor: session.tag.color,
-                    }}
-                  >
-                    <Calendar
-                      className="w-5 h-5"
-                      style={{ color: "var(--text-primary)" }}
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1 text-textPrimary">
-                      {session.title}
-                    </h3>
-                    <p className="text-textSecondary">
-                      {getStartAt(session.start_at)}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  //onClick={}
-                  className="flex items-center gap-2 px-6 py-3 rounded-full transition-all hover:scale-105"
-                  style={{
-                    backgroundColor: "var(--soft-blue)",
-                    color: "white",
-                  }}
-                >
-                  <PlayCircle className="w-5 h-5" />
-                  <span>Start</span>
-                </button>
-              </div>
-            ))}
+            <TodaySessionList dashboard={data} />
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { BackgroundDots } from "./BackgroundDots";
 import { PomodoroPreview } from "./PomodoroPreview";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function HeroSection() {
   const { data: user } = useCurrentUser();

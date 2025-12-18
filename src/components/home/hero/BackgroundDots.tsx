@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useMousePosition } from "./useMousePosition";
+import { useMousePosition } from "../../../hooks/useMousePosition";
 
 export function BackgroundDots() {
   const mouse = useMousePosition();

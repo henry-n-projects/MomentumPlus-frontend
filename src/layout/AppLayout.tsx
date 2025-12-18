@@ -2,10 +2,12 @@ import { Outlet, Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import avatarPlaceholder from "../assets/avatar-placeholder.png";
+import { useUserTimezone } from "../hooks/useUserTimezone";
 export default function AppLayout() {
   const { data: user } = useCurrentUser();
   const isAuthenticated = Boolean(user);
-  const name = user?.name;
+  useUserTimezone;
+  console.log(user?.timezone);
   return (
     <div className="min-h-screen bg-[var(--warm-neutral)] text-[var(--text-primary)]">
       <nav className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-md border-b border-[var(--warm-neutral-dark)] shadow-sm">

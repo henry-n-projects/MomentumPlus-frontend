@@ -1,13 +1,9 @@
+import type { UserObject } from "./user";
+
 export interface DashboardResponse {
   status: string;
   data: {
-    user: {
-      id: string;
-      name: string;
-      avatar_url: string | null;
-      timezone: string;
-      settings: JSON;
-    };
+    user: UserObject;
     week_progress: WeekProgress;
     weekly_activities: [WeeklyActivity];
     today: {

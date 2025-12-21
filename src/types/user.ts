@@ -4,5 +4,5 @@ export interface UserObject {
   avartar: string | undefined;
   name: string;
   timezone: string;
-  settings: any;
+  settings: JSON;
 }

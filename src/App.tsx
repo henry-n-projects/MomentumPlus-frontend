@@ -1,15 +1,21 @@
-//import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AppLayout from "./layout/AppLayout";
+import PublicLayout from "./layout/PublicLayout";
+import ProtectedLayout from "./layout/ProtectedLayout";
 import HomePage from "./pages/home";
-import DashboardHome from "./components/dashboard/Dashboard";
+import Dashboard from "./pages/dashboard";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AppLayout />}>
+        {/* Public routes */}
+        <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={<DashboardHome />} />
+        </Route>
+
+        {/* Protected routes */}
+        <Route element={<ProtectedLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

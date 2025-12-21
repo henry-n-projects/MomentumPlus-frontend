@@ -19,33 +19,38 @@ export function ActivityGraph({ weeklyActivity }: ActivityGraphProps) {
     day: getWeekDay(item.date),
   }));
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={weeklyActivities}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#E5D7CF" />
-        <XAxis dataKey="day" tick={{ fill: "var(--text-secondary)" }} />
-        <YAxis
-          tick={{ fill: "var(--text-secondary)" }}
-          label={{
-            value: "Minutes",
-            angle: -90,
-            position: "insideLeft",
-            fill: "var(--text-secondary)",
-          }}
-        />
-        <Tooltip
-          contentStyle={{
-            backgroundColor: "var(--warm-neutral)",
-            border: "none",
-            borderRadius: "12px",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-          }}
-        />
-        <Bar
-          dataKey="focus_minutes"
-          fill="var(--soft-blue)"
-          radius={[8, 8, 0, 0]}
-        />
-      </BarChart>
-    </ResponsiveContainer>
+    <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] mb-10">
+      <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
+        This Week's Overview
+      </h3>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={weeklyActivities}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#E5D7CF" />
+          <XAxis dataKey="day" tick={{ fill: "var(--text-secondary)" }} />
+          <YAxis
+            tick={{ fill: "var(--text-secondary)" }}
+            label={{
+              value: "Minutes",
+              angle: -90,
+              position: "insideLeft",
+              fill: "var(--text-secondary)",
+            }}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "var(--warm-neutral)",
+              border: "none",
+              borderRadius: "12px",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+            }}
+          />
+          <Bar
+            dataKey="focus_minutes"
+            fill="var(--soft-blue)"
+            radius={[8, 8, 0, 0]}
+          />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 }

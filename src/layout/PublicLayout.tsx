@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import avatarPlaceholder from "../assets/avatar-placeholder.png";
 import { useUserTimezone } from "../hooks/useUserTimezone";
-export default function AppLayout() {
+export default function PublicLayout() {
   const { data: user } = useCurrentUser();
   const isAuthenticated = Boolean(user);
   useUserTimezone;

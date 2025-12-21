@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
-import { useDashboard } from "../../hooks/useDashboard";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { TodaySessionList } from "./SessionList";
-import { ActivityGraph } from "./ActivityGraph";
-import StatsGrid from "./StatsGrid";
+import { useDashboard } from "../hooks/useDashboard";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { TodaySessionList } from "../components/dashboard/SessionList";
+import { ActivityGraph } from "../components/dashboard/ActivityGraph";
+import StatsGrid from "../components/dashboard/StatsGrid";
 
 export default function Dashboard() {
   const { data: user } = useCurrentUser();
@@ -98,29 +98,16 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        {/* Stats grid*/}
         <StatsGrid
           completionRate={completionRate}
           weekProgress={weekProgress}
           weeklyFocusMinutes={weeklyFocusMinutes}
           todayCount={todayCount}
         />
-        {/* Activity Graph */}
-        <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] mb-10">
-          <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
-            This Week's Overview
-          </h3>
-          <ActivityGraph weeklyActivity={weeklyActivities} />
-        </div>
-        {/* Scheduled Sessions */}
-        <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-          <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
-            Today's Sessions
-          </h3>
-          {/*add "no schedueld sessions today , create one now" div if today.sessions.length === 0*/}
-          <div className="space-y-4">
-            <TodaySessionList todaySessions={todaySessions} />
-          </div>
+        <ActivityGraph weeklyActivity={weeklyActivities} />
+        {/*add "no schedueld sessions today , create one now" div if today.sessions.length === 0*/}
+        <div className="space-y-4">
+          <TodaySessionList todaySessions={todaySessions} />
         </div>
       </div>
     </div>

@@ -1,0 +1,128 @@
+import { useEffect, useState } from "react";
+import { Clock } from "lucide-react";
+import { useDashboard } from "../../hooks/useDashboard";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { TodaySessionList } from "./SessionList";
+import { ActivityGraph } from "./ActivityGraph";
+import StatsGrid from "./StatsGrid";
+
+export default function Dashboard() {
+  const { data: user } = useCurrentUser();
+  //Time State
+  const [currentTime, setCurrentTime] = useState(() => new Date());
+
+  //Quote state maybe pull api for differnt quotes
+  const quote = "Focus is the gateway to thinking clearly.";
+
+  // Timer effect - rerender update time displayed every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000); // 1000ms / 1 sec
+
+    return () => clearInterval(timer); // cleanup when component disapears;
+  }, []);
+
+  const formatTime = (date: Date) =>
+    date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+  const formatDate = (date: Date) =>
+    date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+  const { data, isLoading, error } = useDashboard();
+
+  if (isLoading || !data) {
+    return null;
+  }
+  if (error) return <p>Failed to load dashboard.</p>;
+  const weekProgress = data!.data.week_progress;
+  const weeklyActivities = data!.data.weekly_activities;
+  const todaySessions = data!.data.today.sessions;
+  const todayCount = todaySessions.length;
+  const completionRate =
+    weekProgress.scheduled_count === 0
+      ? 0
+      : Math.round(
+          (weekProgress.completed_count / weekProgress.scheduled_count) * 100
+        );
+  const weeklyFocusMinutes = weeklyActivities.reduce(
+    (sum, day) => sum + day.focus_minutes,
+    0
+  );
+
+  return (
+    // Page layout
+    <div className="min-h-screen px-6">
+      {/* Content layout*/}
+      <div className="mx-auto max=w-[1200px] py-10">
+        {/* Welcome Section */}
+        <div className="mb-10">
+          <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-3xl font-semibold mb-2 text-textPrimary">
+                  Welcome back {user?.name}
+                </h1>
+
+                <p className="text-textSecondary">{formatDate(currentTime)}</p>
+              </div>
+
+              <div className="text-right">
+                <div className="mb-2 flex items-center gap-2">
+                  <Clock
+                    className="h-6 w-6"
+                    style={{ color: "var(--soft-blue)" }}
+                  />
+                  <h2 className="text-textPrimary">
+                    {formatTime(currentTime)}
+                  </h2>
+                </div>
+                <p className="text-textSecondary">Live</p>
+              </div>
+            </div>
+
+            <div
+              className="mt-6 rounded-2xl p-6"
+              style={{ backgroundColor: "var(--soft-blue-light)" }}
+            >
+              <p className="italic text-textPrimary">"{quote}"</p>
+            </div>
+          </div>
+        </div>
+        {/* Stats grid*/}
+        <StatsGrid
+          completionRate={completionRate}
+          weekProgress={weekProgress}
+          weeklyFocusMinutes={weeklyFocusMinutes}
+          todayCount={todayCount}
+        />
+        {/* Activity Graph */}
+        <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] mb-10">
+          <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
+            This Week's Overview
+          </h3>
+          <ActivityGraph weeklyActivity={weeklyActivities} />
+        </div>
+        {/* Scheduled Sessions */}
+        <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
+            Today's Sessions
+          </h3>
+          {/*add "no schedueld sessions today , create one now" div if today.sessions.length === 0*/}
+          <div className="space-y-4">
+            <TodaySessionList todaySessions={todaySessions} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

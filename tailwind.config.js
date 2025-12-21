@@ -11,6 +11,7 @@ export default {
         warmNeutralDark: "var(--warm-neutral-dark)",
         textPrimary: "var(--text-primary)",
         textSecondary: "var(--text-secondary)",
+        offWhite: "var(--off-white)",
       },
     },
   },

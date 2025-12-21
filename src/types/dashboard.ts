@@ -8,33 +8,35 @@ export interface DashboardResponse {
       timezone: string;
       settings: JSON;
     };
-    week_progress: {
-      scheduled_count: number;
-      completed_count: number;
-    };
-    weekly_activities: [
-      {
-        date: string;
-        focus_minutes: number;
-      }
-    ];
+    week_progress: WeekProgress;
+    weekly_activities: [WeeklyActivity];
     today: {
       date: string;
-      sessions: [
-        {
-          id: string;
-          name: string;
-          start_at: string;
-          end_at: string | null;
-          status: string;
-          break_time: number;
-          tag: {
-            id: string;
-            name: string;
-            color: string;
-          };
-        }
-      ];
+      sessions: [Session];
     };
+  };
+}
+
+export interface WeeklyActivity {
+  date: string;
+  focus_minutes: number;
+}
+
+export interface WeekProgress {
+  scheduled_count: number;
+  completed_count: number;
+}
+
+export interface Session {
+  id: string;
+  name: string;
+  start_at: string;
+  end_at: string | null;
+  status: string;
+  break_time: number;
+  tag: {
+    id: string;
+    name: string;
+    color: string;
   };
 }

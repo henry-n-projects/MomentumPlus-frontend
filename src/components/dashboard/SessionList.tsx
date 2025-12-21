@@ -1,27 +1,25 @@
 import { Clock, CheckCircle2, Circle, Play } from "lucide-react";
-import type { DashboardResponse } from "../../types/dashboard";
+import type { DashboardResponse, Session } from "../../types/dashboard";
 
 const handleStartSession = (sessionTitle: string) => {
   console.log(`Starting session: ${sessionTitle}`);
-  // Add your session start logic here
+  //session start logic here
 };
 type sessionProps = {
-  dashboard: DashboardResponse;
+  todaySessions: Session[];
 };
 
-export function TodaySessionList({ dashboard }: sessionProps) {
-  const sessions = dashboard.data.today.sessions;
-
+export function TodaySessionList({ todaySessions }: sessionProps) {
   return (
     <div className="space-y-4">
-      {sessions.map((session) => (
+      {todaySessions.map((session) => (
         <div
           key={session.id}
           className="flex items-center gap-4 p-4 rounded-2xl transition-all hover:shadow-md"
           style={{
             backgroundColor:
               session.status === "COMPLETED"
-                ? "rgba(163, 201, 224, 0.1)"
+                ? "var(--soft-blue-extra-light)"
                 : "var(--warm-neutral)",
             border:
               session.status === "COMPLETED"
@@ -36,7 +34,10 @@ export function TodaySessionList({ dashboard }: sessionProps) {
                 style={{ color: "var(--soft-blue)" }}
               />
             ) : (
-              <Circle className="w-6 h-6" style={{ color: "#718096" }} />
+              <Circle
+                className="w-6 h-6"
+                style={{ color: "var(--text-secondary)" }}
+              />
             )}
           </div>
 
@@ -59,7 +60,7 @@ export function TodaySessionList({ dashboard }: sessionProps) {
                 style={{
                   backgroundColor: session.tag.color,
                   fontSize: "12px",
-                  color: "#2D3748",
+                  color: "var(--text-primary)",
                   fontWeight: 600,
                 }}
               >
@@ -69,12 +70,13 @@ export function TodaySessionList({ dashboard }: sessionProps) {
             <div className="flex items-center gap-3">
               <span
                 className="flex items-center gap-1"
-                style={{ fontSize: "14px", color: "#718096" }}
+                style={{ fontSize: "14px", color: "var(--text-secondary)" }}
               >
                 <Clock className="w-4 h-4" />
-                {new Date(session.start_at).toLocaleDateString([], {
-                  hour: "2-digit",
+                {new Date(session.start_at).toLocaleTimeString([], {
+                  hour: "numeric",
                   minute: "2-digit",
+                  hour12: true,
                 })}
               </span>
             </div>
@@ -85,8 +87,8 @@ export function TodaySessionList({ dashboard }: sessionProps) {
               onClick={() => handleStartSession(session.name)}
               className="flex items-center gap-2 px-4 py-2 rounded-xl transition-all hover:shadow-md active:scale-95"
               style={{
-                backgroundColor: "#A3C9E0",
-                color: "#2D3748",
+                backgroundColor: "var(--soft-blue)",
+                color: "var(--text-primary)",
               }}
             >
               <Play className="w-4 h-4" />

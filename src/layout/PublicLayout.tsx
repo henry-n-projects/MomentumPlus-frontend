@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 
-import TopBar from "../components/navbars/Topbar";
+import TopBar from "../components/navbars/TopBar";
 export default function PublicLayout() {
   return (
-    <div className="min-h-screen bg-[var(--warm-neutral)] text-[var(--text-primary)] ">
+    <div className="min-h-screen bg-[var(--warm-neutral)] text-[var(--text-primary)]">
       <TopBar />
       <main>
         <Outlet />

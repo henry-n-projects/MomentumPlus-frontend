@@ -3,6 +3,7 @@ import PublicLayout from "./layout/PublicLayout";
 import ProtectedLayout from "./layout/ProtectedLayout";
 import HomePage from "./pages/home";
 import Dashboard from "./pages/dashboard";
+import Session from "./pages/session";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         {/* Protected routes */}
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/session" element={<Session />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -19,7 +19,7 @@ export function ActivityGraph({ weeklyActivity }: ActivityGraphProps) {
     day: getWeekDay(item.date),
   }));
   return (
-    <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] mb-10">
+    <div className="rounded-3xl bg-white p-6 shadow-lg mb-10 ">
       <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
         This Week's Overview
       </h3>

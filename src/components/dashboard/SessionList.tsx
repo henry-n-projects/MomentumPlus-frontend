@@ -11,7 +11,7 @@ type sessionProps = {
 
 export function TodaySessionList({ todaySessions }: sessionProps) {
   return (
-    <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+    <div className="rounded-3xl bg-white p-6 shadow-lg">
       <h3 className="text-2xl font-semibold mb-6 text-textPrimary">
         Today's Sessions
       </h3>

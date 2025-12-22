@@ -1,8 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
-import { Icon, LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, TimerIcon } from "lucide-react";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/session", label: "Session", icon: TimerIcon },
 ];
 export default function Sidebar() {
   return (

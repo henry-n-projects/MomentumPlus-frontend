@@ -16,7 +16,7 @@ export default function StatsGrid({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
       {/* Week Progress */}
-      <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+      <div className="rounded-3xl bg-white p-6 shadow-lg">
         <div className="mb-4 flex items-center gap-3">
           <div
             className="rounded-full p-3"
@@ -60,7 +60,7 @@ export default function StatsGrid({
       </div>
 
       {/* Weekly Activity */}
-      <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+      <div className="rounded-3xl bg-white p-6 shadow-lg">
         <div className="mb-4 flex items-center gap-3">
           <div
             className="rounded-full p-3"
@@ -87,7 +87,7 @@ export default function StatsGrid({
       </div>
 
       {/* Today's Sessions */}
-      <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+      <div className="rounded-3xl bg-white p-6 shadow-lg">
         <div className="flex items-center gap-3 mb-4">
           <div
             className="rounded-full p-3"

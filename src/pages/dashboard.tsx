@@ -5,6 +5,7 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { TodaySessionList } from "../components/dashboard/SessionList";
 import { ActivityGraph } from "../components/dashboard/ActivityGraph";
 import StatsGrid from "../components/dashboard/StatsGrid";
+import { BackgroundDots } from "../components/home/hero/BackgroundDots";
 
 export default function Dashboard() {
   const { data: user } = useCurrentUser();
@@ -61,12 +62,15 @@ export default function Dashboard() {
 
   return (
     // Page layout
-    <div className="min-h-screen px-6">
+
+    <div className="min-h-screen px-6 ">
       {/* Content layout*/}
-      <div className="mx-auto max=w-[1200px] py-10">
+      <BackgroundDots />
+      <div className="relative mx-auto max-w-[1200px] py-10">
         {/* Welcome Section */}
+
         <div className="mb-10">
-          <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <div className="rounded-3xl bg-white p-6 shadow-lg">
             <div className="flex items-start justify-between">
               <div>
                 <h1 className="text-3xl font-semibold mb-2 text-textPrimary">
@@ -98,12 +102,14 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+
         <StatsGrid
           completionRate={completionRate}
           weekProgress={weekProgress}
           weeklyFocusMinutes={weeklyFocusMinutes}
           todayCount={todayCount}
         />
+
         <ActivityGraph weeklyActivity={weeklyActivities} />
         {/*add "no schedueld sessions today , create one now" div if today.sessions.length === 0*/}
         <div className="space-y-4">

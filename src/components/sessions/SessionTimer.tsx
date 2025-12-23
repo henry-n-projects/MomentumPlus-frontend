@@ -1,5 +1,3 @@
-import type { style } from "motion/react-client";
-
 interface SessionTimerProps {
   elapsedTime: number;
   isOnBreak: boolean;

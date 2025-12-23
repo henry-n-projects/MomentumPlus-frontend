@@ -6,6 +6,7 @@ import { TodaySessionList } from "../components/dashboard/SessionList";
 import { ActivityGraph } from "../components/dashboard/ActivityGraph";
 import StatsGrid from "../components/dashboard/StatsGrid";
 import { BackgroundDots } from "../components/home/hero/BackgroundDots";
+import { formatDate, formatTime } from "../lib/utils";
 
 export default function Dashboard() {
   const { data: user } = useCurrentUser();
@@ -23,21 +24,6 @@ export default function Dashboard() {
 
     return () => clearInterval(timer); // cleanup when component disapears;
   }, []);
-
-  const formatTime = (date: Date) =>
-    date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
 
   const { data, isLoading, error } = useDashboard();
 
@@ -96,7 +82,10 @@ export default function Dashboard() {
 
             <div
               className="mt-6 rounded-2xl p-6"
-              style={{ backgroundColor: "var(--soft-blue-light)" }}
+              style={{
+                background:
+                  "linear-gradient(90deg, var(--soft-blue-light) 0%, var(--accent-purple) 100%)",
+              }}
             >
               <p className="italic text-textPrimary">"{quote}"</p>
             </div>

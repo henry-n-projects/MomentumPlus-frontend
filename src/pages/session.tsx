@@ -1,22 +1,119 @@
+import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { SessionTimer } from "../components/sessions/SessionTimer";
+import type { SessionAndTag } from "../types/session";
+import { useSession } from "../hooks/useSessions";
+import { ScheduledSessionsList } from "../components/sessions/ScheduledSessionsList";
+import { mockScheduledSessions } from "../mockdata/sessions";
 
 export default function Session() {
+  // Session state
+  const [isRunning, setIsRunning] = useState(false);
+  const [isOnBreak, setIsOnBreak] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [breakDuration, setBreakDuration] = useState(0);
+
+  // Router hooks
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sessionId = searchParams.get("id");
+
+  // Fetch selected session id
+  const { data: sessionData } = useSession(sessionId || "");
+  const selectedSession = sessionData?.data?.session;
+
+  // Handles selecting a session from the list Updates the URL with the new session ID
+  const handleSelectSession = useCallback(
+    (session: SessionAndTag) => {
+      setSearchParams({ id: session.id });
+    },
+    [setSearchParams]
+  );
+
+  // Update time spent and elapsed time
+  useEffect(() => {
+    // Create reference of interval object to clean up interval objects on renders
+    let interval: ReturnType<typeof setInterval>;
+
+    if (isRunning) {
+      interval = setInterval(() => {
+        setElapsedTime((prev) => prev + 1);
+
+        if (!isOnBreak) {
+          setElapsedTime((prev) => prev + 1);
+        } else {
+          setBreakDuration((prev) => prev + 1);
+        }
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning, isOnBreak]);
+
+  if (!sessionId) {
+  }
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Timer and Controls */}
-      <div className="lg:col-span-2 space-y-8">
-        {/* Timer*/}
-        <div
-          className="p-12 rounded-3xl shadow-lg flex justify-center"
-          style={{
-            backgroundColor: "var(--off-white)",
-          }}
-        >
-          <SessionTimer
-            elapsedTime={3750}
-            isRunning={false}
-            isOnBreak={false}
-          />
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "var(--background)" }}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        {/* Header */}
+        <div className="mb-12">
+          <h1 style={{ color: "var(--text-primary)", marginBottom: "8px" }}>
+            Pomodoro Session
+          </h1>
+          {selectedSession && (
+            <div className="flex items-center gap-3">
+              <span
+                className="px-4 py-2 rounded-full"
+                style={{
+                  backgroundColor: selectedSession.tag.color + "30",
+                  color: selectedSession.tag.color,
+                  fontWeight: 600,
+                }}
+              >
+                {selectedSession.tag.name}
+              </span>
+              <span
+                style={{ fontSize: "16px", color: "var(--text-secondary)" }}
+              >
+                {selectedSession.name}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols 3 gap-8">
+          {/* Left Column - Timer and Controls */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Timer*/}
+            <div
+              className="p-12 rounded-3xl shadow-lg flex justify-center"
+              style={{
+                backgroundColor: "var(--off-white)",
+              }}
+            >
+              <SessionTimer
+                elapsedTime={3750}
+                isRunning={false}
+                isOnBreak={false}
+              />
+            </div>
+
+            {/* Controls */}
+            <div
+              className="p-6 rounded-3xl shadow-lg"
+              style={{
+                backgroundColor: "var(--off-white)",
+              }}
+            >
+              <ScheduledSessionsList
+                sessions={mockScheduledSessions}
+                selectedSessionId={sessionId || undefined}
+                onSelectSession={handleSelectSession}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

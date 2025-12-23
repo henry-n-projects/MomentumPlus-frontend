@@ -15,7 +15,7 @@ export default function ProtectedLayout() {
     <div className="flex min-h-screen">
       <Sidebar />
 
-      <main className="relative flex-1 bg-gradient-to-b from-warmNeutral to-softBlueLight">
+      <main className="relative flex-1 ">
         <Outlet />
       </main>
     </div>

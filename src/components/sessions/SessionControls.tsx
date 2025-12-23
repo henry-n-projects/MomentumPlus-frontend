@@ -1,9 +1,9 @@
-import { Pause, Play } from "lucide-react";
+import { Clock, Pause, Play, TimerOff } from "lucide-react";
 
 interface SessionControlProps {
   isRunning: boolean;
   isOnBreak: boolean;
-  onStartPause: () => void;
+  onStart: () => void;
   onStartBreak: () => void;
   onReturnFromBreak: () => void;
   onStop: () => void;
@@ -13,7 +13,7 @@ interface SessionControlProps {
 export default function SessionControls({
   isRunning,
   isOnBreak,
-  onStartPause,
+  onStart,
   onStartBreak,
   onReturnFromBreak,
   onStop,
@@ -21,8 +21,9 @@ export default function SessionControls({
 }: SessionControlProps) {
   return (
     <div className="flex flex-wrap gap-3 justify-center">
+      {/* Play/Pause Button */}
       <button
-        onClick={onStartPause}
+        onClick={onStart}
         className="gap-2"
         style={{
           backgroundColor: isRunning
@@ -34,11 +35,11 @@ export default function SessionControls({
         }}
       >
         {isRunning ? (
-          <Pause className="w-5 h-5" />
+          <TimerOff className="w-5 h-5" />
         ) : (
           <Play className="w-5 h-5" />
         )}
-        {isRunning ? "Pause" : "Start"}
+        {isRunning ? "Timing" : "Start"}
       </button>
     </div>
   );

@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SessionTimer } from "../components/sessions/SessionTimer";
 import type { SessionAndTag } from "../types/session";
-import { useSession } from "../hooks/useSessions";
+import { useScheduledSessions, useSession } from "../hooks/useSessions";
 import { ScheduledSessionsList } from "../components/sessions/ScheduledSessionsList";
 import { mockScheduledSessions } from "../mockdata/sessions";
 
@@ -48,8 +48,10 @@ export default function Session() {
     return () => clearInterval(interval);
   }, [isRunning, isOnBreak]);
 
-  if (!sessionId) {
-  }
+  // Fetch Scheduled Sessions
+  const { data: scheduledSessionData } = useScheduledSessions();
+  const scheduledSessions = scheduledSessionData?.data ?? [];
+
   return (
     <div
       className="min-h-screen"
@@ -83,7 +85,7 @@ export default function Session() {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols 3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Timer and Controls */}
           <div className="lg:col-span-2 space-y-8">
             {/* Timer*/}
@@ -94,9 +96,9 @@ export default function Session() {
               }}
             >
               <SessionTimer
-                elapsedTime={3750}
-                isRunning={false}
-                isOnBreak={false}
+                elapsedTime={elapsedTime}
+                isRunning={isRunning}
+                isOnBreak={isOnBreak}
               />
             </div>
 
@@ -106,13 +108,15 @@ export default function Session() {
               style={{
                 backgroundColor: "var(--off-white)",
               }}
-            >
-              <ScheduledSessionsList
-                sessions={mockScheduledSessions}
-                selectedSessionId={sessionId || undefined}
-                onSelectSession={handleSelectSession}
-              />
-            </div>
+            ></div>
+          </div>
+          {/* Right Column - Scheduled Sessions */}
+          <div className="lg:col-span-1 space-y-8">
+            <ScheduledSessionsList
+              sessions={scheduledSessions}
+              selectedSessionId={sessionId || undefined}
+              onSelectSession={handleSelectSession}
+            />
           </div>
         </div>
       </div>

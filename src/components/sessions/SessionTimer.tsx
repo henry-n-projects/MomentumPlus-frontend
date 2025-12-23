@@ -59,15 +59,9 @@ export function SessionTimer({
                 marginTop: "8px",
               }}
             >
-              {isOnBreak ? "Break Time" : "Focus Time"}
+              Elapsed Time
             </div>
           </div>
-        </div>
-      </div>
-      {/* Elapsed Time Label */}
-      <div className="mt-8 text-center">
-        <div style={{ fontSize: "14px", color: "var(--text-secondary)" }}>
-          Total Elapsed: {Math.floor(elapsedTime / 60)} minutes
         </div>
       </div>
     </div>

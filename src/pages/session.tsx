@@ -4,14 +4,16 @@ import { SessionTimer } from "../components/sessions/SessionTimer";
 import type { SessionAndTag } from "../types/session";
 import {
   useEndSession,
+  useEndSessionBreak,
   useScheduledSessions,
   useSession,
   useStartSession,
+  useStartSessionBreak,
 } from "../hooks/useSessions";
 import { ScheduledSessionsList } from "../components/sessions/ScheduledSessionsList";
-import { mockScheduledSessions } from "../mockdata/sessions";
 import SessionControls from "../components/sessions/SessionControls";
-import { select } from "motion/react-client";
+import { motion } from "motion/react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 export default function Session() {
   // Session state
@@ -40,6 +42,10 @@ export default function Session() {
   }, [sessionId, scheduledSessions, setSearchParams]);
 
   const canStart = Boolean(selectedSession);
+
+  // Track active break
+  const [activeBreakId, setActiveBreakId] = useState<string | null>(null);
+
   // Update time spent and elapsed time
   useEffect(() => {
     // Create reference of interval object to clean up interval objects on renders
@@ -94,12 +100,39 @@ export default function Session() {
     });
   };
 
+  const { mutate: startBreak } = useStartSessionBreak();
   const handleStartBreak = () => {
-    setIsOnBreak(true);
+    if (!selectedSession) return;
+    startBreak(
+      { sessionId: selectedSession.id },
+      {
+        onSuccess: (data) => {
+          setIsOnBreak(true);
+          setActiveBreakId(data.data.break.id);
+        },
+        onError: () => {
+          setIsOnBreak(false);
+        },
+      }
+    );
   };
+  const { mutate: endBreak } = useEndSessionBreak();
   const handleEndBreak = () => {
-    setIsOnBreak(false);
+    if (!selectedSession || !activeBreakId) return;
+    endBreak(
+      { sessionId: selectedSession.id, breakId: activeBreakId },
+      {
+        onSuccess: () => {
+          setIsOnBreak(false);
+        },
+        onError: () => {
+          setIsOnBreak(true);
+        },
+      }
+    );
   };
+
+  const handleUpcomingNavigation = () => {};
 
   return (
     <div
@@ -108,10 +141,10 @@ export default function Session() {
     >
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
-        <div className="mb-12">
-          <h1 style={{ color: "var(--text-primary)", marginBottom: "8px" }}>
-            Pomodoro Session
-          </h1>
+        <div className="mb-12 text-xl font-semibold">
+          <h2 className="text-3xl font-semibold text-[var(--text-primary)] mb-2">
+            Your Session
+          </h2>
           {selectedSession && (
             <div className="flex items-center gap-3">
               <span
@@ -144,11 +177,32 @@ export default function Session() {
                 backgroundColor: "var(--off-white)",
               }}
             >
-              <SessionTimer
-                elapsedTime={elapsedTime}
-                isRunning={isRunning}
-                isOnBreak={isOnBreak}
-              />
+              {!selectedSession ? (
+                <div>
+                  <motion.button
+                    onClick={handleUpcomingNavigation}
+                    className="flex items-center gap-2
+                    px-5 py-2
+                    rounded-full shadow-lg
+                    overflow-hidden
+                    transition-opacity"
+                    whileHover={{ scale: 1.05 }}
+                    style={{
+                      backgroundColor: "var(--soft-blue)",
+                      color: "var(--text-primary)",
+                    }}
+                  >
+                    Create and select a session to start
+                    <ChevronRight className="w-5 h-5" />
+                  </motion.button>
+                </div>
+              ) : (
+                <SessionTimer
+                  elapsedTime={elapsedTime}
+                  isRunning={isRunning}
+                  isOnBreak={isOnBreak}
+                />
+              )}
             </div>
 
             {/* Controls */}

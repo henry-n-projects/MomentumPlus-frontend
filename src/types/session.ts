@@ -36,7 +36,6 @@ export interface SessionActivity {
 
 export interface SessionBreak {
   id: string;
-  type: string;
   start_time: string;
   end_time: string | null;
 }

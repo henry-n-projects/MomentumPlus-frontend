@@ -1,5 +1,4 @@
 import { CheckCircle, Coffee, Play, TimerOff } from "lucide-react";
-
 import { motion } from "motion/react";
 
 interface SessionControlProps {

@@ -59,7 +59,7 @@ export default function Dashboard() {
           <div className="rounded-3xl bg-white p-6 shadow-lg">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-3xl font-semibold mb-2 text-textPrimary">
+                <h1 className="text-3xl font-semibold mb-2 mb-2 text-textPrimary">
                   Welcome back {user?.name}
                 </h1>
 

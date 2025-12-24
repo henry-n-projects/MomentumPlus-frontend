@@ -23,3 +23,19 @@
     font-family: "Manrope", sans-serif;
   }
 }
+
+@keyframes pulse-gentle {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.025);
+    opacity: 0.95;
+  }
+}
+
+.animate-pulse-gentle {
+  animation: pulse-gentle 3s ease-in-out infinite;
+}

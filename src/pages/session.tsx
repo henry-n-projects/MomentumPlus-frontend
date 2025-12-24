@@ -2,9 +2,16 @@ import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SessionTimer } from "../components/sessions/SessionTimer";
 import type { SessionAndTag } from "../types/session";
-import { useScheduledSessions, useSession } from "../hooks/useSessions";
+import {
+  useEndSession,
+  useScheduledSessions,
+  useSession,
+  useStartSession,
+} from "../hooks/useSessions";
 import { ScheduledSessionsList } from "../components/sessions/ScheduledSessionsList";
 import { mockScheduledSessions } from "../mockdata/sessions";
+import SessionControls from "../components/sessions/SessionControls";
+import { select } from "motion/react-client";
 
 export default function Session() {
   // Session state
@@ -12,6 +19,10 @@ export default function Session() {
   const [isOnBreak, setIsOnBreak] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [breakDuration, setBreakDuration] = useState(0);
+
+  // Fetch Scheduled Sessions
+  const { data: scheduledSessionData } = useScheduledSessions();
+  const scheduledSessions = scheduledSessionData?.data ?? [];
 
   // Router hooks
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,14 +32,14 @@ export default function Session() {
   const { data: sessionData } = useSession(sessionId || "");
   const selectedSession = sessionData?.data?.session;
 
-  // Handles selecting a session from the list Updates the URL with the new session ID
-  const handleSelectSession = useCallback(
-    (session: SessionAndTag) => {
-      setSearchParams({ id: session.id });
-    },
-    [setSearchParams]
-  );
+  // If there is not sessionId in the url params default to first scheduled session
+  useEffect(() => {
+    if (!sessionId && scheduledSessions.length > 0) {
+      setSearchParams({ id: scheduledSessions[0].id });
+    }
+  }, [sessionId, scheduledSessions, setSearchParams]);
 
+  const canStart = Boolean(selectedSession);
   // Update time spent and elapsed time
   useEffect(() => {
     // Create reference of interval object to clean up interval objects on renders
@@ -48,9 +59,47 @@ export default function Session() {
     return () => clearInterval(interval);
   }, [isRunning, isOnBreak]);
 
-  // Fetch Scheduled Sessions
-  const { data: scheduledSessionData } = useScheduledSessions();
-  const scheduledSessions = scheduledSessionData?.data ?? [];
+  // Handles selecting a session from the list Updates the URL with the new session ID
+  const handleSelectSession = useCallback(
+    (session: SessionAndTag) => {
+      setSearchParams({ id: session.id });
+    },
+    [setSearchParams]
+  );
+
+  // Control functions
+  const { mutate: sessionStart } = useStartSession();
+  const handleStartSession = () => {
+    if (!selectedSession) return;
+    sessionStart(selectedSession.id, {
+      onSuccess: () => {
+        setIsRunning(true);
+      },
+      onError: () => {
+        setIsRunning(false);
+      },
+    });
+  };
+
+  const { mutate: sessionEnd } = useEndSession();
+  const handleEndSession = () => {
+    if (!selectedSession) return;
+    sessionEnd(selectedSession.id, {
+      onSuccess: () => {
+        setIsRunning(false);
+      },
+      onError: () => {
+        setIsRunning(true);
+      },
+    });
+  };
+
+  const handleStartBreak = () => {
+    setIsOnBreak(true);
+  };
+  const handleEndBreak = () => {
+    setIsOnBreak(false);
+  };
 
   return (
     <div
@@ -108,7 +157,17 @@ export default function Session() {
               style={{
                 backgroundColor: "var(--off-white)",
               }}
-            ></div>
+            >
+              <SessionControls
+                isOnBreak={isOnBreak}
+                isRunning={isRunning}
+                canStart={canStart}
+                onStart={handleStartSession}
+                onEndSession={handleEndSession}
+                onStartBreak={handleStartBreak}
+                onReturnFromBreak={handleEndBreak}
+              />
+            </div>
           </div>
           {/* Right Column - Scheduled Sessions */}
           <div className="lg:col-span-1 space-y-8">

@@ -8,9 +8,8 @@ import {
   endSessionBreak,
   startSession,
   startSessionBreak,
-  stopSession,
+  endSession,
 } from "../lib/postApi";
-import type { BreakType } from "../types/break";
 
 export function useScheduledSessions() {
   return useQuery<ScheduledSessionsResponse>({
@@ -23,7 +22,7 @@ export function useSession(sessionId: string) {
   return useQuery<SessionResponse>({
     queryKey: ["session", sessionId],
     queryFn: () => api.get(`/sessions/${sessionId}`),
-    enabled: !!sessionId, // dont run until id provided
+    enabled: !!sessionId, // Dont run until id provided
     refetchInterval: (query) => {
       // refetch every 30 sec if session in progress
       return query.state.data?.data.session.status === "IN_PROGRESS"
@@ -43,10 +42,10 @@ export function useStartSession() {
   });
 }
 
-export function useStopSession() {
+export function useEndSession() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (sessionId: string) => stopSession(sessionId),
+    mutationFn: (sessionId: string) => endSession(sessionId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
@@ -57,8 +56,8 @@ export function useStartSessionBreak() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ sessionId, type }: { sessionId: string; type: BreakType }) =>
-      startSessionBreak(sessionId, type),
+    mutationFn: ({ sessionId }: { sessionId: string }) =>
+      startSessionBreak(sessionId),
 
     onSuccess: (_data, variables) => {
       // Refresh dashboard + active session data

@@ -1,4 +1,3 @@
-import type { BreakType } from "../types/break";
 import type {
   SessionBreakEndResponse,
   SessionBreakStartResponse,
@@ -23,7 +22,7 @@ export async function startSession(
   return res.json();
 }
 
-export async function stopSession(
+export async function endSession(
   sessionId: string
 ): Promise<SessionStopResponse> {
   const res = await fetch(
@@ -41,8 +40,7 @@ export async function stopSession(
 }
 
 export async function startSessionBreak(
-  sessionId: string,
-  type: BreakType
+  sessionId: string
 ): Promise<SessionBreakStartResponse> {
   const res = await fetch(
     `${import.meta.env.VITE_API_URL}/api/sessions/${sessionId}/breaks/start`,
@@ -53,7 +51,6 @@ export async function startSessionBreak(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ type }),
     }
   );
 

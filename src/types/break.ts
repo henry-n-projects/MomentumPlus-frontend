@@ -4,7 +4,3 @@ export interface Break {
   end_time: string;
   duration_minutes: number;
 }
-
-export interface BreakType {
-  type: "SHORT" | "LONG" | "CUSTOM";
-}

@@ -12,7 +12,6 @@ import {
 } from "../hooks/useSessions";
 import { ScheduledSessionsList } from "../components/sessions/ScheduledSessionsList";
 import SessionControls from "../components/sessions/SessionControls";
-import { motion } from "motion/react";
 import { ChevronRight } from "lucide-react";
 import { SessionActivity } from "../components/sessions/SessionActivity";
 
@@ -94,6 +93,8 @@ export default function Session() {
     sessionEnd(selectedSession.id, {
       onSuccess: () => {
         setIsRunning(false);
+        // TODO: reset everything refetch show success
+        // selected id, states
       },
       onError: () => {
         setIsRunning(true);
@@ -133,7 +134,7 @@ export default function Session() {
       }
     );
   };
-
+  const handleAddDistraction = () => {};
   const handleUpcomingNavigation = () => {};
 
   return (
@@ -181,7 +182,7 @@ export default function Session() {
             >
               {!selectedSession ? (
                 <div>
-                  <motion.button
+                  <button
                     onClick={handleUpcomingNavigation}
                     className="flex items-center gap-2
                     px-5 py-2
@@ -189,15 +190,14 @@ export default function Session() {
                     overflow-hidden
                     transition-opacity
                     transition-transform animate-pulse-gentle"
-                    whileHover={{ scale: 1.05 }}
                     style={{
                       backgroundColor: "var(--soft-blue)",
                       color: "var(--text-primary)",
                     }}
                   >
-                    Create and select a session to start
+                    Create and select a session to begin
                     <ChevronRight className="w-5 h-5" />
-                  </motion.button>
+                  </button>
                 </div>
               ) : (
                 <SessionTimer
@@ -230,7 +230,8 @@ export default function Session() {
               breakCount={breakCount}
               breakDuration={breakDuration}
               distractions={[]}
-              onAddDistraction={handleUpcomingNavigation}
+              onAddDistraction={handleAddDistraction}
+              canAddDistraction={canStart}
             />
           </div>
           {/* Right Column - Scheduled Sessions */}

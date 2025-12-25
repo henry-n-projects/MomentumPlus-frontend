@@ -126,12 +126,11 @@ export function SessionActivity({
               borderRadius: "12px",
               padding: 5,
               backgroundColor: "var(--warm-neutral)",
-              border: "none",
             }}
           />
           <motion.button
             onClick={handleAddDistraction}
-            className="px-2 rounded-full"
+            className="px-2 rounded-full shadow"
             whileHover={canAddDistraction ? { scale: 1.05 } : {}}
             disabled={!canAddDistraction || newDistraction.trim() === ""}
             style={{

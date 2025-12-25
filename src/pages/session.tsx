@@ -15,6 +15,7 @@ import { ScheduledSessionsList } from "../components/sessions/ScheduledSessionsL
 import SessionControls from "../components/sessions/SessionControls";
 import { ChevronRight } from "lucide-react";
 import { SessionActivity } from "../components/sessions/SessionActivity";
+import { ActiveSession } from "../components/sessions/ActiveSession";
 
 export default function Session() {
   // Session state
@@ -48,7 +49,8 @@ export default function Session() {
 
   // Track active break
   const [activeBreakId, setActiveBreakId] = useState<string | null>(null);
-
+  //
+  const [startedAt, setStartedAt] = useState<Date | null>(null);
   // Update time spent and elapsed time
   useEffect(() => {
     // Create reference of interval object to clean up interval objects on renders
@@ -58,15 +60,24 @@ export default function Session() {
       interval = setInterval(() => {
         setElapsedTime((prev) => prev + 1);
 
-        if (!isOnBreak) {
-          setElapsedTime((prev) => prev + 1);
-        } else {
+        if (isOnBreak) {
           setBreakDuration((prev) => prev + 1);
         }
       }, 1000);
     }
     return () => clearInterval(interval);
   }, [isRunning, isOnBreak]);
+
+  function resetSessionState() {
+    setIsRunning(false);
+    setIsOnBreak(false);
+    setElapsedTime(0);
+    setBreakDuration(0);
+    setBreakCount(0);
+    setDistractions([]);
+    setActiveBreakId(null);
+    setStartedAt(null);
+  }
 
   // Handles selecting a session from the list Updates the URL with the new session ID
   const handleSelectSession = useCallback(
@@ -83,6 +94,7 @@ export default function Session() {
     sessionStart(selectedSession.id, {
       onSuccess: () => {
         setIsRunning(true);
+        setStartedAt(new Date());
       },
       onError: () => {
         setIsRunning(false);
@@ -98,9 +110,10 @@ export default function Session() {
         setIsRunning(false);
         // TODO: reset everything refetch show success
         // selected id, states
+        //show toast
       },
       onError: () => {
-        setIsRunning(true);
+        //show toast
       },
     });
   };
@@ -256,8 +269,14 @@ export default function Session() {
               canAddDistraction={canStart}
             />
           </div>
-          {/* Right Column - Scheduled Sessions */}
+          {/* Right Column - Scheduled and active session */}
           <div className="lg:col-span-1 space-y-8">
+            <ActiveSession
+              session={selectedSession}
+              isOnBreak={isOnBreak}
+              startedAt={startedAt}
+            />
+
             <ScheduledSessionsList
               sessions={scheduledSessions}
               selectedSessionId={sessionId || undefined}

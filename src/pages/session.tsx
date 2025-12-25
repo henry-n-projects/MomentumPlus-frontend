@@ -13,7 +13,8 @@ import {
 import { ScheduledSessionsList } from "../components/sessions/ScheduledSessionsList";
 import SessionControls from "../components/sessions/SessionControls";
 import { motion } from "motion/react";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { SessionActivity } from "../components/sessions/SessionActivity";
 
 export default function Session() {
   // Session state
@@ -21,7 +22,7 @@ export default function Session() {
   const [isOnBreak, setIsOnBreak] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [breakDuration, setBreakDuration] = useState(0);
-
+  const [breakCount, setBreakCount] = useState(0);
   // Fetch Scheduled Sessions
   const { data: scheduledSessionData } = useScheduledSessions();
   const scheduledSessions = scheduledSessionData?.data ?? [];
@@ -34,7 +35,7 @@ export default function Session() {
   const { data: sessionData } = useSession(sessionId || "");
   const selectedSession = sessionData?.data?.session;
 
-  // If there is not sessionId in the url params default to first scheduled session
+  // Set sessionId in the url params default to first scheduled session if not provided
   useEffect(() => {
     if (!sessionId && scheduledSessions.length > 0) {
       setSearchParams({ id: scheduledSessions[0].id });
@@ -109,6 +110,7 @@ export default function Session() {
         onSuccess: (data) => {
           setIsOnBreak(true);
           setActiveBreakId(data.data.break.id);
+          setBreakCount((prev) => prev + 1);
         },
         onError: () => {
           setIsOnBreak(false);
@@ -185,7 +187,8 @@ export default function Session() {
                     px-5 py-2
                     rounded-full shadow-lg
                     overflow-hidden
-                    transition-opacity"
+                    transition-opacity
+                    transition-transform animate-pulse-gentle"
                     whileHover={{ scale: 1.05 }}
                     style={{
                       backgroundColor: "var(--soft-blue)",
@@ -222,6 +225,13 @@ export default function Session() {
                 onReturnFromBreak={handleEndBreak}
               />
             </div>
+            <SessionActivity
+              timeSpent={elapsedTime}
+              breakCount={breakCount}
+              breakDuration={breakDuration}
+              distractions={[]}
+              onAddDistraction={handleUpcomingNavigation}
+            />
           </div>
           {/* Right Column - Scheduled Sessions */}
           <div className="lg:col-span-1 space-y-8">

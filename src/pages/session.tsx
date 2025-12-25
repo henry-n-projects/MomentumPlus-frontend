@@ -107,9 +107,17 @@ export default function Session() {
     if (!selectedSession) return;
     sessionEnd(selectedSession.id, {
       onSuccess: () => {
-        setIsRunning(false);
-        // TODO: reset everything refetch show success
-        // selected id, states
+        resetSessionState();
+
+        // refetch shceduled sessions
+        const result = useScheduledSessions();
+        const freshSessions = result.data?.data ?? [];
+
+        if (freshSessions.length > 0) {
+          setSearchParams({ id: freshSessions[0].id }); // set to first scheduled session
+        } else {
+          setSearchParams({}); // clear slection
+        }
         //show toast
       },
       onError: () => {
@@ -260,6 +268,7 @@ export default function Session() {
                 onReturnFromBreak={handleEndBreak}
               />
             </div>
+
             <SessionActivity
               timeSpent={elapsedTime}
               breakCount={breakCount}

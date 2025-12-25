@@ -38,7 +38,9 @@ export function useStartSession() {
   return useMutation({
     mutationFn: (sessionId: string) => startSession(sessionId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({
+        queryKey: ["dashboard", "sessions", "session"],
+      });
     },
   });
 }

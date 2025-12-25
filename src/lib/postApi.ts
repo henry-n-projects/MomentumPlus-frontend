@@ -1,3 +1,4 @@
+import type { Distraction, DistractionRequestBody } from "../types/distraction";
 import type {
   SessionBreakEndResponse,
   SessionBreakStartResponse,
@@ -5,6 +6,7 @@ import type {
   SessionStopResponse,
 } from "../types/session";
 
+// FETCH WRAPPERS
 export async function startSession(
   sessionId: string
 ): Promise<SessionStartResponse> {
@@ -78,5 +80,27 @@ export async function endSessionBreak(
   if (!res.ok) {
     throw new Error(`Failed to end break: ${res.status} ${res.statusText}`);
   }
+  return res.json();
+}
+
+export async function addSessionDistraction(
+  sessionId: string,
+  body: DistractionRequestBody
+): Promise<Distraction> {
+  const res = await fetch(`sessions/${sessionId}/distraction`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ body }),
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to add distraction: ${res.status} ${res.statusText}`
+    );
+  }
+
   return res.json();
 }

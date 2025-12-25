@@ -16,7 +16,7 @@ export function formatTime(date: Date): string {
     second: "2-digit",
   });
 }
-export function formatSecToMin(seconds: number): string {
+export function formatTimeToMinSec(seconds: number): string {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins}:${String(secs).padStart(2, "0")}`;

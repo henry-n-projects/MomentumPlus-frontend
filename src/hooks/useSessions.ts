@@ -9,8 +9,9 @@ import {
   startSession,
   startSessionBreak,
   endSession,
+  addSessionDistraction,
 } from "../lib/postApi";
-
+import type { DistractionRequestBody } from "../types/distraction";
 export function useScheduledSessions() {
   return useQuery<ScheduledSessionsResponse>({
     queryKey: ["sessions", "scheduled"],
@@ -83,6 +84,25 @@ export function useEndSessionBreak() {
     onSuccess: (_data, variables) => {
       // Refresh dashboard + active session data
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({
+        queryKey: ["session", variables.sessionId],
+      });
+    },
+  });
+}
+
+export function useAddSessionDistraction() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      sessionId,
+      body,
+    }: {
+      sessionId: string;
+      body: DistractionRequestBody;
+    }) => addSessionDistraction(sessionId, body),
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: ["session", variables.sessionId],
       });

@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { SessionTimer } from "../components/sessions/SessionTimer";
 import type { SessionAndTag } from "../types/session";
 import {
+  useAddSessionDistraction,
   useEndSession,
   useEndSessionBreak,
   useScheduledSessions,
@@ -22,6 +23,8 @@ export default function Session() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [breakDuration, setBreakDuration] = useState(0);
   const [breakCount, setBreakCount] = useState(0);
+  const [distractions, setDistractions] = useState<string[]>([]);
+
   // Fetch Scheduled Sessions
   const { data: scheduledSessionData } = useScheduledSessions();
   const scheduledSessions = scheduledSessionData?.data ?? [];
@@ -134,7 +137,26 @@ export default function Session() {
       }
     );
   };
-  const handleAddDistraction = () => {};
+  const { mutate: addDistraction } = useAddSessionDistraction();
+  const handleAddDistraction = (distraction: string) => {
+    if (!isRunning || !selectedSession) return;
+    const trimmed = distraction.trim();
+    if (!trimmed) return;
+
+    setDistractions((prev) => [...prev, trimmed]);
+
+    addDistraction(
+      {
+        sessionId: selectedSession.id,
+        body: { name: trimmed },
+      },
+      {
+        onError: () => {
+          setDistractions((prev) => prev.slice(0, -1));
+        },
+      }
+    );
+  };
   const handleUpcomingNavigation = () => {};
 
   return (
@@ -229,7 +251,7 @@ export default function Session() {
               timeSpent={elapsedTime}
               breakCount={breakCount}
               breakDuration={breakDuration}
-              distractions={[]}
+              distractions={distractions}
               onAddDistraction={handleAddDistraction}
               canAddDistraction={canStart}
             />

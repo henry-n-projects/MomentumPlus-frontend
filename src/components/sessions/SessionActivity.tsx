@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { AlertCircle, Clock, Coffee, Plus } from "lucide-react";
-import { formatSecToMin, formatTime } from "../../lib/utils";
+import { formatTimeToMinSec } from "../../lib/utils";
 
 interface SessionActivityProps {
   timeSpent: number;
@@ -35,7 +35,7 @@ export function SessionActivity({
     {
       icon: Clock,
       label: "Time Spent",
-      value: formatSecToMin(timeSpent),
+      value: formatTimeToMinSec(timeSpent),
       color: "var(--soft-blue)",
     },
     {
@@ -47,7 +47,7 @@ export function SessionActivity({
     {
       icon: Clock,
       label: "Break Duration",
-      value: formatSecToMin(breakDuration),
+      value: formatTimeToMinSec(breakDuration),
       color: "var(--accent-purple)",
     },
   ];

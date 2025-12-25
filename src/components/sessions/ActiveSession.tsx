@@ -31,6 +31,7 @@ export function ActiveSession({
             className="p-4 rounded-2xl"
             style={{
               backgroundColor: "var(--warm-neutral)",
+              border: "2px solid var(--warm-neutral-dark)",
             }}
           >
             <div className="flex items-start justify-between mb-3">

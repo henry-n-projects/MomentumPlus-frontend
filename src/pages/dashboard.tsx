@@ -41,10 +41,13 @@ export default function Dashboard() {
       : Math.round(
           (weekProgress.completed_count / weekProgress.scheduled_count) * 100
         );
-  const weeklyFocusMinutes = weeklyActivities.reduce(
-    (sum, day) => sum + day.focus_minutes,
-    0
+  const weeklyFocusMinutes = Math.ceil(
+    weeklyActivities.reduce((sum, day) => sum + day.focus_minutes, 0)
   );
+  const weekly_activities = weeklyActivities.map((a) => ({
+    date: a.date,
+    focus_minutes: Math.ceil(a.focus_minutes),
+  }));
 
   return (
     // Page layout
@@ -99,7 +102,7 @@ export default function Dashboard() {
           todayCount={todayCount}
         />
 
-        <ActivityGraph weeklyActivity={weeklyActivities} />
+        <ActivityGraph weeklyActivity={weekly_activities} />
         {/*add "no schedueld sessions today , create one now" div if today.sessions.length === 0*/}
         <div className="space-y-4">
           <TodaySessionList todaySessions={todaySessions} />

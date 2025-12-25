@@ -16,6 +16,7 @@ import SessionControls from "../components/sessions/SessionControls";
 import { ChevronRight } from "lucide-react";
 import { SessionActivity } from "../components/sessions/SessionActivity";
 import { ActiveSession } from "../components/sessions/ActiveSession";
+import toast from "react-hot-toast";
 
 export default function Session() {
   // Session state
@@ -27,7 +28,9 @@ export default function Session() {
   const [distractions, setDistractions] = useState<string[]>([]);
 
   // Fetch Scheduled Sessions
-  const { data: scheduledSessionData } = useScheduledSessions();
+  const { data: scheduledSessionData, refetch: refetchScheduled } =
+    useScheduledSessions();
+
   const scheduledSessions = scheduledSessionData?.data ?? [];
 
   // Router hooks
@@ -98,6 +101,7 @@ export default function Session() {
       },
       onError: () => {
         setIsRunning(false);
+        toast.error("Failed to start session.");
       },
     });
   };
@@ -106,22 +110,24 @@ export default function Session() {
   const handleEndSession = () => {
     if (!selectedSession) return;
     sessionEnd(selectedSession.id, {
-      onSuccess: () => {
+      onSuccess: async () => {
+        // 1. Reset all local UI state
         resetSessionState();
 
-        // refetch shceduled sessions
-        const result = useScheduledSessions();
+        // 2. Refetch scheduled sessions from backend
+        const result = await refetchScheduled();
         const freshSessions = result.data?.data ?? [];
 
+        // 3. Pick the first scheduled session, if any
         if (freshSessions.length > 0) {
-          setSearchParams({ id: freshSessions[0].id }); // set to first scheduled session
+          setSearchParams({ id: freshSessions[0].id });
         } else {
-          setSearchParams({}); // clear slection
+          setSearchParams({});
         }
-        //show toast
+        toast.success("Session completed!");
       },
       onError: () => {
-        //show toast
+        toast.error("Failed to end session.");
       },
     });
   };
@@ -136,9 +142,11 @@ export default function Session() {
           setIsOnBreak(true);
           setActiveBreakId(data.data.break.id);
           setBreakCount((prev) => prev + 1);
+          toast.success("Started break");
         },
         onError: () => {
           setIsOnBreak(false);
+          toast.error("Failed to start break");
         },
       }
     );
@@ -151,9 +159,11 @@ export default function Session() {
       {
         onSuccess: () => {
           setIsOnBreak(false);
+          toast.success("Ended break.");
         },
         onError: () => {
           setIsOnBreak(true);
+          toast.error("Failed to end break");
         },
       }
     );
@@ -174,6 +184,7 @@ export default function Session() {
       {
         onError: () => {
           setDistractions((prev) => prev.slice(0, -1));
+          toast.error("Failed to add distraction.");
         },
       }
     );
@@ -290,6 +301,7 @@ export default function Session() {
               sessions={scheduledSessions}
               selectedSessionId={sessionId || undefined}
               onSelectSession={handleSelectSession}
+              canSelect={!isRunning}
             />
           </div>
         </div>

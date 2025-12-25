@@ -1,4 +1,7 @@
-import type { Distraction, DistractionRequestBody } from "../types/distraction";
+import type {
+  DistractionResponse,
+  DistractionRequestBody,
+} from "../types/distraction";
 import type {
   SessionBreakEndResponse,
   SessionBreakStartResponse,
@@ -11,7 +14,7 @@ export async function startSession(
   sessionId: string
 ): Promise<SessionStartResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/sessions/${sessionId}/start`,
+    `${import.meta.env.VITE_API_URL}/sessions/${sessionId}/start`,
     {
       method: "POST",
       credentials: "include",
@@ -28,7 +31,7 @@ export async function endSession(
   sessionId: string
 ): Promise<SessionStopResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/sessions/${sessionId}/stop`,
+    `${import.meta.env.VITE_API_URL}/sessions/${sessionId}/stop`,
     {
       method: "POST",
       credentials: "include",
@@ -45,7 +48,7 @@ export async function startSessionBreak(
   sessionId: string
 ): Promise<SessionBreakStartResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/sessions/${sessionId}/breaks/start`,
+    `${import.meta.env.VITE_API_URL}/sessions/${sessionId}/breaks/start`,
 
     {
       method: "POST",
@@ -70,7 +73,7 @@ export async function endSessionBreak(
   breakId: string
 ): Promise<SessionBreakEndResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/sessions/${id}/breaks/${breakId}/end`,
+    `${import.meta.env.VITE_API_URL}/sessions/${id}/breaks/${breakId}/end`,
     {
       method: "POST",
       credentials: "include",
@@ -86,15 +89,18 @@ export async function endSessionBreak(
 export async function addSessionDistraction(
   sessionId: string,
   body: DistractionRequestBody
-): Promise<Distraction> {
-  const res = await fetch(`sessions/${sessionId}/distraction`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ body }),
-  });
+): Promise<DistractionResponse> {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/sessions/${sessionId}/distraction`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(body),
+    }
+  );
 
   if (!res.ok) {
     throw new Error(

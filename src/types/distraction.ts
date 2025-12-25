@@ -1,9 +1,9 @@
-export interface Distraction {
+export interface DistractionResponse {
   status: string;
   data: {
     session_id: string;
     name: string;
-    ocured_at: string;
+    ocurred_at: string;
   };
 }
 

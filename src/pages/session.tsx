@@ -25,7 +25,9 @@ export default function Session() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [breakDuration, setBreakDuration] = useState(0);
   const [breakCount, setBreakCount] = useState(0);
-  const [distractions, setDistractions] = useState<string[]>([]);
+  const [distractions, setDistractions] = useState<
+    { name: string; time: Date }[]
+  >([]);
 
   // Fetch Scheduled Sessions
   const { data: scheduledSessionData, refetch: refetchScheduled } =
@@ -48,7 +50,7 @@ export default function Session() {
     }
   }, [sessionId, scheduledSessions, setSearchParams]);
 
-  const canStart = Boolean(selectedSession);
+  const hasSelectedSession = Boolean(selectedSession);
 
   // Track active break
   const [activeBreakId, setActiveBreakId] = useState<string | null>(null);
@@ -174,7 +176,13 @@ export default function Session() {
     const trimmed = distraction.trim();
     if (!trimmed) return;
 
-    setDistractions((prev) => [...prev, trimmed]);
+    // optimistic add
+    const newDistraction = {
+      name: trimmed,
+      time: new Date(),
+    };
+
+    setDistractions((prev) => [...prev, newDistraction]);
 
     addDistraction(
       {
@@ -182,6 +190,18 @@ export default function Session() {
         body: { name: trimmed },
       },
       {
+        onSuccess: (data) => {
+          setDistractions((prev) =>
+            prev.map((d) =>
+              d === newDistraction
+                ? {
+                    name: data.data.name,
+                    time: new Date(data.data.occurred_at),
+                  }
+                : d
+            )
+          );
+        },
         onError: () => {
           setDistractions((prev) => prev.slice(0, -1));
           toast.error("Failed to add distraction.");
@@ -272,7 +292,7 @@ export default function Session() {
               <SessionControls
                 isOnBreak={isOnBreak}
                 isRunning={isRunning}
-                canStart={canStart}
+                canStart={hasSelectedSession}
                 onStart={handleStartSession}
                 onEndSession={handleEndSession}
                 onStartBreak={handleStartBreak}
@@ -286,7 +306,7 @@ export default function Session() {
               breakDuration={breakDuration}
               distractions={distractions}
               onAddDistraction={handleAddDistraction}
-              canAddDistraction={canStart}
+              canAddDistraction={isRunning && hasSelectedSession}
             />
           </div>
           {/* Right Column - Scheduled and active session */}

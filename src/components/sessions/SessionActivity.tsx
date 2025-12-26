@@ -7,7 +7,7 @@ interface SessionActivityProps {
   timeSpent: number;
   breakCount: number;
   breakDuration: number;
-  distractions: string[];
+  distractions: { name: string; time: Date }[];
   onAddDistraction: (distraction: string) => void;
   canAddDistraction: boolean;
 }
@@ -158,7 +158,8 @@ export function SessionActivity({
                   color: "var(--text-primary)",
                 }}
               >
-                <span style={{ fontSize: "14px" }}>{distraction}</span>
+                <span style={{ fontSize: "14px" }}>{distraction.name}</span>
+                <div>{distraction.time.toLocaleTimeString()}</div>
               </div>
             ))}
           </div>

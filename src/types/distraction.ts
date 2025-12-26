@@ -3,7 +3,7 @@ export interface DistractionResponse {
   data: {
     session_id: string;
     name: string;
-    ocurred_at: string;
+    occurred_at: string;
   };
 }
 

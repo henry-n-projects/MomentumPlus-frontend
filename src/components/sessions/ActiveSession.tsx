@@ -1,5 +1,5 @@
 import { Clock } from "lucide-react";
-import { formatTime } from "../../lib/utils";
+import { formatDate, formatTime } from "../../lib/utils";
 import type { SessionAndTag } from "../../types/session";
 
 interface ActiveSessionProps {
@@ -22,7 +22,7 @@ export function ActiveSession({
     >
       <div className="flex items-center gap-2 mb-4">
         <Clock className="w-5 h-5" style={{ color: "var(--text-secondary)" }} />
-        <h3 style={{ color: "var(--text-primary)" }}>In Progress</h3>
+        <h3 style={{ color: "var(--text-primary)" }}>Selected Session</h3>
       </div>
 
       <div className="space-y-3">
@@ -52,13 +52,17 @@ export function ActiveSession({
                   <span
                     className="px-3 py-1 rounded-full"
                     style={{
-                      backgroundColor: "var(--accent-purple)" + "30",
-                      color: "var(--accent-purple)",
+                      backgroundColor: isOnBreak
+                        ? "var(--accent-purple)" + "10"
+                        : "var(--soft-blue)" + "10",
+                      color: isOnBreak
+                        ? "var(--accent-purple)"
+                        : "var(--soft-blue)",
                       fontSize: "12px",
                       fontWeight: 600,
                     }}
                   >
-                    {isOnBreak ? "Locked in" : "On break"}
+                    {!isOnBreak ? "Locked in" : "On break"}
                   </span>
                 </div>
                 <div
@@ -75,7 +79,13 @@ export function ActiveSession({
 
             <div className="flex items-center justify-between">
               <div style={{ fontSize: "14px", color: "var(--text-secondary)" }}>
-                {startedAt ? `Started at: ${formatTime(startedAt)}` : ""}
+                {startedAt
+                  ? `Started today at: ${startedAt.toLocaleTimeString([], {
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}`
+                  : `${formatDate(new Date(session.start_at))}`}
               </div>
             </div>
           </div>

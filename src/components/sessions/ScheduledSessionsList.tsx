@@ -83,7 +83,11 @@ export function ScheduledSessionsList({
                     }}
                   >
                     {formatDate(new Date(session.start_at))} at{" "}
-                    {formatTime(new Date(session.start_at))}
+                    {new Date(session.start_at).toLocaleTimeString([], {
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
                   </div>
                 </div>
 

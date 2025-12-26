@@ -12,6 +12,8 @@ export default {
         textPrimary: "var(--text-primary)",
         textSecondary: "var(--text-secondary)",
         offWhite: "var(--off-white)",
+        accentGreen: "var(--accent-green)",
+        accentRed: "var(--accent-red)",
       },
     },
   },

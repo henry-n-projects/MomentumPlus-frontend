@@ -64,7 +64,7 @@ export function TodaySessionList({ todaySessions }: sessionProps) {
                   style={{
                     backgroundColor: session.tag.color,
                     fontSize: "12px",
-                    color: "var(--text-primary)",
+                    color: "var(--off-white)",
                     fontWeight: 600,
                   }}
                 >
@@ -92,7 +92,7 @@ export function TodaySessionList({ todaySessions }: sessionProps) {
                 className="flex items-center gap-2 px-4 py-2 rounded-xl transition-all hover:shadow-md active:scale-95"
                 style={{
                   backgroundColor: "var(--soft-blue)",
-                  color: "var(--text-primary)",
+                  color: "var(--text-secondary)",
                 }}
               >
                 <Play className="w-4 h-4" />

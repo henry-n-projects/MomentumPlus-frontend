@@ -6,6 +6,7 @@
 
 @layer base {
   :root {
+    --soft-blue-dark: #6a99b6;
     --soft-blue: #a3c9e0;
     --soft-blue-light: #d9ecf2;
     --soft-blue-extra-light: #e7f0f3;
@@ -15,6 +16,8 @@
     --text-primary: #2d3748;
     --text-secondary: #718096;
     --off-white: #fafafa;
+    --accent-green: #a4cf98;
+    --accent-red: #d4968c;
   }
 
   body {

@@ -222,25 +222,6 @@ export default function Session() {
           <h2 className="text-3xl font-semibold text-[var(--text-primary)] mb-2">
             Your Session
           </h2>
-          {selectedSession && (
-            <div className="flex items-center gap-3">
-              <span
-                className="px-4 py-2 rounded-full"
-                style={{
-                  backgroundColor: selectedSession.tag.color + "30",
-                  color: selectedSession.tag.color,
-                  fontWeight: 600,
-                }}
-              >
-                {selectedSession.tag.name}
-              </span>
-              <span
-                style={{ fontSize: "16px", color: "var(--text-secondary)" }}
-              >
-                {selectedSession.name}
-              </span>
-            </div>
-          )}
         </div>
 
         {/* Main Content */}
@@ -315,6 +296,7 @@ export default function Session() {
               session={selectedSession}
               isOnBreak={isOnBreak}
               startedAt={startedAt}
+              isRunning={isRunning}
             />
 
             <ScheduledSessionsList

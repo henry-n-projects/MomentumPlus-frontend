@@ -1,17 +1,19 @@
 import { Clock } from "lucide-react";
-import { formatDate, formatTime } from "../../lib/utils";
+import { formatDate } from "../../lib/utils";
 import type { SessionAndTag } from "../../types/session";
 
 interface ActiveSessionProps {
   session: SessionAndTag | undefined;
   isOnBreak: boolean;
   startedAt: Date | null;
+  isRunning: boolean;
 }
 
 export function ActiveSession({
   session,
   isOnBreak,
   startedAt,
+  isRunning,
 }: ActiveSessionProps) {
   return (
     <div
@@ -52,17 +54,20 @@ export function ActiveSession({
                   <span
                     className="px-3 py-1 rounded-full"
                     style={{
-                      backgroundColor: isOnBreak
-                        ? "var(--accent-purple)" + "10"
-                        : "var(--soft-blue)" + "10",
-                      color: isOnBreak
-                        ? "var(--accent-purple)"
-                        : "var(--soft-blue)",
+                      backgroundColor:
+                        isRunning && !isOnBreak
+                          ? "var(--accent-green)"
+                          : isOnBreak
+                          ? "var(--accent-purple)"
+                          : "var(--soft-blue)",
+                      color: "var(--off-white)",
                       fontSize: "12px",
                       fontWeight: 600,
                     }}
                   >
-                    {!isOnBreak ? "Locked in" : "On break"}
+                    {!isRunning
+                      ? "Scheduled"
+                      : `${!isOnBreak ? "Locked in" : "On break"}`}
                   </span>
                 </div>
                 <div

@@ -34,8 +34,8 @@ export function SessionActivity({
   const stats = [
     {
       icon: Clock,
-      label: "Time Spent",
-      value: formatTimeToMinSec(timeSpent),
+      label: "Focus Time",
+      value: formatTimeToMinSec(timeSpent - breakDuration),
       color: "var(--soft-blue)",
     },
     {
@@ -152,14 +152,25 @@ export function SessionActivity({
             {distractions.map((distraction, index) => (
               <div
                 key={index}
-                className="p-3 rounded-xl"
+                className="flex items-center justify-between p-3 rounded-xl"
                 style={{
                   backgroundColor: "var(--warm-neutral)",
                   color: "var(--text-primary)",
                 }}
               >
                 <span style={{ fontSize: "14px" }}>{distraction.name}</span>
-                <div>{distraction.time.toLocaleTimeString()}</div>
+                <span
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  {distraction.time.toLocaleTimeString([], {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </span>
               </div>
             ))}
           </div>

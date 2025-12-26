@@ -41,15 +41,30 @@ export default function Session() {
   const sessionId = searchParams.get("id");
 
   // Fetch selected session id
-  const { data: sessionData } = useSession(sessionId || "");
+  const { data: sessionData, isLoading: isLoadingSession } = useSession(sessionId || "");
 
   // Track selected session
   const selectedSession = sessionData?.data?.session;
   useEffect(() => {
-    if (!sessionData) return;
+    // Don't do anything while loading - wait for data to arrive
+    if (isLoadingSession) return;
+    
+    // If we've finished loading but have no data, clear state
+    if (!sessionData) {
+      resetSessionState();
+      return;
+    }
 
     //if no session detected from fetch, clear everything
     if (!selectedSession) {
+      resetSessionState();
+      return;
+    }
+
+    // CRITICAL: Ensure we're processing data for the current sessionId
+    // This prevents processing stale data when switching between sessions
+    if (selectedSession.id !== sessionId) {
+      // Data is for a different session, reset state and don't process it
       resetSessionState();
       return;
     }
@@ -102,8 +117,10 @@ export default function Session() {
     );
   }, [
     sessionData, // re-run when fetched/refetched
-    sessionData?.data?.session?.id,
-    sessionData?.data?.session?.status,
+    isLoadingSession, // wait for loading to complete
+    sessionId, // track session id changes from URL
+    selectedSession?.id, // track session id from data
+    selectedSession?.status, // track status changes
   ]);
 
   // Set sessionId in the url params default to first scheduled session if not provided

@@ -24,6 +24,11 @@ export function useSession(sessionId: string) {
     queryKey: ["session", sessionId],
     queryFn: () => api.get(`/sessions/${sessionId}`),
     enabled: !!sessionId, // Dont run until id provided
+    // Refetch when component mounts to ensure fresh data when navigating back
+    refetchOnMount: true,
+    // Keep data fresh for 30 seconds (matches refetchInterval for active sessions)
+    // This ensures cached data is used immediately when navigating back
+    staleTime: 30_000,
     refetchInterval: (query) => {
       // refetch every 30 sec if session in progress
       return query.state.data?.data.session.status === "IN_PROGRESS"

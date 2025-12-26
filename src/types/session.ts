@@ -87,3 +87,40 @@ export interface SessionBreakEndResponse {
     };
   };
 }
+
+export interface ActiveSessionResponse {
+  status: string;
+  data: ActiveSession | null;
+}
+
+export interface ActiveSession {
+  session: {
+    id: string;
+    name: string;
+    status: string;
+    start_at: string;
+    end_at: string;
+  };
+  tag: {
+    id: string;
+    name: string;
+    color: string;
+  };
+  active_break: {
+    id: string;
+    session_id: string;
+    start_time: string;
+    end_time: string;
+  } | null;
+  breaks: {
+    id: string;
+    session_id: string;
+    start_time: string;
+    end_time: string;
+  }[];
+  distractions: {
+    id: string;
+    name: string;
+    occurred_at: string;
+  };
+}

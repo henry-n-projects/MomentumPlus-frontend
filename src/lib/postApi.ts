@@ -107,6 +107,5 @@ export async function addSessionDistraction(
       `Failed to add distraction: ${res.status} ${res.statusText}`
     );
   }
-
   return res.json();
 }

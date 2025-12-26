@@ -32,7 +32,13 @@ export interface SessionActivity {
   focus_minutes: number;
   break_minutes: number;
   breaks: SessionBreak[];
-  distraction_count: number;
+  distractions: [
+    {
+      id: string;
+      name: string;
+      occurred_at: string;
+    }
+  ];
 }
 
 export interface SessionBreak {

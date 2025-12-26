@@ -28,6 +28,7 @@ export default function Session() {
   const [distractions, setDistractions] = useState<
     { name: string; time: Date }[]
   >([]);
+  const [activeBreakId, setActiveBreakId] = useState<string | null>(null);
 
   // Fetch Scheduled Sessions
   const { data: scheduledSessionData, refetch: refetchScheduled } =
@@ -41,7 +42,69 @@ export default function Session() {
 
   // Fetch selected session id
   const { data: sessionData } = useSession(sessionId || "");
+
+  // Track selected session
   const selectedSession = sessionData?.data?.session;
+  useEffect(() => {
+    if (!sessionData) return;
+
+    //if no session detected from fetch, clear everything
+    if (!selectedSession) {
+      resetSessionState();
+      return;
+    }
+
+    // If selected session is not IN PROGRESS, dont run timer
+    if (selectedSession.status !== "IN_PROGRESS") {
+      resetSessionState();
+      return;
+    }
+
+    const activity = sessionData.data.activity;
+    const breaks = activity.breaks ?? [];
+    const distractions = activity.distractions ?? [];
+    const now = new Date();
+    const start = new Date(selectedSession.start_at);
+    const elapsedSeconds = Math.max(
+      Math.floor((now.getTime() - start.getTime()) / 1000),
+      0
+    );
+    const completedBreakSeconds = breaks
+      .filter((b) => b.end_time)
+      .reduce((sum, b) => {
+        const startMs = new Date(b.start_time).getTime();
+        const endMs = new Date(b.end_time!).getTime();
+        const diff = Math.max(Math.round((endMs - startMs) / 1000), 0);
+        return sum + diff;
+      }, 0);
+    const activeBreak = breaks.find((b) => !b.end_time);
+    const activeBreakSeconds = activeBreak
+      ? Math.max(
+          Math.round(
+            (now.getTime() - new Date(activeBreak.start_time).getTime()) / 1000
+          ),
+          0
+        )
+      : 0;
+
+    setIsRunning(true);
+    setStartedAt(start);
+    setElapsedTime(elapsedSeconds);
+    setBreakDuration(completedBreakSeconds + activeBreakSeconds);
+    setBreakCount(breaks.length);
+    setIsOnBreak(Boolean(activeBreak));
+    setActiveBreakId(activeBreak ? activeBreak.id : null);
+    setDistractions(
+      distractions.map((d) => ({
+        name: d.name,
+        time: new Date(d.occurred_at),
+      }))
+    );
+  }, [
+    sessionData, // re-run when fetched/refetched
+    sessionData?.data?.session?.id,
+    sessionData?.data?.session?.status,
+  ]);
 
   // Set sessionId in the url params default to first scheduled session if not provided
   useEffect(() => {
@@ -52,9 +115,6 @@ export default function Session() {
 
   const hasSelectedSession = Boolean(selectedSession);
 
-  // Track active break
-  const [activeBreakId, setActiveBreakId] = useState<string | null>(null);
-  //
   const [startedAt, setStartedAt] = useState<Date | null>(null);
   // Update time spent and elapsed time
   useEffect(() => {
@@ -82,6 +142,7 @@ export default function Session() {
     setDistractions([]);
     setActiveBreakId(null);
     setStartedAt(null);
+    setDistractions([]);
   }
 
   // Handles selecting a session from the list Updates the URL with the new session ID
@@ -100,6 +161,7 @@ export default function Session() {
       onSuccess: () => {
         setIsRunning(true);
         setStartedAt(new Date());
+        toast.success("Started session.");
       },
       onError: () => {
         setIsRunning(false);
@@ -144,11 +206,11 @@ export default function Session() {
           setIsOnBreak(true);
           setActiveBreakId(data.data.break.id);
           setBreakCount((prev) => prev + 1);
-          toast.success("Started break");
+          toast.success("Started break.");
         },
         onError: () => {
           setIsOnBreak(false);
-          toast.error("Failed to start break");
+          toast.error("Failed to start break.");
         },
       }
     );
@@ -165,7 +227,7 @@ export default function Session() {
         },
         onError: () => {
           setIsOnBreak(true);
-          toast.error("Failed to end break");
+          toast.error("Failed to end break.");
         },
       }
     );

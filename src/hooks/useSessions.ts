@@ -13,10 +13,18 @@ import {
   addSessionDistraction,
 } from "../lib/postApi";
 import type { DistractionRequestBody } from "../types/distraction";
+
 export function useScheduledSessions() {
   return useQuery<ScheduledSessionsResponse>({
     queryKey: ["sessions", "scheduled"],
-    queryFn: () => api.get("/sessions/scheduled"),
+    queryFn: () => api.get("/sessions/status/scheduled"),
+  });
+}
+
+export function useActiveSession() {
+  return useQuery<ActiveSessionResponse>({
+    queryKey: ["active_session"],
+    queryFn: () => api.get("/sessions/status/in-progress"),
   });
 }
 
@@ -32,10 +40,13 @@ export function useStartSession() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (sessionId: string) => startSession(sessionId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["dashboard", "sessions", "session"],
-      });
+    onSuccess: (_data, sessionId) => {
+      // Refresh dashboard summary
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      // Refresh the specific session
+      queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
+      // Refresh active session info if you use it
+      queryClient.invalidateQueries({ queryKey: ["active_session"] });
     },
   });
 }
@@ -44,8 +55,11 @@ export function useEndSession() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (sessionId: string) => endSession(sessionId),
-    onSuccess: () => {
+    onSuccess: (_data, sessionId) => {
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["active_session"] });
+      queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
+      queryClient.invalidateQueries({ queryKey: ["sessions", "scheduled"] });
     },
   });
 }
@@ -104,12 +118,5 @@ export function useAddSessionDistraction() {
         queryKey: ["session", variables.sessionId],
       });
     },
-  });
-}
-
-export function useActiveSession() {
-  return useQuery<ActiveSessionResponse>({
-    queryKey: ["active_session"],
-    queryFn: () => api.get("/sessions/active"),
   });
 }

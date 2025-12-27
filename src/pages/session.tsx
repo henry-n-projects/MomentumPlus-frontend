@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { SessionTimer } from "../components/sessions/SessionTimer";
 import type { SessionAndTag } from "../types/session";
 import {
+  useActiveSession,
   useAddSessionDistraction,
   useEndSession,
   useEndSessionBreak,
@@ -41,17 +42,98 @@ export default function Session() {
   const sessionId = searchParams.get("id");
 
   // Fetch selected session id
-  const { data: sessionData } = useSession(sessionId || "");
+  const { data: sessionData, isLoading: isSessionLoading } = useSession(
+    sessionId || ""
+  );
   const selectedSession = sessionData?.data?.session;
+
+  const { data: activeSessionData, isLoading: isActiveLoading } =
+    useActiveSession();
+  const activeSession = activeSessionData ? activeSessionData?.data : null;
 
   // Set sessionId in the url params default to first scheduled session if not provided
   useEffect(() => {
-    if (!sessionId && scheduledSessions.length > 0) {
+    // 1. If URL already has an id, don't touch it
+    if (sessionId) return;
+
+    // 2. If backend says there's an active session, use that
+    if (activeSession) {
+      console.log(`active session id: ${activeSession.session.id}`);
+      setSearchParams({ id: activeSession.session.id });
+      return;
+    }
+
+    // 3. Otherwise, fall back to the first scheduled session
+    if (scheduledSessions.length > 0) {
+      console.log(`Try to set 1st scheduled: ${scheduledSessions[0].id}`);
       setSearchParams({ id: scheduledSessions[0].id });
     }
-  }, [sessionId, scheduledSessions, setSearchParams]);
+  }, [sessionId, activeSession, scheduledSessions, setSearchParams]);
 
-  const hasSelectedSession = Boolean(selectedSession);
+  // Hydrate UI state from backend when a session is IN_PROGRESS
+  useEffect(() => {
+    // If we have no data yet, don't touch UI
+    if (!sessionData || !selectedSession) {
+      resetSessionState();
+      return;
+    }
+
+    // Only hydrate when this session is IN_PROGRESS
+    if (selectedSession.status !== "IN_PROGRESS") {
+      resetSessionState();
+      return;
+    }
+
+    const activity = sessionData.data.activity;
+    const breaks = activity.breaks ?? [];
+    const now = new Date();
+    const start = new Date(selectedSession.start_at);
+
+    // 1. Elapsed time (seconds since start)
+    const elapsedSeconds = Math.max(
+      Math.floor((now.getTime() - start.getTime()) / 1000),
+      0
+    );
+
+    // 2. Completed breaks (only those with end_time)
+    const completedBreakSeconds = breaks
+      .filter((b) => b.end_time)
+      .reduce((sum, b) => {
+        const startMs = new Date(b.start_time).getTime();
+        const endMs = new Date(b.end_time!).getTime();
+        const diff = Math.max(Math.round((endMs - startMs) / 1000), 0);
+        return sum + diff;
+      }, 0);
+
+    // 3. Active break (if any)
+    const activeBreak = breaks.find((b) => !b.end_time);
+    const activeBreakSeconds = activeBreak
+      ? Math.max(
+          Math.round(
+            (now.getTime() - new Date(activeBreak.start_time).getTime()) / 1000
+          ),
+          0
+        )
+      : 0;
+
+    // 4. Hydrate distractions (if you return them from backend)
+    const distractionsFromApi = activity.distractions ?? [];
+
+    // 5. Push everything into UI state
+    setIsRunning(true);
+    setStartedAt(start);
+    setElapsedTime(elapsedSeconds);
+    setBreakDuration(completedBreakSeconds + activeBreakSeconds);
+    setBreakCount(breaks.length);
+    setIsOnBreak(Boolean(activeBreak));
+    setActiveBreakId(activeBreak ? activeBreak.id : null);
+    setDistractions(
+      distractionsFromApi.map((d) => ({
+        name: d.name,
+        time: new Date(d.occurred_at),
+      }))
+    );
+  }, [sessionData, selectedSession]);
 
   const [startedAt, setStartedAt] = useState<Date | null>(null);
   // Update time spent and elapsed time
@@ -271,7 +353,7 @@ export default function Session() {
               <SessionControls
                 isOnBreak={isOnBreak}
                 isRunning={isRunning}
-                canStart={hasSelectedSession}
+                canStart={Boolean(selectedSession)}
                 onStart={handleStartSession}
                 onEndSession={handleEndSession}
                 onStartBreak={handleStartBreak}
@@ -285,7 +367,7 @@ export default function Session() {
               breakDuration={breakDuration}
               distractions={distractions}
               onAddDistraction={handleAddDistraction}
-              canAddDistraction={isRunning && hasSelectedSession}
+              canAddDistraction={isRunning && Boolean(selectedSession)}
             />
           </div>
           {/* Right Column - Scheduled and active session */}

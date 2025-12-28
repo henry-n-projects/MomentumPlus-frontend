@@ -57,6 +57,8 @@ export default function Session() {
     if (sessionId) return;
 
     // 2. If backend says there's an active session, use that
+    if (isActiveLoading) return;
+
     if (activeSession) {
       console.log(`active session id: ${activeSession.session.id}`);
       setSearchParams({ id: activeSession.session.id });
@@ -72,6 +74,8 @@ export default function Session() {
 
   // Hydrate UI state from backend when a session is IN_PROGRESS
   useEffect(() => {
+    if (isSessionLoading) return;
+
     // If we have no data yet, don't touch UI
     if (!sessionData || !selectedSession) {
       resetSessionState();
@@ -116,7 +120,7 @@ export default function Session() {
         )
       : 0;
 
-    // 4. Hydrate distractions (if you return them from backend)
+    // 4. Hydrate distractions
     const distractionsFromApi = activity.distractions ?? [];
 
     // 5. Push everything into UI state

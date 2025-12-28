@@ -85,20 +85,6 @@ export function TodaySessionList({ todaySessions }: sessionProps) {
                 </span>
               </div>
             </div>
-
-            {session.status !== "COMPLETED" && (
-              <button
-                onClick={() => handleStartSession(session.name)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl transition-all hover:shadow-md active:scale-95"
-                style={{
-                  backgroundColor: "var(--soft-blue)",
-                  color: "var(--text-secondary)",
-                }}
-              >
-                <Play className="w-4 h-4" />
-                Start
-              </button>
-            )}
           </div>
         ))}
       </div>

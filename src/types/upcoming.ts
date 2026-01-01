@@ -1,7 +1,7 @@
 import type { SessionAndTag } from "./session";
 import type { Tag } from "./tag";
 
-export interface SessionActivityResponse {
+export interface AddSessionsResponse {
   status: string;
   data: {
     id: string;
@@ -12,6 +12,19 @@ export interface SessionActivityResponse {
     break_time: number;
     tag: Tag;
   };
+}
+
+export interface SessionsResponse {
+  status: string;
+  data: {
+    id: string;
+    name: string;
+    start_at: string;
+    end_at: string;
+    status: string;
+    break_time: number;
+    tag: Tag;
+  }[];
 }
 
 export interface AddSessionBody {
@@ -47,4 +60,9 @@ export interface AddTagBody {
 export interface AddTagResponse {
   status: string;
   data: Tag;
+}
+
+export interface TagResponse {
+  status: string;
+  data: Tag[];
 }

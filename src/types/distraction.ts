@@ -10,3 +10,9 @@ export interface DistractionResponse {
 export interface DistractionRequestBody {
   name: string;
 }
+
+export interface Distraction {
+  id: string;
+  name: string;
+  occurred_at: string;
+}

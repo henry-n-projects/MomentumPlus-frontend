@@ -1,12 +1,8 @@
-import { Clock, CheckCircle2, Circle, Play } from "lucide-react";
-import type { Session } from "../../types/dashboard";
+import { Clock, CheckCircle2, Circle } from "lucide-react";
+import type { SessionAndTag } from "../../types/session";
 
-const handleStartSession = (sessionTitle: string) => {
-  console.log(`Starting session: ${sessionTitle}`);
-  //session start logic here
-};
 type sessionProps = {
-  todaySessions: Session[];
+  todaySessions: SessionAndTag[];
 };
 
 export function TodaySessionList({ todaySessions }: sessionProps) {

@@ -11,7 +11,7 @@ import {
   startSessionBreak,
   endSession,
   addSessionDistraction,
-} from "../lib/postApi";
+} from "../lib/api/session/api";
 import type { DistractionRequestBody } from "../types/distraction";
 
 export function useScheduledSessions() {

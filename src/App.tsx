@@ -4,6 +4,7 @@ import ProtectedLayout from "./layout/ProtectedLayout";
 import HomePage from "./pages/home";
 import Dashboard from "./pages/dashboard";
 import Session from "./pages/session";
+import Upcoming from "./pages/upcoming";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/session" element={<Session />} />
+          <Route path="/upcoming" element={<Upcoming />} />
         </Route>
       </Routes>
     </BrowserRouter>

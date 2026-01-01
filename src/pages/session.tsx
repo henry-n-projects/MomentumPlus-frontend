@@ -296,10 +296,7 @@ export default function Session() {
   const handleUpcomingNavigation = () => {};
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ backgroundColor: "var(--background)" }}
-    >
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
         <div className="mb-12 text-xl font-semibold">

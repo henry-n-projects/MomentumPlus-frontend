@@ -1,4 +1,6 @@
-import type { Break } from "./break";
+import type { Break, SessionBreak } from "./break";
+import type { Distraction } from "./distraction";
+import type { Tag } from "./tag";
 
 export interface ScheduledSessionsResponse {
   status: string;
@@ -7,16 +9,12 @@ export interface ScheduledSessionsResponse {
 
 export interface SessionAndTag {
   id: string;
-  name: string;
+  name: string | null;
   start_at: string;
-  end_at: string;
+  end_at: string | null;
   status: string;
   break_time: number;
-  tag: {
-    id: string;
-    name: string;
-    color: string;
-  };
+  tag: Tag;
 }
 
 export interface SessionResponse {
@@ -32,19 +30,7 @@ export interface SessionActivity {
   focus_minutes: number;
   break_minutes: number;
   breaks: SessionBreak[];
-  distractions: [
-    {
-      id: string;
-      name: string;
-      occurred_at: string;
-    }
-  ];
-}
-
-export interface SessionBreak {
-  id: string;
-  start_time: string;
-  end_time: string | null;
+  distractions: Distraction[];
 }
 
 export interface SessionStartResponse {
@@ -101,11 +87,7 @@ export interface ActiveSession {
     start_at: string;
     end_at: string;
   };
-  tag: {
-    id: string;
-    name: string;
-    color: string;
-  };
+  tag: Tag;
   active_break: {
     id: string;
     session_id: string;
@@ -118,9 +100,5 @@ export interface ActiveSession {
     start_time: string;
     end_time: string;
   }[];
-  distractions: {
-    id: string;
-    name: string;
-    occurred_at: string;
-  };
+  distractions: Distraction[];
 }

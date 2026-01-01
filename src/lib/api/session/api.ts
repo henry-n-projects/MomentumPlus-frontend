@@ -1,13 +1,13 @@
 import type {
   DistractionResponse,
   DistractionRequestBody,
-} from "../types/distraction";
+} from "../../../types/distraction";
 import type {
   SessionBreakEndResponse,
   SessionBreakStartResponse,
   SessionStartResponse,
   SessionStopResponse,
-} from "../types/session";
+} from "../../../types/session";
 
 // FETCH WRAPPERS
 export async function startSession(

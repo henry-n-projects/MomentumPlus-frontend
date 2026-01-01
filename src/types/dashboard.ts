@@ -1,3 +1,4 @@
+import type { SessionAndTag } from "./session";
 import type { UserObject } from "./user";
 
 export interface DashboardResponse {
@@ -8,7 +9,7 @@ export interface DashboardResponse {
     weekly_activities: [WeeklyActivity];
     today: {
       date: string;
-      sessions: [Session];
+      sessions: [SessionAndTag];
     };
   };
 }
@@ -21,18 +22,4 @@ export interface WeeklyActivity {
 export interface WeekProgress {
   scheduled_count: number;
   completed_count: number;
-}
-
-export interface Session {
-  id: string;
-  name: string;
-  start_at: string;
-  end_at: string | null;
-  status: string;
-  break_time: number;
-  tag: {
-    id: string;
-    name: string;
-    color: string;
-  };
 }

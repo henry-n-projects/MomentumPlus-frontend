@@ -1,9 +1,26 @@
-import { Plus } from "lucide-react";
+import toast from "react-hot-toast";
+import { SessionForm } from "../components/upcoming/SessionForm";
+import { TagManager } from "../components/upcoming/TagManager";
+import { useAddTag, useGetTags } from "../hooks/useUpcoming";
+import type { AddTagBody } from "../types/upcoming";
 
 export default function Upcoming() {
-  const setIsSessionDialogOpen = (isOpen: boolean) => {
-    return;
+  // Fetch users tags
+  const { data: tagsData } = useGetTags();
+  const tags = tagsData?.data.tags ?? [];
+
+  const { mutate: addTag } = useAddTag();
+  const handleAddTag = (tag: AddTagBody) => {
+    addTag(tag, {
+      onSuccess: () => {
+        toast.success("Tag created");
+      },
+      onError: () => {
+        toast.error("Failed to create tag");
+      },
+    });
   };
+  const handleCreateSession = () => {};
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -17,48 +34,25 @@ export default function Upcoming() {
           </p>
         </header>
 
-        {/* Action buttons*/}
-        <div className="flex flex-wrap gap-3 mb-8">
-          <button
-            onClick={() => setIsSessionDialogOpen(true)}
-            className="rounded-xl px-6 py-3 flex items-center gap-2"
-            style={{ backgroundColor: "var(--soft-blue)", color: "#FFFFFF" }}
-          >
-            <Plus className="w-5 h-5" />
-            New Session
-          </button>
-
-          <button
-            onClick={() => setIsSessionDialogOpen(true)}
-            className="rounded-xl px-6 py-3 flex items-center gap-2 border-2"
+        {/* Tags Section */}
+        <section>
+          <h2
             style={{
-              borderColor: "var(--soft-blue)",
-              color: "var(--soft-blue)",
-              backgroundColor: "transparent",
+              fontSize: "36px",
+              fontWeight: 600,
+              color: "var(--text-primary)",
+              marginBottom: "16px",
             }}
           >
-            <Plus className="w-5 h-5" />
-            Create Tag
-          </button>
-        </div>
+            Tags
+          </h2>
+          <TagManager onAddTag={handleAddTag} />
+        </section>
 
-        {/* Tags Section */}
-        <div
-          className="rounded-3xl p-6 mb-8"
-          style={{
-            backgroundColor: 'var(--surface-white)',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-          }}
-        >
-          <h3 className="mb-4" style={{ color: 'var(--text-primary)' }}>
-            Available Tags
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            {tags.map((tag) => (
-              <TagBadge key={tag.id} tag={tag} />
-            ))}
-          </div>
-        </div>
+        {/* Create Session Section */}
+        <section className="pt-5">
+          <SessionForm tags={tags} onCreateSession={handleCreateSession} />
+        </section>
       </div>
     </div>
   );

@@ -25,14 +25,14 @@ export function useUpcomingSessions() {
 export function usePastScheduledSessions() {
   return useQuery<SessionsResponse>({
     queryKey: ["sessions", "past"],
-    queryFn: () => api.get("/past"),
+    queryFn: () => api.get("/upcoming/past"),
   });
 }
 
 export function useGetTags() {
   return useQuery<TagResponse>({
     queryKey: ["tags"],
-    queryFn: () => api.get("/tags"),
+    queryFn: () => api.get("/upcoming/tags"),
   });
 }
 

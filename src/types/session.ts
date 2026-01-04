@@ -1,6 +1,6 @@
 import type { Break, SessionBreak } from "./break";
 import type { Distraction } from "./distraction";
-import type { Tag } from "./tag";
+import type { TagType } from "./tag";
 
 export interface ScheduledSessionsResponse {
   status: string;
@@ -14,7 +14,7 @@ export interface SessionAndTag {
   end_at: string | null;
   status: string;
   break_time: number;
-  tag: Tag;
+  tag: TagType;
 }
 
 export interface SessionResponse {
@@ -87,7 +87,7 @@ export interface ActiveSession {
     start_at: string;
     end_at: string;
   };
-  tag: Tag;
+  tag: TagType;
   active_break: {
     id: string;
     session_id: string;

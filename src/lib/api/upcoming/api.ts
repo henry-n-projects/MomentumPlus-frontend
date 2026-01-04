@@ -8,7 +8,7 @@ import type {
 } from "../../../types/upcoming";
 
 export async function createTag(body: AddTagBody): Promise<AddTagResponse> {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upcoming/tags`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/upcoming/tags`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -90,15 +90,12 @@ export async function deleteSession(sessionId: string): Promise<void> {
 }
 
 export async function addTag(body: AddTagBody): Promise<AddTagResponse> {
-  const res = await fetch(
-    `${import.meta.env.VITE_API_URL}}/api/upcoming/add/tags`,
-    {
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-      body: JSON.stringify(body),
-    }
-  );
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/upcoming/add/tags`, {
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify(body),
+  });
 
   if (!res.ok) {
     const err = await res.json();

@@ -1,5 +1,5 @@
 import type { SessionAndTag } from "./session";
-import type { Tag } from "./tag";
+import type { TagType } from "./tag";
 
 export interface AddSessionsResponse {
   status: string;
@@ -10,7 +10,7 @@ export interface AddSessionsResponse {
     end_at: string;
     status: string;
     break_time: number;
-    tag: Tag;
+    tag: TagType;
   };
 }
 
@@ -23,7 +23,7 @@ export interface SessionsResponse {
     end_at: string;
     status: string;
     break_time: number;
-    tag: Tag;
+    tag: TagType;
   }[];
 }
 
@@ -59,10 +59,14 @@ export interface AddTagBody {
 
 export interface AddTagResponse {
   status: string;
-  data: Tag;
+  data: {
+    tags: TagType[];
+  };
 }
 
 export interface TagResponse {
   status: string;
-  data: Tag[];
+  data: {
+    tags: TagType[];
+  };
 }

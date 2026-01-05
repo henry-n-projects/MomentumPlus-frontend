@@ -23,6 +23,9 @@ export function SessionUpdateForm({
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedTagId, setSelectedTagId] = useState("");
+  const today = new Date().toLocaleDateString("en-CA");
+  const now = new Date();
+  const currentTime = now.toTimeString().slice(0, 5);
 
   // Load selected session data into form
   useEffect(() => {
@@ -115,6 +118,7 @@ export function SessionUpdateForm({
             <input
               type="date"
               value={selectedDate}
+              min={today}
               onChange={(e) => setSelectedDate(e.target.value)}
               className="mt-2 px-4 rounded-full bg-[var(--warm-neutral)] shadow"
               required
@@ -129,6 +133,7 @@ export function SessionUpdateForm({
             <input
               type="time"
               value={selectedTime}
+              min={selectedDate === today ? currentTime : undefined}
               onChange={(e) => setSelectedTime(e.target.value)}
               className="mt-2 px-4 rounded-full bg-[var(--warm-neutral)] shadow"
               required

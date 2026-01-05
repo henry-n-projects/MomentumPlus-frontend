@@ -21,6 +21,7 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedTagId, setSelectedTagId] = useState("");
+
   const canSubmit = Boolean(
     sessionName.trim() &&
       selectedDate &&
@@ -28,6 +29,11 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
       selectedTagId &&
       tags.length > 0
   );
+
+  const today = new Date().toLocaleDateString("en-CA");
+  const now = new Date();
+  const currentTime = now.toTimeString().slice(0, 5);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -91,6 +97,7 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
             <input
               type="date"
               value={selectedDate}
+              min={today}
               onChange={(e) => setSelectedDate(e.target.value)}
               className="rounded-full bg-[var(--warm-neutral)] px-4 py-0.5 shadow"
               required
@@ -105,6 +112,7 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
             <input
               type="time"
               value={selectedTime}
+              min={selectedDate === today ? currentTime : undefined}
               onChange={(e) => setSelectedTime(e.target.value)}
               className="rounded-full bg-[var(--warm-neutral)] px-4 py-0.5 shadow"
               required

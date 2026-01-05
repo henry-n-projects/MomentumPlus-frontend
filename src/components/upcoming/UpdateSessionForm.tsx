@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { motion } from "motion/react";
 import { Calendar, Clock, Edit } from "lucide-react";
 import type { TagType } from "../../types/tag";
 import type { SessionAndTag } from "../../types/session";
@@ -73,45 +73,44 @@ export function SessionUpdateForm({
         style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}
       >
         <div className="flex items-center gap-2 mb-6">
-          <Edit className="w-5 h-5" style={{ color: "#718096" }} />
-          <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2D3748" }}>
+          <Edit className="w-5 h-5 text-[var(--text-priamry)]" />
+          <h3 className="text-xl font-semibold text-[var(--text-primary)]">
             Update Session
           </h3>
         </div>
-        <p className="text-center text-[#718096]">Select a session to edit</p>
+        <p className="text-center text-[var(--text-secondary)]">
+          Select a session to edit
+        </p>
       </div>
     );
   }
 
   return (
-    <div
-      className="p-6 rounded-3xl bg-white"
-      style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}
-    >
+    <div className="p-6 rounded-3xl bg-white shadow-xl">
       <div className="flex items-center gap-2 mb-6">
         <Edit className="w-5 h-5" style={{ color: "#718096" }} />
-        <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2D3748" }}>
-          Update Session
+        <h3 className="text-xl font-semibold text-[var(--text-primary)]">
+          Edit Session
         </h3>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label style={{ fontSize: "14px", color: "#718096" }}>
+        <div className="space-x-4">
+          <label className="text-sm text-[var(--text-secondary)]">
             Session Name
           </label>
           <input
             value={sessionName}
             onChange={(e) => setSessionName(e.target.value)}
             placeholder="Focus work session"
-            className="mt-2 rounded-xl bg-[#F4F2EF] border-none"
+            className="px-4 mt-2 rounded-full bg-[var(--warm-neutral)] shadow"
             required
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label style={{ fontSize: "14px", color: "#718096" }}>
+          <div className="space-x-2">
+            <label className="text-sm text-[var(--text-secondary)]">
               <Calendar className="w-4 h-4 inline mr-1" />
               Date
             </label>
@@ -119,13 +118,13 @@ export function SessionUpdateForm({
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="mt-2 rounded-xl bg-[#F4F2EF] border-none"
+              className="mt-2 px-4 rounded-full bg-[var(--warm-neutral)] shadow"
               required
             />
           </div>
 
-          <div>
-            <label style={{ fontSize: "14px", color: "#718096" }}>
+          <div className="space-x-2">
+            <label className="text-sm text-[var(--text-secondary)]">
               <Clock className="w-4 h-4 inline mr-1" />
               Time
             </label>
@@ -133,30 +132,27 @@ export function SessionUpdateForm({
               type="time"
               value={selectedTime}
               onChange={(e) => setSelectedTime(e.target.value)}
-              className="mt-2 rounded-xl bg-[#F4F2EF] border-none"
+              className="mt-2 px-4 rounded-full bg-[var(--warm-neutral)] shadow"
               required
             />
           </div>
         </div>
 
         <div>
-          <label style={{ fontSize: "14px", color: "#718096" }}>Tag</label>
+          <label className="text-sm text-[var(--text-secondary)]">Tag</label>
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.map((tag) => (
               <button
                 key={tag.id}
                 type="button"
                 onClick={() => setSelectedTagId(tag.id)}
-                className={`px-3 py-1.5 rounded-full transition-all ${
+                className={`px-3 py-1.5 rounded-full transition-all text-[var(--text-primary)] font-medium text-sm ${
                   selectedTagId === tag.id
                     ? "ring-2 ring-offset-2 ring-offset-white"
                     : ""
                 }`}
                 style={{
                   backgroundColor: tag.color,
-                  color: "#2D3748",
-                  fontWeight: 500,
-                  fontSize: "14px",
                 }}
               >
                 {tag.name}
@@ -165,19 +161,40 @@ export function SessionUpdateForm({
           </div>
         </div>
 
-        <button
+        <motion.button
           type="submit"
-          className="w-full rounded-xl"
-          style={{ backgroundColor: "#C8B6E2", color: "#2D3748" }}
+          className="w-full rounded-full py-2 shadow-lg"
           disabled={
             !sessionName.trim() ||
             !selectedDate ||
             !selectedTime ||
             !selectedTagId
           }
+          whileHover={
+            !sessionName.trim() ||
+            !selectedDate ||
+            !selectedTime ||
+            !selectedTagId
+              ? {}
+              : { scale: 1.02 }
+          }
+          style={
+            !sessionName.trim() ||
+            !selectedDate ||
+            !selectedTime ||
+            !selectedTagId
+              ? {
+                  backgroundColor: "var(--warm-neutral)",
+                  color: "var(--text-secondary)",
+                }
+              : {
+                  backgroundColor: "var(--accent-purple)",
+                  color: "var(--text-primary)",
+                }
+          }
         >
           Update Session
-        </button>
+        </motion.button>
       </form>
     </div>
   );

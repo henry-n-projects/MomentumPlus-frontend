@@ -196,7 +196,7 @@ export function SessionUpdateForm({
                 }
           }
         >
-          Update Session
+          Update
         </motion.button>
       </form>
     </div>

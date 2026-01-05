@@ -41,12 +41,15 @@ export function ScheduledSessionsList({
               key={session.id}
               disabled={!canSelect}
               onClick={() => canSelect && onSelectSession(session)}
-              className={`w-full p-4 rounded-2xl transition-all
-                ${canSelect ? "hover:scale-[1.02]" : "opacity-50"}
+              className={`w-full p-4 rounded-2xl 
+                ${
+                  canSelect
+                    ? " transition-all hover:border-2 hover:border-[var(--warm-neutral-dark)]"
+                    : "opacity-50"
+                }
               `}
               style={{
                 backgroundColor: "var(--warm-neutral)",
-                border: "2px solid transparent",
               }}
             >
               <div className="flex items-center justify-between">
@@ -55,8 +58,8 @@ export function ScheduledSessionsList({
                     <span
                       className="px-3 py-1 rounded-full"
                       style={{
-                        backgroundColor: session.tag.color + "30",
-                        color: session.tag.color,
+                        backgroundColor: session.tag.color,
+                        color: "var(--text-primary)",
                         fontSize: "12px",
                         fontWeight: 600,
                       }}

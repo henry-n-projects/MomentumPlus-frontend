@@ -32,8 +32,8 @@ export function ActiveSession({
           <div
             className="p-4 rounded-2xl"
             style={{
-              backgroundColor: "var(--warm-neutral)",
-              border: "2px solid var(--warm-neutral-dark)",
+              backgroundColor: "var(--soft-blue-light)",
+              border: "2px solid var(--soft-blue)",
             }}
           >
             <div className="flex items-start justify-between mb-3">
@@ -42,8 +42,8 @@ export function ActiveSession({
                   <span
                     className="px-3 py-1 rounded-full"
                     style={{
-                      backgroundColor: session.tag.color + "30",
-                      color: session.tag.color,
+                      backgroundColor: session.tag.color,
+                      color: "var(--text-primary)",
                       fontSize: "12px",
                       fontWeight: 600,
                     }}

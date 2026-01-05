@@ -299,10 +299,13 @@ export default function Session() {
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
-        <div className="mb-12 text-xl font-semibold">
+        <div className="mb-12 ">
           <h2 className="text-3xl font-semibold text-[var(--text-primary)] mb-2">
             Your Session
           </h2>
+          <p className="text-xl mt-2 text-[var(--text-secondary)]">
+            Record and track session activity
+          </p>
         </div>
 
         {/* Main Content */}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calendar, Clock } from "lucide-react";
+import { Activity, Calendar, CircleCheck, Clock } from "lucide-react";
 import type { TagType } from "../../types/tag";
 import { motion } from "motion/react";
 import type { AddSessionBody } from "../../types/upcoming";
@@ -63,14 +63,7 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
 
   return (
     <div className="p-6 rounded-3xl bg-white shadow-lg">
-      <h3
-        style={{
-          fontSize: "24px",
-          fontWeight: 600,
-          color: "var(--text-primary)",
-          marginBottom: "24px",
-        }}
-      >
+      <h3 className="text-xl font-semibold text[var(--text-primary)] mb-6">
         Create Session
       </h3>
 
@@ -137,7 +130,7 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
                 }`}
                 style={{
                   backgroundColor: tag.color,
-                  color: "var(--warm-neutral)",
+                  color: "var(--text-primaryl)",
                   fontWeight: 500,
                   fontSize: "14px",
                 }}
@@ -176,7 +169,7 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
           }
           disabled={!canSubmit}
         >
-          Create Session
+          Create
         </motion.button>
       </form>
     </div>

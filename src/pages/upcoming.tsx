@@ -99,10 +99,10 @@ export default function Upcoming() {
         {/* Header */}
         <header className="mb-12">
           <h2 className="text-3xl font-semibold text-[var(--text-primary)] mb-2">
-            Pomodoro Sessions
+            Upcoming Sessions
           </h2>
           <p className="text-xl mt-2 text-[var(--text-secondary)]">
-            Schedule and manage your focus sessions
+            Schedule and manage your sessions
           </p>
         </header>
 

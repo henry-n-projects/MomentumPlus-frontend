@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus, TagIcon, X } from "lucide-react";
 import { motion } from "motion/react";
 import type { AddTagBody } from "../../types/upcoming";
 
@@ -40,6 +40,9 @@ export function TagManager({ onAddTag }: TagManagerProps) {
     <div className="space-y-4">
       {isCreating ? (
         <div className="p-4 rounded-3xl bg-[var(--off-white)] shadow-lg">
+          <h3 className="text-xl font-semibold text[var(--text-primary)] mb-6">
+            Create Tag
+          </h3>
           <div className="space-y-3">
             <div>
               <label
@@ -99,7 +102,7 @@ export function TagManager({ onAddTag }: TagManagerProps) {
                       }
                 }
               >
-                Create Tag
+                Create
               </motion.button>
               <motion.button
                 onClick={() => {
@@ -123,7 +126,7 @@ export function TagManager({ onAddTag }: TagManagerProps) {
           className="flex items-center gap-2 px-4 py-2 rounded-full shadow-lg transition-opacity text-[var(--text-primary)] bg-[var(--soft-blue)]"
           whileHover={{ scale: 1.03 }}
         >
-          <Plus className="w-4" />
+          <TagIcon className="w-4" />
           Add Custom Tag
         </motion.button>
       )}

@@ -59,7 +59,7 @@ export function SessionList({
                     </h4>
                     {tag && (
                       <span
-                        className="px-2 py-0.5 rounded-full shrink-0 text-white text-sm font-medium"
+                        className="px-2 py-0.5 rounded-full shrink-0 text-[var(--text-primary)] text-sm font-medium"
                         style={{
                           backgroundColor: tag.color,
                         }}

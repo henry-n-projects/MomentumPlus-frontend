@@ -4,7 +4,7 @@ import {
   type ScheduledSessionsResponse,
   type ActiveSessionResponse,
 } from "../types/session";
-import { api } from "../lib/getApi";
+import { api } from "../lib/api/get/api";
 import {
   endSessionBreak,
   startSession,

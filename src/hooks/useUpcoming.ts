@@ -6,7 +6,7 @@ import {
   type UpdateSessionBody,
   type AddTagBody,
 } from "../types/upcoming";
-import { api } from "../lib/getApi";
+import { api } from "../lib/api/get/api";
 import {
   addSession,
   addTag,

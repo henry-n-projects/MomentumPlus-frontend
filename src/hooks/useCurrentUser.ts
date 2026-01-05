@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../lib/getApi";
+import { api } from "../lib/api/get/api";
 import { type UserObject } from "../types/user";
 export function useCurrentUser() {
   return useQuery<UserObject>({

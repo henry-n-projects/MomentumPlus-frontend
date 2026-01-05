@@ -28,7 +28,7 @@ export function SessionUpdateForm({
   useEffect(() => {
     if (sessionToEdit) {
       const date = new Date(sessionToEdit.start_at);
-      const dateStr = date.toISOString().split("T")[0];
+      const dateStr = date.toLocaleDateString("en-CA");
       const timeStr = date.toTimeString().slice(0, 5);
       setSessionName(sessionToEdit.name ?? "");
       setSelectedDate(dateStr);
@@ -59,21 +59,19 @@ export function SessionUpdateForm({
 
     const updatedSession: UpdateSessionBody = {
       name: sessionName.trim(),
-      start_at: scheduledDateTime.toLocaleString(),
+      start_at: scheduledDateTime.toISOString(),
       tag_id: selectedTagId,
     };
+    console.log(updatedSession);
 
     onUpdateSession(sessionToEdit.id, updatedSession);
   };
 
   if (!sessionToEdit) {
     return (
-      <div
-        className="p-6 rounded-3xl bg-white"
-        style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}
-      >
+      <div className="p-6 rounded-3xl bg-white shadow-xl">
         <div className="flex items-center gap-2 mb-6">
-          <Edit className="w-5 h-5 text-[var(--text-priamry)]" />
+          <Edit className="w-5 h-5 text-[var(--text-primary)]" />
           <h3 className="text-xl font-semibold text-[var(--text-primary)]">
             Update Session
           </h3>
@@ -88,7 +86,7 @@ export function SessionUpdateForm({
   return (
     <div className="p-6 rounded-3xl bg-white shadow-xl">
       <div className="flex items-center gap-2 mb-6">
-        <Edit className="w-5 h-5" style={{ color: "#718096" }} />
+        <Edit className="w-5 h-5 text-[var(--text-primary)]" />
         <h3 className="text-xl font-semibold text-[var(--text-primary)]">
           Edit Session
         </h3>

@@ -42,7 +42,7 @@ export interface AddSessionResponse {
 }
 
 export interface UpdateSessionBody {
-  name: string | null;
+  name: string;
   start_at: string;
   tag_id: string;
 }

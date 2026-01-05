@@ -30,7 +30,7 @@ export interface SessionsResponse {
 export interface AddSessionBody {
   name: string;
   start_at: string;
-  end_at: string;
+  end_at: null;
   tag_id: string;
   new_tag_name: string | null;
   new_tag_color: string | null;

@@ -19,6 +19,7 @@ export function useUpcomingSessions() {
   return useQuery<SessionsResponse>({
     queryKey: ["sessions", "upcoming"],
     queryFn: () => api.get("/upcoming"),
+    refetchInterval: 60_000,
   });
 }
 
@@ -26,6 +27,7 @@ export function usePastScheduledSessions() {
   return useQuery<SessionsResponse>({
     queryKey: ["sessions", "past"],
     queryFn: () => api.get("/upcoming/past"),
+    refetchInterval: 60_000,
   });
 }
 

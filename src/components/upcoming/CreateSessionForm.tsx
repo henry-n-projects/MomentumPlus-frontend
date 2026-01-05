@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Calendar, Clock } from "lucide-react";
 import type { TagType } from "../../types/tag";
 import { motion } from "motion/react";
+import type { AddSessionBody } from "../../types/upcoming";
 export interface Session {
   id: string;
   name: string;
@@ -12,7 +13,7 @@ export interface Session {
 
 interface SessionFormProps {
   tags: TagType[];
-  onCreateSession: (session: Session) => void;
+  onCreateSession: (session: AddSessionBody) => void;
 }
 
 export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
@@ -20,27 +21,29 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedTagId, setSelectedTagId] = useState("");
-
+  const canSubmit = Boolean(
+    sessionName.trim() &&
+      selectedDate &&
+      selectedTime &&
+      selectedTagId &&
+      tags.length > 0
+  );
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !sessionName.trim() ||
-      !selectedDate ||
-      !selectedTime ||
-      !selectedTagId
-    ) {
+    if (!canSubmit) {
       return;
     }
 
     const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}`);
-
-    const newSession: Session = {
-      id: Date.now().toString(),
+    const selectedTag = tags.find((tag) => tag.id === selectedTagId);
+    const newSession: AddSessionBody = {
       name: sessionName.trim(),
-      scheduledDate: scheduledDateTime,
-      tagId: selectedTagId,
-      completed: false,
+      start_at: scheduledDateTime.toISOString(),
+      end_at: null,
+      tag_id: selectedTagId,
+      new_tag_name: selectedTag?.name ?? "",
+      new_tag_color: selectedTag?.color ?? null,
     };
 
     onCreateSession(newSession);
@@ -110,7 +113,7 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
         </div>
 
         <div>
-          <label style={{ fontSize: "14px", color: "var(--text-seondary)" }}>
+          <label style={{ fontSize: "14px", color: "var(--text-secondary)" }}>
             Tag
           </label>
           <div className="mt-2 flex flex-wrap gap-2">
@@ -150,14 +153,20 @@ export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
 
         <motion.button
           type="submit"
-          className="rounded-full shadow-lg px-4 py-2 bg-[var(--soft-blue)] text-[var(--text-primary)]"
-          whileHover={{ scale: 1.03 }}
-          disabled={
-            !sessionName.trim() ||
-            !selectedDate ||
-            !selectedTime ||
-            !selectedTagId
+          className="rounded-full shadow-lg px-4 py-2 "
+          whileHover={canSubmit ? { scale: 1.03 } : {}}
+          style={
+            canSubmit
+              ? {
+                  color: "var(--text-primary)",
+                  backgroundColor: "var(--soft-blue)",
+                }
+              : {
+                  color: "var(--text-secondary)",
+                  backgroundColor: "var(--warm-neutral)",
+                }
           }
+          disabled={!canSubmit}
         >
           Create Session
         </motion.button>

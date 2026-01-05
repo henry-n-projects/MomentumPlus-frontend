@@ -47,6 +47,7 @@ export function useStartSession() {
       queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
       // Refresh active session info if you use it
       queryClient.invalidateQueries({ queryKey: ["active_session"] });
+      queryClient.invalidateQueries({ queryKey: ["sessions", "upcoming"] });
     },
   });
 }

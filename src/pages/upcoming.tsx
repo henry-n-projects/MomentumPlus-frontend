@@ -7,15 +7,23 @@ import {
   useDeleteSession,
   useGetTags,
   useUpcomingSessions,
+  useUpdateSession,
 } from "../hooks/useUpcoming";
-import type { AddSessionBody, AddTagBody } from "../types/upcoming";
+import type {
+  AddSessionBody,
+  AddTagBody,
+  UpdateSessionBody,
+} from "../types/upcoming";
 import { SessionList } from "../components/upcoming/SessionList";
 import { ListFilter } from "lucide-react";
 import { useState } from "react";
 import { SessionUpdateForm } from "../components/upcoming/UpdateSessionForm";
+import type { SessionAndTag } from "../types/session";
 
 export default function Upcoming() {
-  const [filterTagId, setFilterTagId] = useState<string>("");
+  const [filterTagName, setFilterTagName] = useState<string>("");
+  const [selectedSessionForEdit, setSelectedSessionForEdit] =
+    useState<SessionAndTag | null>(null);
   // Fetch users tags
   const { data: tagsData } = useGetTags();
   const tags = tagsData?.data.tags ?? [];
@@ -45,13 +53,33 @@ export default function Upcoming() {
     });
   };
 
-  const handleToggleComplete = () => {};
+  const { mutate: updateSession } = useUpdateSession();
+  const handleUpdateSession = (
+    id: string,
+    updatedSession: UpdateSessionBody
+  ) => {
+    updateSession(
+      { sessionId: id, body: updatedSession },
+      {
+        onSuccess: () => {
+          toast.success("Session updated");
+        },
+        onError: () => {
+          toast.error("Failed to update session");
+        },
+      }
+    );
+  };
 
   const { mutate: deleteSession } = useDeleteSession();
   const handleDeleteSession = (sessionId: string) => {
     deleteSession(sessionId, {
       onSuccess: () => {
         toast.success("Session deleted");
+        // Reset form if the deleted session is currently selected
+        if (selectedSessionForEdit?.id === sessionId) {
+          setSelectedSessionForEdit(null);
+        }
       },
       onError: () => {
         toast.error("Failed to delete session");
@@ -59,6 +87,12 @@ export default function Upcoming() {
     });
   };
 
+  const filteredSessions =
+    filterTagName === ""
+      ? scheduledSessions
+      : scheduledSessions.filter(
+          (session) => session.tag.name === filterTagName
+        );
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -86,18 +120,16 @@ export default function Upcoming() {
         {scheduledSessions.length > 0 && (
           <section className="pt-5">
             <div className="flex items-center gap-3 mb-4">
-              <ListFilter className="w-5 h-5" style={{ color: "#718096" }} />
-              <h2
-                style={{ fontSize: "24px", fontWeight: 600, color: "#2D3748" }}
-              >
+              <ListFilter className="w-5 h-5 text-[var(--text-primary)}" />
+              <h2 className="text-xl font-semibold text-[var(--text-primary)]">
                 Filter by Tag
               </h2>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => setFilterTagId("")}
+                onClick={() => setFilterTagName("")}
                 className={`rounded-full border px-4 py-2 ${
-                  filterTagId === ""
+                  filterTagName === ""
                     ? "bg-[var(--soft-blue)] text-[var(--text-primary)]"
                     : "border-[var(--soft-blue)] bg-[var(--off-white)] text-[var(--text-primary)]"
                 }`}
@@ -108,9 +140,9 @@ export default function Upcoming() {
               {tags.map((tag) => (
                 <button
                   key={tag.id}
-                  onClick={() => setFilterTagId(tag.id)}
+                  onClick={() => setFilterTagName(tag.name)}
                   className={`px-4 py-2 rounded-full transition-all ${
-                    filterTagId === tag.id
+                    filterTagName === tag.name
                       ? "ring-2 ring-offset-2 ring-offset-[var(--warm-neutral)]"
                       : ""
                   }`}
@@ -131,20 +163,20 @@ export default function Upcoming() {
           {/* Upcoming Sessions */}
           <section className="pt-5">
             <SessionList
-              sessions={scheduledSessions}
+              sessions={filteredSessions}
               tags={tags}
               title="Upcoming Sessions"
               emptyMessage="No upcoming sessions scheduled"
-              onEdit={handleToggleComplete}
+              onEdit={setSelectedSessionForEdit}
               onDelete={handleDeleteSession}
             />
           </section>
 
           <section className="pt-5">
             <SessionUpdateForm
-              sessions={scheduledSessions}
+              sessionToEdit={selectedSessionForEdit}
               tags={tags}
-              onUpdateSession={handleToggleComplete}
+              onUpdateSession={handleUpdateSession}
             />
           </section>
         </div>

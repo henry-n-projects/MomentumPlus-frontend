@@ -9,7 +9,7 @@ interface SessionListProps {
   tags: TagType[];
   title: string;
   emptyMessage: string;
-  onEdit: (sessionId: string) => void;
+  onEdit: (session: SessionAndTag) => void;
   onDelete: (sessionId: string) => void;
 }
 
@@ -85,7 +85,7 @@ export function SessionList({
                   {onEdit && (
                     <motion.button
                       type="button"
-                      onClick={() => onEdit(session.id)}
+                      onClick={() => onEdit(session)}
                       className="rounded-lg bg-[var(--off-white)] p-2 border border-[var(--text-primary)]"
                       whileHover={{ scale: 1.03 }}
                     >

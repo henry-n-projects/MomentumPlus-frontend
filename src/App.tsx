@@ -5,6 +5,7 @@ import HomePage from "./pages/home";
 import Dashboard from "./pages/dashboard";
 import Session from "./pages/session";
 import Upcoming from "./pages/upcoming";
+import Analytics from "./pages/analytics";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/session" element={<Session />} />
           <Route path="/upcoming" element={<Upcoming />} />
+          <Route path="/analytics" element={<Analytics />} />
         </Route>
       </Routes>
     </BrowserRouter>

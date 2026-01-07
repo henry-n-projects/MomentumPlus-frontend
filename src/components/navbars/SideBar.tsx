@@ -1,10 +1,16 @@
 import { Link, NavLink } from "react-router-dom";
-import { Calendar, LayoutDashboard, TimerIcon } from "lucide-react";
+import {
+  Calendar,
+  ChartNetwork,
+  LayoutDashboard,
+  TimerIcon,
+} from "lucide-react";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/session", label: "Session", icon: TimerIcon },
   { to: "/upcoming", label: "Upcoming", icon: Calendar },
+  { to: "/analytics", label: "Analytics", icon: ChartNetwork },
 ];
 export default function Sidebar() {
   return (

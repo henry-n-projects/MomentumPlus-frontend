@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Activity, Calendar, CircleCheck, Clock } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
 import type { TagType } from "../../types/tag";
 import { motion } from "motion/react";
 import type { AddSessionBody } from "../../types/upcoming";

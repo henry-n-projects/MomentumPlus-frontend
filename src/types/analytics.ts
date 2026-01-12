@@ -30,7 +30,7 @@ export interface AnalyticsResponse {
     };
     focus_trend: {
       date: string;
-      focus_hours: number;
+      focus_minutes: number;
     }[];
     range: {
       from: string;

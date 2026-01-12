@@ -11,7 +11,7 @@ import {
 interface FocusConsistencyProps {
   data: Array<{
     date: string;
-    focus_hours: number;
+    focus_minutes: number;
   }>;
 }
 
@@ -60,14 +60,14 @@ export function FocusConsistency({ data }: FocusConsistencyProps) {
             style={{ fontFamily: "Manrope, sans-serif", fontSize: "12px" }}
             tickLine={false}
             label={{
-              value: "Hours",
+              value: "Minutes",
               angle: -90,
               position: "insideLeft",
               style: { fill: "#718096", fontFamily: "Manrope, sans-serif" },
             }}
           />
           <Tooltip
-            formatter={(value: number) => [`${value} hours`, "Focus Time"]}
+            formatter={(value: number) => [`${value} minutes`, "Focus Time"]}
             contentStyle={{
               backgroundColor: "rgba(255, 255, 255, 0.95)",
               border: "none",
@@ -79,7 +79,7 @@ export function FocusConsistency({ data }: FocusConsistencyProps) {
           />
           <Area
             type="monotone"
-            dataKey="hours"
+            dataKey="focus_minutes"
             stroke="#A3C9E0"
             strokeWidth={3}
             fill="url(#colorHours)"

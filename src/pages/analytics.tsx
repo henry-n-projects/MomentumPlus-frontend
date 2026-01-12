@@ -3,82 +3,10 @@ import { AnalyticsCard } from "../components/analytics/AnalyticsCard";
 import { FocusTimeByTag } from "../components/analytics/FocusTimeByTag";
 import { PlanningRealism } from "../components/analytics/PlanningRealism";
 import { FocusEfficiency } from "../components/analytics/FocusEfficiency";
-import { FocusBalance } from "../components/analytics/FocusBalance";
 import { FocusConsistency } from "../components/analytics/FocusConsistency";
 import { useAnalytics } from "../hooks/useAnalytics";
 import { TimePeriodSelector } from "../components/analytics/TimePeriodSelector";
 import { useMemo, useState } from "react";
-import { time } from "motion";
-// Mock data for the analytics dashboard - Week
-const weekData = {
-  focusTimeByTag: [
-    { name: "Work", value: 42, color: "#A3C9E0" },
-    { name: "Study", value: 28, color: "#C8B6E2" },
-    { name: "Personal", value: 18, color: "#E5D7CF" },
-    { name: "Exercise", value: 12, color: "#D9ECF2" },
-  ],
-  focusConsistency: [
-    { date: "Mon", hours: 3.5 },
-    { date: "Tue", hours: 4.2 },
-    { date: "Wed", hours: 3.8 },
-    { date: "Thu", hours: 5.1 },
-    { date: "Fri", hours: 4.5 },
-    { date: "Sat", hours: 2.8 },
-    { date: "Sun", hours: 3.2 },
-  ],
-  focusBalance: [
-    { tag: "Work", hours: 42, target: 40 },
-    { tag: "Study", hours: 28, target: 30 },
-    { tag: "Personal", hours: 18, target: 20 },
-    { tag: "Exercise", hours: 12, target: 10 },
-  ],
-
-  stats: {
-    streak: "12 days",
-    streakTrend: "+3 days",
-    completionRate: "87%",
-    completionTrend: "+5%",
-    completedSessions: "156",
-    focusTime: "48h",
-    focusTimeTrend: "+12h",
-    focusMinutes: 1620,
-    breakMinutes: 480,
-  },
-};
-
-// Mock data for 30 days
-const monthData = {
-  focusTimeByTag: [
-    { name: "Work", value: 156, color: "#A3C9E0" },
-    { name: "Study", value: 98, color: "#C8B6E2" },
-    { name: "Personal", value: 64, color: "#E5D7CF" },
-    { name: "Exercise", value: 42, color: "#D9ECF2" },
-  ],
-  focusConsistency: [
-    { date: "Week 1", hours: 22 },
-    { date: "Week 2", hours: 26 },
-    { date: "Week 3", hours: 28 },
-    { date: "Week 4", hours: 24 },
-  ],
-  focusBalance: [
-    { tag: "Work", hours: 156, target: 160 },
-    { tag: "Study", hours: 98, target: 100 },
-    { tag: "Personal", hours: 64, target: 60 },
-    { tag: "Exercise", hours: 42, target: 40 },
-  ],
-
-  stats: {
-    streak: "12 days",
-    streakTrend: "+8 days",
-    completionRate: "89%",
-    completionTrend: "+7%",
-    completedSessions: "156",
-    focusTime: "120h",
-    focusTimeTrend: "+28h",
-    focusMinutes: 5400,
-    breakMinutes: 1800,
-  },
-};
 
 type TimePeriod = "week" | "month";
 
@@ -135,52 +63,57 @@ export default function App() {
           <TimePeriodSelector selected={timePeriod} onChange={setTimePeriod} />
         </div>
 
-        {/* Top Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <AnalyticsCard
-            title="Current Streak"
-            value={data?.data.summary.streak || 0}
-            icon={<Flame size={24} style={{ color: "var(--accent-red)" }} />}
-            subtitle={`days in a row`}
-          />
-
-          <AnalyticsCard
-            title="Completion Rate"
-            value={
-              data
-                ? Math.round(data.data.summary.completed_rate * 1000) / 10 +
-                  " %"
-                : 0
-            }
-            icon={<Target size={24} style={{ color: "var(--soft-blue)" }} />}
-            subtitle={`from last ${days} days`}
-          />
-
-          <AnalyticsCard
-            title="Completed Sessions"
-            value={data?.data.summary.completed_sessions || 0}
-            icon={
-              <CircleCheck size={24} style={{ color: "var(--accent-green)" }} />
-            }
-            subtitle={`from last ${days} days`}
-          />
-
-          <AnalyticsCard
-            title="Total Focus Time"
-            value={
-              data ? Math.round(data.data.summary.total_minutes * 10) / 10 : 0
-            }
-            icon={
-              <TrendingUp size={24} style={{ color: "var(--accent-purple" }} />
-            }
-            subtitle={`minutes from last ${days} days`}
-          />
-        </div>
-
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
           <FocusTimeByTag data={focusTimeByTagData} />
-          {/* <FocusBalance data={} /> */}
+
+          {/*  Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+            <AnalyticsCard
+              title="Current Streak"
+              value={data?.data.summary.streak || 0}
+              icon={<Flame size={24} style={{ color: "var(--accent-red)" }} />}
+              subtitle={`days in a row`}
+            />
+
+            <AnalyticsCard
+              title="Completion Rate"
+              value={
+                data
+                  ? Math.round(data.data.summary.completed_rate * 1000) / 10 +
+                    " %"
+                  : 0
+              }
+              icon={<Target size={24} style={{ color: "var(--soft-blue)" }} />}
+              subtitle={`from last ${days} days`}
+            />
+
+            <AnalyticsCard
+              title="Completed Sessions"
+              value={data?.data.summary.completed_sessions || 0}
+              icon={
+                <CircleCheck
+                  size={24}
+                  style={{ color: "var(--accent-green)" }}
+                />
+              }
+              subtitle={`from last ${days} days`}
+            />
+
+            <AnalyticsCard
+              title="Total Focus Time"
+              value={
+                data ? Math.round(data.data.summary.total_minutes * 10) / 10 : 0
+              }
+              icon={
+                <TrendingUp
+                  size={24}
+                  style={{ color: "var(--accent-purple" }}
+                />
+              }
+              subtitle={`minutes from last ${days} days`}
+            />
+          </div>
         </div>
 
         {/* Planning Realism & Focus Efficiency */}
@@ -193,7 +126,7 @@ export default function App() {
         </div>
 
         {/* Focus Consistency */}
-        {/* <FocusConsistency data={} /> */}
+        <FocusConsistency data={data ? data.data.focus_trend : []} />
       </div>
     </div>
   );

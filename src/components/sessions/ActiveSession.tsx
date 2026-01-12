@@ -19,7 +19,7 @@ export function ActiveSession({
     <div
       className="p-6 rounded-3xl shadow-lg"
       style={{
-        backgroundColor: "var(--off-white)",
+        backgroundColor: "white",
       }}
     >
       <div className="flex items-center gap-2 mb-4">
@@ -60,7 +60,7 @@ export function ActiveSession({
                           : isOnBreak
                           ? "var(--accent-purple)"
                           : "var(--soft-blue)",
-                      color: "var(--off-white)",
+                      color: "white",
                       fontSize: "12px",
                       fontWeight: 600,
                     }}

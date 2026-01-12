@@ -5,16 +5,12 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { TodaySessionList } from "../components/dashboard/SessionList";
 import { ActivityGraph } from "../components/dashboard/ActivityGraph";
 import StatsGrid from "../components/dashboard/StatsGrid";
-import { BackgroundDots } from "../components/home/hero/BackgroundDots";
 import { formatDate, formatTime } from "../lib/utils";
 
 export default function Dashboard() {
   const { data: user } = useCurrentUser();
   //Time State
   const [currentTime, setCurrentTime] = useState(() => new Date());
-
-  //Quote state maybe pull api for differnt quotes
-  const quote = "Focus is the gateway to thinking clearly.";
 
   // Timer effect - rerender update time displayed every second
   useEffect(() => {
@@ -54,7 +50,7 @@ export default function Dashboard() {
 
     <div className="min-h-screen px-6 ">
       {/* Content layout*/}
-      <BackgroundDots />
+
       <div className="relative mx-auto max-w-[1200px] py-10">
         {/* Welcome Section */}
 
@@ -81,16 +77,6 @@ export default function Dashboard() {
                 </div>
                 <p className="text-textSecondary">Live</p>
               </div>
-            </div>
-
-            <div
-              className="mt-6 rounded-2xl p-6"
-              style={{
-                background:
-                  "linear-gradient(90deg, var(--soft-blue-light) 0%, var(--accent-purple) 100%)",
-              }}
-            >
-              <p className="italic text-textPrimary">"{quote}"</p>
             </div>
           </div>
         </div>

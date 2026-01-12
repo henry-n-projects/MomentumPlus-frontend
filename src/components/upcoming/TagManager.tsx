@@ -39,7 +39,7 @@ export function TagManager({ onAddTag }: TagManagerProps) {
   return (
     <div className="space-y-4">
       {isCreating ? (
-        <div className="p-4 rounded-3xl bg-[var(--off-white)] shadow-lg">
+        <div className="p-4 rounded-3xl bg-white shadow-lg">
           <h3 className="text-xl font-semibold text[var(--text-primary)] mb-6">
             Create Tag
           </h3>

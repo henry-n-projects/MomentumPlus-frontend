@@ -27,24 +27,14 @@ export function PlanningRealism({ data }: PlanningRealismProps) {
   }
 
   return (
-    <div
-      className="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
-      style={{ fontFamily: "Manrope, sans-serif" }}
-    >
+    <div className="bg-white rounded-3xl p-6 shadow-xl">
       <div className="mb-6">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h3
-              style={{
-                fontSize: "24px",
-                fontWeight: 600,
-                color: "#2D3748",
-                marginBottom: "8px",
-              }}
-            >
+            <h3 className="text-2xl font-semibold text-[var(--text-primary)] mb-2">
               Planning Realism
             </h3>
-            <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
+            <p className="text-sm font-normal text-[var(--text-secondary)]">
               How your plans match reality
             </p>
           </div>
@@ -59,19 +49,21 @@ export function PlanningRealism({ data }: PlanningRealismProps) {
           />
           <XAxis
             dataKey="day"
-            stroke="#718096"
+            stroke="var(--text-secondary"
             style={{ fontFamily: "Manrope, sans-serif", fontSize: "12px" }}
             tickLine={false}
           />
           <YAxis
-            stroke="#718096"
+            stroke="var(--text-secondary"
             style={{ fontFamily: "Manrope, sans-serif", fontSize: "12px" }}
             tickLine={false}
             label={{
               value: "Sessions",
               angle: -90,
               position: "insideLeft",
-              style: { fill: "#718096", fontFamily: "Manrope, sans-serif" },
+              style: {
+                fill: "var(--text-secondary",
+              },
             }}
           />
           <Tooltip
@@ -82,7 +74,6 @@ export function PlanningRealism({ data }: PlanningRealismProps) {
               borderRadius: "12px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
               padding: "12px",
-              fontFamily: "Manrope, sans-serif",
             }}
           />
           <Legend
@@ -90,19 +81,18 @@ export function PlanningRealism({ data }: PlanningRealismProps) {
             height={36}
             iconType="circle"
             wrapperStyle={{
-              fontFamily: "Manrope, sans-serif",
               fontSize: "14px",
             }}
           />
           <Bar
             dataKey="scheduled"
-            fill="#E5D7CF"
+            fill="var(--warm-neutral-dark)"
             radius={[8, 8, 0, 0]}
             name="Scheduled"
           />
           <Bar
             dataKey="completed"
-            fill="#C8B6E2"
+            fill="var(--accent-purple)"
             radius={[8, 8, 0, 0]}
             name="Completed"
           />

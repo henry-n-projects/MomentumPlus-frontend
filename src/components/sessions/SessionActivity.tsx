@@ -62,7 +62,7 @@ export function SessionActivity({
               key={index}
               className="p-6 rounded-3xl shadow-xl"
               style={{
-                backgroundColor: "var(--off-white)",
+                backgroundColor: "white",
               }}
             >
               <div className="flex items-center gap-3">
@@ -98,7 +98,7 @@ export function SessionActivity({
       <div
         className="p-6 rounded-3xl shadow-lg"
         style={{
-          backgroundColor: "var(--off-white)",
+          backgroundColor: "white",
         }}
       >
         <div className="flex items-center gap-2 mb-4">

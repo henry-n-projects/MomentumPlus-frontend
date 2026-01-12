@@ -40,14 +40,13 @@ export function FocusTimeByTag({ data }: FocusTimeByTagProps) {
             ))}
           </Pie>
           <Tooltip
-            formatter={(value: number) => `${value} hours`}
+            formatter={(value: number) => `${value} minutes`}
             contentStyle={{
               backgroundColor: "rgba(255, 255, 255, 0.95)",
               border: "none",
               borderRadius: "12px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
               padding: "12px",
-              fontFamily: "Manrope, sans-serif",
             }}
           />
           <Legend
@@ -55,7 +54,6 @@ export function FocusTimeByTag({ data }: FocusTimeByTagProps) {
             height={36}
             iconType="circle"
             wrapperStyle={{
-              fontFamily: "Manrope, sans-serif",
               fontSize: "14px",
             }}
           />

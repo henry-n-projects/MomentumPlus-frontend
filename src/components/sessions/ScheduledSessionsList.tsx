@@ -24,7 +24,7 @@ export function ScheduledSessionsList({
   return (
     <div
       className="p-6 rounded-3xl shadow-lg"
-      style={{ backgroundColor: "var(--off-white)" }}
+      style={{ backgroundColor: "white" }}
     >
       <div className="flex items-center gap-2 mb-4">
         <Calendar

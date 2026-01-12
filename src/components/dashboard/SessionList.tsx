@@ -60,7 +60,7 @@ export function TodaySessionList({ todaySessions }: sessionProps) {
                   style={{
                     backgroundColor: session.tag.color,
                     fontSize: "12px",
-                    color: "var(--off-white)",
+                    color: "white",
                     fontWeight: 600,
                   }}
                 >

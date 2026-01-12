@@ -18,23 +18,17 @@ export function FocusEfficiency({
     : Math.round((breakMinutes / total) * 100);
 
   const data = [
-    { name: "Focus Time", value: focusMinutes, color: "#A3C9E0" },
-    { name: "Break Time", value: breakMinutes, color: "#E5D7CF" },
+    { name: "Focus Time", value: focusMinutes, color: "var(--soft-blue)" },
+    {
+      name: "Break Time",
+      value: breakMinutes,
+      color: "var(--warm-neutral-dark)",
+    },
   ];
 
   return (
-    <div
-      className="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
-      style={{ fontFamily: "Manrope, sans-serif" }}
-    >
-      <h3
-        style={{
-          fontSize: "24px",
-          fontWeight: 600,
-          color: "#2D3748",
-          marginBottom: "24px",
-        }}
-      >
+    <div className="bg-white rounded-[24px] p-6 shadow-xl">
+      <h3 className="text-2xl font-semibold text-[var(--text-primary)] mb-8">
         Focus Efficiency
       </h3>
 
@@ -60,10 +54,10 @@ export function FocusEfficiency({
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <p style={{ fontSize: "36px", fontWeight: 600, color: "#2D3748" }}>
+            <p className="text-4xl font-semibold text-[var(--text-primary)]">
               {focusPercentage}%
             </p>
-            <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
+            <p className="text-sm font-normal text-[var(--text-secondary)]">
               Efficiency
             </p>
           </div>
@@ -71,75 +65,39 @@ export function FocusEfficiency({
       </div>
 
       <div className="space-y-4">
-        <div
-          className="flex items-center justify-between p-4 rounded-2xl"
-          style={{ backgroundColor: "#D9ECF2" }}
-        >
+        <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--soft-blue-light)]">
           <div className="flex items-center gap-3">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: "#A3C9E0" }}
-            ></div>
-            <span
-              style={{ fontSize: "16px", fontWeight: 600, color: "#2D3748" }}
-            >
+            <div className="w-3 h-3 rounded-full bg-[var(--soft-blue)]"></div>
+            <span className="text-base font-semibold text-[var(--text-primary)]">
               Focus Time
             </span>
           </div>
           <div className="text-right">
-            <p style={{ fontSize: "16px", fontWeight: 600, color: "#2D3748" }}>
+            <p className="text-base font-semibold text-[var(--text-primary)]">
               {Math.floor(focusMinutes / 60)}h {Math.floor(focusMinutes % 60)}m
             </p>
-            <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
+            <p className="text-sm font-normal text-[var(--text-secondary)]">
               {focusPercentage}%
             </p>
           </div>
         </div>
 
-        <div
-          className="flex items-center justify-between p-4 rounded-2xl"
-          style={{ backgroundColor: "#F4F2EF" }}
-        >
+        <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--warm-neutral)]">
           <div className="flex items-center gap-3">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: "#E5D7CF" }}
-            ></div>
-            <span
-              style={{ fontSize: "16px", fontWeight: 600, color: "#2D3748" }}
-            >
+            <div className="w-3 h-3 rounded-full bg-[var(--warm-neutral-dark)]"></div>
+            <span className="font-semibold text-[var(text-primary)]">
               Break Time
             </span>
           </div>
           <div className="text-right">
-            <p style={{ fontSize: "16px", fontWeight: 600, color: "#2D3748" }}>
+            <p className="text-base font-semibold text-[var(--text-primary)]">
               {Math.floor(breakMinutes / 60)}h {Math.floor(breakMinutes % 60)}m
             </p>
-            <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
+            <p className="text-sm font-normal text-[var(--text-secondary)]">
               {breakPercentage}%
             </p>
           </div>
         </div>
-      </div>
-
-      <div
-        className="mt-6 p-4 rounded-2xl"
-        style={{ backgroundColor: "rgba(200, 182, 226, 0.1)" }}
-      >
-        <p
-          style={{
-            fontSize: "14px",
-            fontWeight: 600,
-            color: "#2D3748",
-            marginBottom: "4px",
-          }}
-        >
-          💡 Insight
-        </p>
-        <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
-          Your focus-to-break ratio is optimal for sustained productivity. Keep
-          maintaining this balance!
-        </p>
       </div>
     </div>
   );

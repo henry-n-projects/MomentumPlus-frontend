@@ -186,7 +186,10 @@ export default function App() {
         {/* Planning Realism & Focus Efficiency */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
           <PlanningRealism data={planningRealismData} />
-          {/* <FocusEfficiency focusMinutes={} breakMinutes={} /> */}
+          <FocusEfficiency
+            focusMinutes={data ? data.data.focus_efficiency.focus_minutes : 0}
+            breakMinutes={data ? data.data.focus_efficiency.break_minutes : 0}
+          />
         </div>
 
         {/* Focus Consistency */}

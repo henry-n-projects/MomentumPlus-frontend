@@ -86,7 +86,7 @@ export function SessionList({
                     <motion.button
                       type="button"
                       onClick={() => onEdit(session)}
-                      className="rounded-lg bg-[var(--off-white)] p-2 border border-[var(--text-primary)]"
+                      className="rounded-lg bg-white p-2 border border-[var(--text-primary)]"
                       whileHover={{ scale: 1.03 }}
                     >
                       <Edit className="w-4 h-4" />
@@ -97,7 +97,7 @@ export function SessionList({
                     <motion.button
                       type="button"
                       onClick={() => onDelete(session.id)}
-                      className="rounded-lg bg-[var(--off-white)] p-2 border border-red-600"
+                      className="rounded-lg bg-white p-2 border border-red-600"
                       whileHover={{ scale: 1.03 }}
                     >
                       <Trash2 className="w-4 h-4 text-red-600" />

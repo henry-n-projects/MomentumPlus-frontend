@@ -1,6 +1,4 @@
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -13,7 +11,7 @@ import {
 interface FocusConsistencyProps {
   data: Array<{
     date: string;
-    hours: number;
+    focus_hours: number;
   }>;
 }
 

@@ -1,17 +1,13 @@
-import type { TagType } from "./tag";
-
 export interface AnalyticsResponse {
   status: string;
   data: {
-    range: {
-      from: string;
-      to: string;
-      days: number;
+    summary: {
+      streak: number;
+      completed_sessions: number;
+      scheduled_sessions: number;
+      completed_rate: number;
+      total_minutes: number;
     };
-    streak: number;
-    completion_rate: number;
-    completed_count: number;
-    scheduled_count: number;
     time_per_tag: {
       tag: {
         id: string;
@@ -19,16 +15,27 @@ export interface AnalyticsResponse {
         color: string;
       };
       focus_minutes: number;
-    };
-    sessions: {
-      id: string;
-      name: string;
-      start_at: string;
-      end_at: string;
-      status: string;
-      net_minutes: number;
+      percentage: number;
+    }[];
+
+    planning_realism: {
+      day: string;
+      scheduled: number;
+      completed: number;
+    }[];
+    focus_efficiency: {
+      focus_minutes: number;
       break_minutes: number;
-      tag: TagType;
+      efficiency_rate: number;
+    };
+    focus_trend: {
+      date: string;
+      focus_hours: number;
+    }[];
+    range: {
+      from: string;
+      to: string;
+      days: number;
     };
   };
 }

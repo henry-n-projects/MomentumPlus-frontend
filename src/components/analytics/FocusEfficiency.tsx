@@ -10,8 +10,12 @@ export function FocusEfficiency({
   breakMinutes,
 }: FocusEfficiencyProps) {
   const total = focusMinutes + breakMinutes;
-  const focusPercentage = Math.round((focusMinutes / total) * 100);
-  const breakPercentage = Math.round((breakMinutes / total) * 100);
+  const focusPercentage = Number.isNaN(focusMinutes / total)
+    ? 0
+    : Math.round((focusMinutes / total) * 100);
+  const breakPercentage = Number.isNaN(breakMinutes / total)
+    ? 0
+    : Math.round((breakMinutes / total) * 100);
 
   const data = [
     { name: "Focus Time", value: focusMinutes, color: "#A3C9E0" },
@@ -84,7 +88,7 @@ export function FocusEfficiency({
           </div>
           <div className="text-right">
             <p style={{ fontSize: "16px", fontWeight: 600, color: "#2D3748" }}>
-              {Math.floor(focusMinutes / 60)}h {focusMinutes % 60}m
+              {Math.floor(focusMinutes / 60)}h {Math.floor(focusMinutes % 60)}m
             </p>
             <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
               {focusPercentage}%
@@ -109,7 +113,7 @@ export function FocusEfficiency({
           </div>
           <div className="text-right">
             <p style={{ fontSize: "16px", fontWeight: 600, color: "#2D3748" }}>
-              {Math.floor(breakMinutes / 60)}h {breakMinutes % 60}m
+              {Math.floor(breakMinutes / 60)}h {Math.floor(breakMinutes % 60)}m
             </p>
             <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
               {breakPercentage}%

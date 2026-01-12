@@ -17,18 +17,8 @@ interface FocusTimeByTagProps {
 
 export function FocusTimeByTag({ data }: FocusTimeByTagProps) {
   return (
-    <div
-      className="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
-      style={{ fontFamily: "Manrope, sans-serif" }}
-    >
-      <h3
-        style={{
-          fontSize: "24px",
-          fontWeight: 600,
-          color: "#2D3748",
-          marginBottom: "24px",
-        }}
-      >
+    <div className="bg-white rounded-3xl p-6 shadow-xl">
+      <h3 className="text-2xl font-semibold text-[var(--text-primary)] mb-8">
         Focus Time by Tag
       </h3>
       <ResponsiveContainer width="100%" height={300}>
@@ -42,7 +32,7 @@ export function FocusTimeByTag({ data }: FocusTimeByTagProps) {
             fill="#8884d8"
             dataKey="value"
             label={({ name, percent }) =>
-              `${name} ${(percent ?? 0 * 100).toFixed(0)}%`
+              `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
             }
           >
             {data.map((entry, index) => (

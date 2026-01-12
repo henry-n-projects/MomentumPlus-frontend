@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import type { AnalyticsResponse } from "../types/analytics";
-import { api } from "../lib/api/get/api";
 
-export function useAnalytics() {
+import { getAnalytics } from "../lib/api/analytics/api";
+
+export function useAnalytics(days: number) {
   return useQuery<AnalyticsResponse>({
-    queryKey: ["analytics"],
-    queryFn: () => api.get("/analytics"),
+    queryKey: ["analytics", days],
+    queryFn: () => getAnalytics(days),
   });
 }

@@ -5,225 +5,192 @@ import { PlanningRealism } from "../components/analytics/PlanningRealism";
 import { FocusEfficiency } from "../components/analytics/FocusEfficiency";
 import { FocusBalance } from "../components/analytics/FocusBalance";
 import { FocusConsistency } from "../components/analytics/FocusConsistency";
-// Mock data for the analytics dashboard
-const focusTimeByTagData = [
-  { name: "Work", value: 42, color: "#A3C9E0" },
-  { name: "Study", value: 28, color: "#C8B6E2" },
-  { name: "Personal", value: 18, color: "#E5D7CF" },
-  { name: "Exercise", value: 12, color: "#D9ECF2" },
-];
+import { useAnalytics } from "../hooks/useAnalytics";
+import { TimePeriodSelector } from "../components/analytics/TimePeriodSelector";
+import { useMemo, useState } from "react";
+import { time } from "motion";
+// Mock data for the analytics dashboard - Week
+const weekData = {
+  focusTimeByTag: [
+    { name: "Work", value: 42, color: "#A3C9E0" },
+    { name: "Study", value: 28, color: "#C8B6E2" },
+    { name: "Personal", value: 18, color: "#E5D7CF" },
+    { name: "Exercise", value: 12, color: "#D9ECF2" },
+  ],
+  focusConsistency: [
+    { date: "Mon", hours: 3.5 },
+    { date: "Tue", hours: 4.2 },
+    { date: "Wed", hours: 3.8 },
+    { date: "Thu", hours: 5.1 },
+    { date: "Fri", hours: 4.5 },
+    { date: "Sat", hours: 2.8 },
+    { date: "Sun", hours: 3.2 },
+  ],
+  focusBalance: [
+    { tag: "Work", hours: 42, target: 40 },
+    { tag: "Study", hours: 28, target: 30 },
+    { tag: "Personal", hours: 18, target: 20 },
+    { tag: "Exercise", hours: 12, target: 10 },
+  ],
 
-const focusConsistencyData = [
-  { date: "Mon", hours: 3.5 },
-  { date: "Tue", hours: 4.2 },
-  { date: "Wed", hours: 3.8 },
-  { date: "Thu", hours: 5.1 },
-  { date: "Fri", hours: 4.5 },
-  { date: "Sat", hours: 2.8 },
-  { date: "Sun", hours: 3.2 },
-];
+  stats: {
+    streak: "12 days",
+    streakTrend: "+3 days",
+    completionRate: "87%",
+    completionTrend: "+5%",
+    completedSessions: "156",
+    focusTime: "48h",
+    focusTimeTrend: "+12h",
+    focusMinutes: 1620,
+    breakMinutes: 480,
+  },
+};
 
-const focusBalanceData = [
-  { tag: "Work", hours: 42, target: 40 },
-  { tag: "Study", hours: 28, target: 30 },
-  { tag: "Personal", hours: 18, target: 20 },
-  { tag: "Exercise", hours: 12, target: 10 },
-];
+// Mock data for 30 days
+const monthData = {
+  focusTimeByTag: [
+    { name: "Work", value: 156, color: "#A3C9E0" },
+    { name: "Study", value: 98, color: "#C8B6E2" },
+    { name: "Personal", value: 64, color: "#E5D7CF" },
+    { name: "Exercise", value: 42, color: "#D9ECF2" },
+  ],
+  focusConsistency: [
+    { date: "Week 1", hours: 22 },
+    { date: "Week 2", hours: 26 },
+    { date: "Week 3", hours: 28 },
+    { date: "Week 4", hours: 24 },
+  ],
+  focusBalance: [
+    { tag: "Work", hours: 156, target: 160 },
+    { tag: "Study", hours: 98, target: 100 },
+    { tag: "Personal", hours: 64, target: 60 },
+    { tag: "Exercise", hours: 42, target: 40 },
+  ],
 
-const planningRealismData = [
-  { day: "Mon", scheduled: 8, completed: 7 },
-  { day: "Tue", scheduled: 10, completed: 9 },
-  { day: "Wed", scheduled: 9, completed: 7 },
-  { day: "Thu", scheduled: 12, completed: 11 },
-  { day: "Fri", scheduled: 8, completed: 8 },
-  { day: "Sat", scheduled: 6, completed: 4 },
-  { day: "Sun", scheduled: 5, completed: 4 },
-];
+  stats: {
+    streak: "12 days",
+    streakTrend: "+8 days",
+    completionRate: "89%",
+    completionTrend: "+7%",
+    completedSessions: "156",
+    focusTime: "120h",
+    focusTimeTrend: "+28h",
+    focusMinutes: 5400,
+    breakMinutes: 1800,
+  },
+};
 
+type TimePeriod = "week" | "month";
+
+const PeriodToDays: Record<TimePeriod, number> = {
+  week: 7,
+  month: 30,
+};
 export default function App() {
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>("week");
+  const days = PeriodToDays[timePeriod];
+  const { data } = useAnalytics(days);
+
+  const focusTimeByTagData = useMemo(() => {
+    if (!data) return [];
+
+    return data.data.time_per_tag.map((item) => ({
+      name: item.tag.name,
+      value: Math.max(0, Math.round(item.focus_minutes * 10) / 10), // minutes → hours
+      color: item.tag.color,
+    }));
+  }, [data]);
+
+  const planningRealismData = useMemo(() => {
+    if (!data) return [];
+
+    return data.data.planning_realism.map((d) => ({
+      day: new Date(`${d.day}T00:00:00`).toLocaleDateString("en-US", {
+        weekday: "short",
+      }),
+
+      scheduled: d.scheduled,
+      completed: d.completed,
+    }));
+  }, [data]);
+
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        backgroundColor: "#F4F2EF",
-        fontFamily: "Manrope, sans-serif",
-      }}
-    >
+    <div className="min-h-screen">
       <div className="max-w-[1200px] mx-auto px-6 py-10">
         {/* Header */}
-        <div className="mb-10">
-          <h1
-            style={{
-              fontSize: "48px",
-              fontWeight: 700,
-              color: "#2D3748",
-              marginBottom: "8px",
-            }}
-          >
-            Pomodoro Analytics
-          </h1>
-          <p style={{ fontSize: "16px", fontWeight: 400, color: "#718096" }}>
-            Track your focus patterns and productivity insights
-          </p>
+        <div className="mb-10 flex items-center justify-between">
+          <div>
+            <h1
+              className="text-4xl font-bold text-[var(--text-primary)] mb-8"
+              style={{
+                marginBottom: "8px",
+              }}
+            >
+              Pomodoro Analytics
+            </h1>
+            <p className="text-base font-normal text-[var(--text-secondary)]">
+              Track your focus patterns and productivity insights
+            </p>
+          </div>
+          <TimePeriodSelector selected={timePeriod} onChange={setTimePeriod} />
         </div>
 
         {/* Top Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <AnalyticsCard
             title="Current Streak"
-            value="12 days"
-            icon={<Flame size={24} style={{ color: "#A3C9E0" }} />}
-            trend={{ value: "+3 days", isPositive: true }}
-            subtitle="from last week"
+            value={data?.data.summary.streak || 0}
+            icon={<Flame size={24} style={{ color: "var(--accent-red)" }} />}
+            subtitle={`days in a row`}
           />
 
           <AnalyticsCard
             title="Completion Rate"
-            value="87%"
-            icon={<Target size={24} style={{ color: "#C8B6E2" }} />}
-            trend={{ value: "+5%", isPositive: true }}
-            subtitle="from last week"
+            value={
+              data
+                ? Math.round(data.data.summary.completed_rate * 1000) / 10 +
+                  " %"
+                : 0
+            }
+            icon={<Target size={24} style={{ color: "var(--soft-blue)" }} />}
+            subtitle={`from last ${days} days`}
           />
 
           <AnalyticsCard
             title="Completed Sessions"
-            value="156"
-            icon={<CircleCheck size={24} style={{ color: "#A3C9E0" }} />}
-            subtitle="this month"
+            value={data?.data.summary.completed_sessions || 0}
+            icon={
+              <CircleCheck size={24} style={{ color: "var(--accent-green)" }} />
+            }
+            subtitle={`from last ${days} days`}
           />
 
           <AnalyticsCard
             title="Total Focus Time"
-            value="48h"
-            icon={<TrendingUp size={24} style={{ color: "#C8B6E2" }} />}
-            trend={{ value: "+12h", isPositive: true }}
-            subtitle="from last week"
+            value={
+              data ? Math.round(data.data.summary.total_minutes * 10) / 10 : 0
+            }
+            icon={
+              <TrendingUp size={24} style={{ color: "var(--accent-purple" }} />
+            }
+            subtitle={`minutes from last ${days} days`}
           />
         </div>
 
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
           <FocusTimeByTag data={focusTimeByTagData} />
-
-          <div
-            className="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
-            style={{ fontFamily: "Manrope, sans-serif" }}
-          >
-            <h3
-              style={{
-                fontSize: "24px",
-                fontWeight: 600,
-                color: "#2D3748",
-                marginBottom: "24px",
-              }}
-            >
-              Quick Insights
-            </h3>
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: "#D9ECF2" }}
-                >
-                  <Flame size={20} style={{ color: "#A3C9E0" }} />
-                </div>
-                <div>
-                  <p
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 600,
-                      color: "#2D3748",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    Best Streak Ever
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: 400,
-                      color: "#718096",
-                    }}
-                  >
-                    Your current 12-day streak is your longest yet! Keep it up.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: "#E5D7CF" }}
-                >
-                  <Target size={20} style={{ color: "#C8B6E2" }} />
-                </div>
-                <div>
-                  <p
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 600,
-                      color: "#2D3748",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    Most Productive Day
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: 400,
-                      color: "#718096",
-                    }}
-                  >
-                    Thursday was your best day with 5.1 hours of focused work.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: "#D9ECF2" }}
-                >
-                  <TrendingUp size={20} style={{ color: "#A3C9E0" }} />
-                </div>
-                <div>
-                  <p
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 600,
-                      color: "#2D3748",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    Weekly Growth
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: 400,
-                      color: "#718096",
-                    }}
-                  >
-                    You've increased your focus time by 25% this week.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* <FocusBalance data={} /> */}
         </div>
 
-        {/* Focus Balance & Planning Realism */}
+        {/* Planning Realism & Focus Efficiency */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-          <FocusBalance data={focusBalanceData} />
           <PlanningRealism data={planningRealismData} />
+          {/* <FocusEfficiency focusMinutes={} breakMinutes={} /> */}
         </div>
 
-        {/* Focus Efficiency & Consistency */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-          <FocusEfficiency focusMinutes={1620} breakMinutes={480} />
-          <FocusConsistency data={focusConsistencyData} />
-        </div>
+        {/* Focus Consistency */}
+        {/* <FocusConsistency data={} /> */}
       </div>
     </div>
   );

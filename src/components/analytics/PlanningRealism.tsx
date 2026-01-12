@@ -18,10 +18,13 @@ interface PlanningRealismProps {
 }
 
 export function PlanningRealism({ data }: PlanningRealismProps) {
-  const averageCompletion =
-    data.reduce((acc, item) => {
-      return acc + (item.completed / item.scheduled) * 100;
-    }, 0) / data.length;
+  if (data.length === 0) {
+    return (
+      <div className="bg-white rounded-[24px] p-6 text-sm text-gray-500">
+        No planning data available for this period.
+      </div>
+    );
+  }
 
   return (
     <div
@@ -43,14 +46,6 @@ export function PlanningRealism({ data }: PlanningRealismProps) {
             </h3>
             <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
               How your plans match reality
-            </p>
-          </div>
-          <div className="text-right">
-            <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
-              Avg. Completion
-            </p>
-            <p style={{ fontSize: "24px", fontWeight: 600, color: "#2D3748" }}>
-              {averageCompletion.toFixed(0)}%
             </p>
           </div>
         </div>

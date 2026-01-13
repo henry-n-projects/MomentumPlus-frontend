@@ -74,7 +74,7 @@ export function HeroSection() {
             </motion.button>
 
             <p className="mt-6 text-sm text-textSecondary">
-              Free to use. No credit card required.
+              Free to use. Sign in with google.
             </p>
           </motion.div>
         </div>

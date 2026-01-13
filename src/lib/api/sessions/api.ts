@@ -8,7 +8,7 @@ import type {
 } from "../../../types/sessions";
 
 export async function createTag(body: AddTagBody): Promise<AddTagResponse> {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/upcoming/tags`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/sessions/tags`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -27,7 +27,7 @@ export async function addSession(
   body: AddSessionBody
 ): Promise<AddSessionResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/upcoming/sessions/add`,
+    `${import.meta.env.VITE_API_URL}/sessions/session/add`,
     {
       method: "POST",
       credentials: "include",
@@ -90,7 +90,7 @@ export async function deleteSession(sessionId: string): Promise<void> {
 }
 
 export async function addTag(body: AddTagBody): Promise<AddTagResponse> {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/upcoming/add/tags`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/sessions/add/tags`, {
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     method: "POST",

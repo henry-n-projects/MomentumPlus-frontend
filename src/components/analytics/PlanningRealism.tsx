@@ -20,7 +20,7 @@ interface PlanningRealismProps {
 export function PlanningRealism({ data }: PlanningRealismProps) {
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-[24px] p-6 text-sm text-gray-500">
+      <div className="bg-white rounded-3xl p-6 text-sm text-gray-500">
         No planning data available for this period.
       </div>
     );

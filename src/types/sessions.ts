@@ -1,4 +1,4 @@
-import type { SessionAndTag } from "./session";
+import type { SessionAndTag } from "./record";
 import type { TagType } from "./tag";
 
 export interface AddSessionsResponse {

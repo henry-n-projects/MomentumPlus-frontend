@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Plus, TagIcon, X } from "lucide-react";
 import { motion } from "motion/react";
-import type { AddTagBody } from "../../types/upcoming";
+import type { AddTagBody } from "../../types/sessions";
 
 interface TagManagerProps {
   onAddTag: (tag: AddTagBody) => void;

@@ -55,28 +55,25 @@ export default function Dashboard() {
         {/* Welcome Section */}
 
         <div className="mb-10">
-          <div className="rounded-3xl bg-white p-6 shadow-lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-3xl font-semibold mb-2 mb-2 text-textPrimary">
-                  Welcome back {user?.name}
-                </h1>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-semibold mb-2 mb-2 text-textPrimary">
+                Welcome back {user?.name}
+              </h1>
 
-                <p className="text-textSecondary">{formatDate(currentTime)}</p>
-              </div>
+              <p className=" text-xl text-textSecondary">
+                {formatDate(currentTime)}
+              </p>
+            </div>
 
-              <div className="text-right">
-                <div className="mb-2 flex items-center gap-2">
-                  <Clock
-                    className="h-6 w-6"
-                    style={{ color: "var(--soft-blue)" }}
-                  />
-                  <h2 className="text-textPrimary">
-                    {formatTime(currentTime)}
-                  </h2>
-                </div>
-                <p className="text-textSecondary">Live</p>
+            <div className="text-right">
+              <div className="mb-2 flex items-center gap-2">
+                <Clock className="h-6 w-6 text-[var(--soft-blue)]" />
+                <h2 className="text-xl text-textPrimary">
+                  {formatTime(currentTime)}
+                </h2>
               </div>
+              <p className="text-xl text-textSecondary">Live</p>
             </div>
           </div>
         </div>

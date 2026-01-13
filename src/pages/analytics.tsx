@@ -48,15 +48,10 @@ export default function App() {
         {/* Header */}
         <div className="mb-10 flex items-center justify-between">
           <div>
-            <h1
-              className="text-4xl font-bold text-[var(--text-primary)] mb-8"
-              style={{
-                marginBottom: "8px",
-              }}
-            >
-              Pomodoro Analytics
+            <h1 className="text-3xl font-semibold text-[var(--text-primary)] mb-2">
+              Your Analytics
             </h1>
-            <p className="text-base font-normal text-[var(--text-secondary)]">
+            <p className="text-xl font-normal text-[var(--text-secondary)]">
               Track your focus patterns and productivity insights
             </p>
           </div>

@@ -1,5 +1,5 @@
 import { Clock, CheckCircle2, Circle } from "lucide-react";
-import type { SessionAndTag } from "../../types/session";
+import type { SessionAndTag } from "../../types/record";
 
 type sessionProps = {
   todaySessions: SessionAndTag[];

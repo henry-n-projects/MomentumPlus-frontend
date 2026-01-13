@@ -17,22 +17,12 @@ interface FocusConsistencyProps {
 
 export function FocusConsistency({ data }: FocusConsistencyProps) {
   return (
-    <div
-      className="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
-      style={{ fontFamily: "Manrope, sans-serif" }}
-    >
+    <div className="bg-white rounded-3xl p-6 shadow-xl">
       <div className="mb-6">
-        <h3
-          style={{
-            fontSize: "24px",
-            fontWeight: 600,
-            color: "#2D3748",
-            marginBottom: "8px",
-          }}
-        >
+        <h3 className="text-2xl font-semibold text-[var(--text-primary) mb-2]">
           Focus Consistency Over Time
         </h3>
-        <p style={{ fontSize: "14px", fontWeight: 400, color: "#718096" }}>
+        <p className="text-sm font-normal text-[var(--text-secondary)]">
           Your daily focus patterns show a strong upward trend
         </p>
       </div>
@@ -40,23 +30,27 @@ export function FocusConsistency({ data }: FocusConsistencyProps) {
         <AreaChart data={data}>
           <defs>
             <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#A3C9E0" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#A3C9E0" stopOpacity={0} />
+              <stop
+                offset="5%"
+                stopColor="var(--soft-blue)"
+                stopOpacity={0.3}
+              />
+              <stop offset="95%" stopColor="var(--soft-blue)" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid
             strokeDasharray="3 3"
-            stroke="#E5D7CF"
+            stroke="var(--warm-neutral)"
             strokeOpacity={0.3}
           />
           <XAxis
             dataKey="date"
-            stroke="#718096"
-            style={{ fontFamily: "Manrope, sans-serif", fontSize: "12px" }}
+            stroke="var(--text-secondary)"
+            style={{ fontSize: "12px" }}
             tickLine={false}
           />
           <YAxis
-            stroke="#718096"
+            stroke="var(--text-secondary)"
             style={{ fontFamily: "Manrope, sans-serif", fontSize: "12px" }}
             tickLine={false}
             label={{
@@ -74,13 +68,12 @@ export function FocusConsistency({ data }: FocusConsistencyProps) {
               borderRadius: "12px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
               padding: "12px",
-              fontFamily: "Manrope, sans-serif",
             }}
           />
           <Area
             type="monotone"
             dataKey="focus_minutes"
-            stroke="#A3C9E0"
+            stroke="var(--soft-blue)"
             strokeWidth={3}
             fill="url(#colorHours)"
           />

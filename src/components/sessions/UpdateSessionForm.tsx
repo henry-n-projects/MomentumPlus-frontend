@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Calendar, Clock, Edit } from "lucide-react";
 import type { TagType } from "../../types/tag";
-import type { SessionAndTag } from "../../types/session";
-import type { UpdateSessionBody } from "../../types/upcoming";
+import type { SessionAndTag } from "../../types/record";
+import type { UpdateSessionBody } from "../../types/sessions";
 
 interface SessionUpdateFormProps {
   sessionToEdit: SessionAndTag | null;
@@ -80,7 +80,7 @@ export function SessionUpdateForm({
           </h3>
         </div>
         <p className="text-center text-[var(--text-secondary)]">
-          Select a session to edit
+          Select an upcoming session to edit
         </p>
       </div>
     );

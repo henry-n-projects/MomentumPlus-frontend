@@ -5,7 +5,7 @@ import type {
   AddTagResponse,
   UpdateSessionBody,
   UpdateSessionResponse,
-} from "../../../types/upcoming";
+} from "../../../types/sessions";
 
 export async function createTag(body: AddTagBody): Promise<AddTagResponse> {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/upcoming/tags`, {
@@ -27,7 +27,7 @@ export async function addSession(
   body: AddSessionBody
 ): Promise<AddSessionResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/upcoming/session/add`,
+    `${import.meta.env.VITE_API_URL}/upcoming/sessions/add`,
     {
       method: "POST",
       credentials: "include",
@@ -51,7 +51,7 @@ export async function updateSession(
   body: UpdateSessionBody
 ): Promise<UpdateSessionResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/upcoming/update/${sessionId}`,
+    `${import.meta.env.VITE_API_URL}/sessions/update/${sessionId}`,
     {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -70,7 +70,7 @@ export async function updateSession(
 
 export async function deleteSession(sessionId: string): Promise<void> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/upcoming/delete/${sessionId}`,
+    `${import.meta.env.VITE_API_URL}/sessions/delete/${sessionId}`,
     {
       method: "DELETE",
       credentials: "include",

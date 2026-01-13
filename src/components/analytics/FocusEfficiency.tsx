@@ -27,7 +27,7 @@ export function FocusEfficiency({
   ];
 
   return (
-    <div className="bg-white rounded-[24px] p-6 shadow-xl">
+    <div className="bg-white rounded-3xl p-6 shadow-xl">
       <h3 className="text-2xl font-semibold text-[var(--text-primary)] mb-8">
         Focus Efficiency
       </h3>

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
-import { SessionTimer } from "../components/sessions/SessionTimer";
-import type { SessionAndTag } from "../types/session";
+import { Link, useSearchParams } from "react-router-dom";
+import { SessionTimer } from "../components/record/SessionTimer";
+import type { SessionAndTag } from "../types/record";
 import {
   useActiveSession,
   useAddSessionDistraction,
@@ -11,15 +11,15 @@ import {
   useSession,
   useStartSession,
   useStartSessionBreak,
-} from "../hooks/useSessions";
-import { ScheduledSessionsList } from "../components/sessions/ScheduledSessionsList";
-import SessionControls from "../components/sessions/SessionControls";
+} from "../hooks/useRecord";
+import { ScheduledSessionsList } from "../components/record/ScheduledSessionsList";
+import SessionControls from "../components/record/SessionControls";
 import { ChevronRight } from "lucide-react";
-import { SessionActivity } from "../components/sessions/SessionActivity";
-import { ActiveSession } from "../components/sessions/ActiveSession";
+import { SessionActivity } from "../components/record/SessionActivity";
+import { ActiveSession } from "../components/record/ActiveSession";
 import toast from "react-hot-toast";
 
-export default function Session() {
+export default function Record() {
   // Session state
   const [isRunning, setIsRunning] = useState(false);
   const [isOnBreak, setIsOnBreak] = useState(false);
@@ -301,7 +301,7 @@ export default function Session() {
         {/* Header */}
         <div className="mb-12 ">
           <h2 className="text-3xl font-semibold text-[var(--text-primary)] mb-2">
-            Your Session
+            Record Your Session
           </h2>
           <p className="text-xl mt-2 text-[var(--text-secondary)]">
             Record and track session activity
@@ -321,22 +321,24 @@ export default function Session() {
             >
               {!selectedSession ? (
                 <div>
-                  <button
-                    onClick={handleUpcomingNavigation}
-                    className="flex items-center gap-2
+                  <Link to={"/sessions"}>
+                    <button
+                      onClick={handleUpcomingNavigation}
+                      className="flex items-center gap-2
                     px-5 py-2
                     rounded-full shadow-lg
                     overflow-hidden
                     transition-opacity
                     transition-transform animate-pulse-gentle"
-                    style={{
-                      backgroundColor: "var(--soft-blue)",
-                      color: "var(--text-primary)",
-                    }}
-                  >
-                    Create and select a session to begin
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
+                      style={{
+                        backgroundColor: "var(--soft-blue)",
+                        color: "var(--text-primary)",
+                      }}
+                    >
+                      Create and select a session to begin
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </Link>
                 </div>
               ) : (
                 <SessionTimer

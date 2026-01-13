@@ -7,14 +7,14 @@ import type {
   SessionBreakStartResponse,
   SessionStartResponse,
   SessionStopResponse,
-} from "../../../types/session";
+} from "../../../types/record";
 
 // FETCH WRAPPERS
 export async function startSession(
   sessionId: string
 ): Promise<SessionStartResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/sessions/${sessionId}/start`,
+    `${import.meta.env.VITE_API_URL}/record/${sessionId}/start`,
     {
       method: "POST",
       credentials: "include",
@@ -31,7 +31,7 @@ export async function endSession(
   sessionId: string
 ): Promise<SessionStopResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/sessions/${sessionId}/stop`,
+    `${import.meta.env.VITE_API_URL}/record/${sessionId}/stop`,
     {
       method: "POST",
       credentials: "include",
@@ -48,7 +48,7 @@ export async function startSessionBreak(
   sessionId: string
 ): Promise<SessionBreakStartResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/sessions/${sessionId}/breaks/start`,
+    `${import.meta.env.VITE_API_URL}/record/${sessionId}/breaks/start`,
 
     {
       method: "POST",
@@ -73,7 +73,7 @@ export async function endSessionBreak(
   breakId: string
 ): Promise<SessionBreakEndResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/sessions/${id}/breaks/${breakId}/end`,
+    `${import.meta.env.VITE_API_URL}/record/${id}/breaks/${breakId}/end`,
     {
       method: "POST",
       credentials: "include",
@@ -91,7 +91,7 @@ export async function addSessionDistraction(
   body: DistractionRequestBody
 ): Promise<DistractionResponse> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/sessions/${sessionId}/distraction`,
+    `${import.meta.env.VITE_API_URL}/record/${sessionId}/distraction`,
     {
       method: "POST",
       headers: {

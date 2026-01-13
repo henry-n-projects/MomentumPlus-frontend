@@ -1,6 +1,6 @@
 import { Calendar, Clock, Trash2, Edit } from "lucide-react";
 import type { TagType } from "../../types/tag";
-import type { SessionAndTag } from "../../types/session";
+import type { SessionAndTag } from "../../types/record";
 import { formatDate, formatTime } from "../../lib/utils";
 
 import { motion } from "motion/react";

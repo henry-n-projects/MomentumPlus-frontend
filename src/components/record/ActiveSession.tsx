@@ -1,6 +1,6 @@
 import { Clock } from "lucide-react";
 import { formatDate } from "../../lib/utils";
-import type { SessionAndTag } from "../../types/session";
+import type { SessionAndTag } from "../../types/record";
 
 interface ActiveSessionProps {
   session: SessionAndTag | undefined;

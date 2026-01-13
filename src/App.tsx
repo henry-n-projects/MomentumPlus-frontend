@@ -3,8 +3,8 @@ import PublicLayout from "./layout/PublicLayout";
 import ProtectedLayout from "./layout/ProtectedLayout";
 import HomePage from "./pages/home";
 import Dashboard from "./pages/dashboard";
-import Session from "./pages/session";
-import Upcoming from "./pages/upcoming";
+import Record from "./pages/record";
+import Sessions from "./pages/sessions";
 import Analytics from "./pages/analytics";
 
 function App() {
@@ -19,8 +19,8 @@ function App() {
         {/* Protected routes */}
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/session" element={<Session />} />
-          <Route path="/upcoming" element={<Upcoming />} />
+          <Route path="/record" element={<Record />} />
+          <Route path="/sessions" element={<Sessions />} />
           <Route path="/analytics" element={<Analytics />} />
         </Route>
       </Routes>

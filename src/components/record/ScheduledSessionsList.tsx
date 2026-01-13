@@ -1,6 +1,6 @@
 import { Calendar, ChevronRight } from "lucide-react";
-import type { SessionAndTag } from "../../types/session";
-import { formatDate, formatTime } from "../../lib/utils";
+import type { SessionAndTag } from "../../types/record";
+import { formatDate } from "../../lib/utils";
 
 interface ScheduledSessionsListProps {
   sessions: SessionAndTag[];

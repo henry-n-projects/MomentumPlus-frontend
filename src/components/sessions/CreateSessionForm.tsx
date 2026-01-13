@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Calendar, Clock } from "lucide-react";
 import type { TagType } from "../../types/tag";
 import { motion } from "motion/react";
-import type { AddSessionBody } from "../../types/upcoming";
+import type { AddSessionBody } from "../../types/sessions";
 export interface Session {
   id: string;
   name: string;

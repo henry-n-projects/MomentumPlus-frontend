@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
-import { SessionForm } from "../components/upcoming/CreateSessionForm";
-import { TagManager } from "../components/upcoming/TagManager";
+import { SessionForm } from "../components/sessions/CreateSessionForm";
+import { TagManager } from "../components/sessions/TagManager";
 import {
   useAddSession,
   useAddTag,
@@ -8,19 +8,19 @@ import {
   useGetTags,
   useUpcomingSessions,
   useUpdateSession,
-} from "../hooks/useUpcoming";
+} from "../hooks/useSessions";
 import type {
   AddSessionBody,
   AddTagBody,
   UpdateSessionBody,
-} from "../types/upcoming";
-import { SessionList } from "../components/upcoming/SessionList";
+} from "../types/sessions";
+import { SessionList } from "../components/sessions/SessionList";
 import { ListFilter } from "lucide-react";
 import { useState } from "react";
-import { SessionUpdateForm } from "../components/upcoming/UpdateSessionForm";
-import type { SessionAndTag } from "../types/session";
+import { SessionUpdateForm } from "../components/sessions/UpdateSessionForm";
+import type { SessionAndTag } from "../types/record";
 
-export default function Upcoming() {
+export default function Sessions() {
   const [filterTagName, setFilterTagName] = useState<string>("");
   const [selectedSessionForEdit, setSelectedSessionForEdit] =
     useState<SessionAndTag | null>(null);
@@ -99,7 +99,7 @@ export default function Upcoming() {
         {/* Header */}
         <header className="mb-12">
           <h2 className="text-3xl font-semibold text-[var(--text-primary)] mb-2">
-            Upcoming Sessions
+            Manage Sessions
           </h2>
           <p className="text-xl mt-2 text-[var(--text-secondary)]">
             Schedule and manage your sessions

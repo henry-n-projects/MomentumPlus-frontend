@@ -1,109 +1,55 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  type SessionResponse,
-  type ScheduledSessionsResponse,
-  type ActiveSessionResponse,
-} from "../types/session";
+  type TagResponse,
+  type SessionsResponse,
+  type AddSessionBody,
+  type UpdateSessionBody,
+  type AddTagBody,
+} from "../types/sessions";
 import { api } from "../lib/api/get/api";
 import {
-  endSessionBreak,
-  startSession,
-  startSessionBreak,
-  endSession,
-  addSessionDistraction,
-} from "../lib/api/session/api";
-import type { DistractionRequestBody } from "../types/distraction";
+  addSession,
+  addTag,
+  createTag,
+  deleteSession,
+  updateSession,
+} from "../lib/api/sessions/api";
 
-export function useScheduledSessions() {
-  return useQuery<ScheduledSessionsResponse>({
-    queryKey: ["sessions", "scheduled"],
-    queryFn: () => api.get("/sessions/status/scheduled"),
+export function useUpcomingSessions() {
+  return useQuery<SessionsResponse>({
+    queryKey: ["sessions", "upcoming"],
+    queryFn: () => api.get("/sessions"),
+    refetchInterval: 60_000,
   });
 }
 
-export function useActiveSession() {
-  return useQuery<ActiveSessionResponse>({
-    queryKey: ["active_session"],
-    queryFn: () => api.get("/sessions/status/in-progress"),
+export function usePastScheduledSessions() {
+  return useQuery<SessionsResponse>({
+    queryKey: ["sessions", "past"],
+    queryFn: () => api.get("/sessions/past"),
+    refetchInterval: 60_000,
   });
 }
 
-export function useSession(sessionId: string) {
-  return useQuery<SessionResponse>({
-    queryKey: ["session", sessionId],
-    queryFn: () => api.get(`/sessions/${sessionId}`),
-    enabled: !!sessionId, // Dont run until id provided
+export function useGetTags() {
+  return useQuery<TagResponse>({
+    queryKey: ["tags"],
+    queryFn: () => api.get("/sessions/tags"),
   });
 }
 
-export function useStartSession() {
+export function useAddSession() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (sessionId: string) => startSession(sessionId),
-    onSuccess: (_data, sessionId) => {
-      // Refresh dashboard summary
+    mutationFn: (body: AddSessionBody) => addSession(body),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
-      // Refresh the specific session
-      queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
-      // Refresh active session info if you use it
-      queryClient.invalidateQueries({ queryKey: ["active_session"] });
-      queryClient.invalidateQueries({ queryKey: ["sessions", "upcoming"] });
+      queryClient.invalidateQueries({ queryKey: ["sessions"] });
     },
   });
 }
 
-export function useEndSession() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (sessionId: string) => endSession(sessionId),
-    onSuccess: (_data, sessionId) => {
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
-      queryClient.invalidateQueries({ queryKey: ["active_session"] });
-      queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
-      queryClient.invalidateQueries({ queryKey: ["sessions", "scheduled"] });
-    },
-  });
-}
-
-export function useStartSessionBreak() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ sessionId }: { sessionId: string }) =>
-      startSessionBreak(sessionId),
-
-    onSuccess: (_data, variables) => {
-      // Refresh dashboard + active session data
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
-      queryClient.invalidateQueries({
-        queryKey: ["session", variables.sessionId],
-      });
-    },
-  });
-}
-
-export function useEndSessionBreak() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({
-      sessionId,
-      breakId,
-    }: {
-      sessionId: string;
-      breakId: string;
-    }) => endSessionBreak(sessionId, breakId),
-    onSuccess: (_data, variables) => {
-      // Refresh dashboard + active session data
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
-      queryClient.invalidateQueries({
-        queryKey: ["session", variables.sessionId],
-      });
-    },
-  });
-}
-
-export function useAddSessionDistraction() {
+export function useUpdateSession() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -112,12 +58,56 @@ export function useAddSessionDistraction() {
       body,
     }: {
       sessionId: string;
-      body: DistractionRequestBody;
-    }) => addSessionDistraction(sessionId, body),
+      body: UpdateSessionBody;
+    }) => updateSession(sessionId, body),
+
     onSuccess: (_data, variables) => {
+      // Refresh any screens that show sessions
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["sessions"] });
+
+      // If you have a single-session details query, refresh it too
       queryClient.invalidateQueries({
         queryKey: ["session", variables.sessionId],
       });
+    },
+  });
+}
+
+export function useDeleteSession() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (sessionId: string) => deleteSession(sessionId),
+    onSuccess: (_data, sessionId) => {
+      // refresh all data that depends on sessions
+      queryClient.invalidateQueries({ queryKey: ["sessions"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({
+        queryKey: ["session", sessionId],
+      });
+    },
+  });
+}
+
+export function useCreateTag() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: AddTagBody) => createTag(body),
+    onSuccess: (_data) => {
+      queryClient.invalidateQueries({ queryKey: ["tags"] });
+    },
+  });
+}
+
+export function useAddTag() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: AddTagBody) => addTag(body),
+    onSuccess: (_data) => {
+      queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
   });
 }

@@ -191,14 +191,8 @@ function App() {
             ))}
           </div>
         ) : (
-          <div
-            className="text-center py-12 rounded-3xl"
-            style={{
-              backgroundColor: "var(--surface-white)",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-            }}
-          >
-            <p style={{ color: "var(--text-secondary)" }}>
+          <div className="text-center py-12 rounded-3xl bg-white shadow-xl">
+            <p className="text-[var(--text-secondary)]">
               No sessions found for the selected filters.
             </p>
           </div>

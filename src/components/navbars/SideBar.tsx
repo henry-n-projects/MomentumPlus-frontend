@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import {
+  Archive,
   Calendar,
   ChartNetwork,
   LayoutDashboard,
@@ -11,6 +12,7 @@ const navItems = [
   { to: "/record", label: "Record", icon: TimerIcon },
   { to: "/sessions", label: "Sessions", icon: Calendar },
   { to: "/analytics", label: "Analytics", icon: ChartNetwork },
+  { to: "/history", label: "History", icon: Archive },
 ];
 export default function Sidebar() {
   return (

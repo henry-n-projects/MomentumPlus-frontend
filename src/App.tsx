@@ -6,6 +6,7 @@ import Dashboard from "./pages/dashboard";
 import Record from "./pages/record";
 import Sessions from "./pages/sessions";
 import Analytics from "./pages/analytics";
+import History from "./pages/history";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/record" element={<Record />} />
           <Route path="/sessions" element={<Sessions />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/history" element={<History />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,9 +1,9 @@
 import { X, Clock, Coffee, AlertCircle } from "lucide-react";
-import { type Session } from "./SesssionCard";
 import { formatDate, formatTime } from "../../lib/utils";
+import type { SessionHistory } from "../../types/history";
 
 interface SessionDetailModalProps {
-  session: Session;
+  session: SessionHistory;
   onClose: () => void;
 }
 
@@ -11,10 +11,10 @@ export function SessionDetailModal({
   session,
   onClose,
 }: SessionDetailModalProps) {
-  const focusTime = session.totalDuration - session.breakTime;
-  const focusPercentage = ((focusTime / session.totalDuration) * 100).toFixed(
-    0
-  );
+  const focusPercentage = (
+    (session.focus_minutes / session.focus_minutes + session.break_time) *
+    100
+  ).toFixed(0);
 
   return (
     <div
@@ -30,16 +30,15 @@ export function SessionDetailModal({
           <div>
             <h2 className="text-[var(--text-primary)] mb-2">Session Details</h2>
             <p className="text-[var(--text-secondary)]">
-              {formatDate(session.startTime) + `: `}
-              {formatTime(session.startTime) + " - "}
-              {formatTime(session.endTime)}
+              {formatDate(new Date(session.start_at)) + `: `}
+              {formatTime(new Date(session.start_at)) + ` - `}
+              {formatTime(new Date(session.end_at))}
             </p>
           </div>
           <button onClick={onClose} style={{ color: "var(--text-secondary)" }}>
             <X className="w-5 h-5" />
           </button>
         </div>
-
         {/* Tag */}
         <div className="mb-6">
           <span
@@ -48,10 +47,9 @@ export function SessionDetailModal({
               backgroundColor: "var(--soft-blue-light)",
             }}
           >
-            {session.tag}
+            {session.tag?.name}
           </span>
         </div>
-
         {/* Focus vs Break Chart */}
         <div className="p-6 rounded-2xl mb-6 bg-[var(--warm-neutral)]">
           <h3 className="mb-4 text-[var(--text-primary)]">Time Breakdown</h3>
@@ -64,7 +62,7 @@ export function SessionDetailModal({
                 </span>
               </div>
               <p className="text-[var(--text-primary)] text-3xl font-semibold">
-                {focusTime} min
+                {session.focus_minutes} min
               </p>
               <p className="text-[var(--text-secondary)] ">
                 {focusPercentage}% of session
@@ -76,10 +74,11 @@ export function SessionDetailModal({
                 <span className="text-[var(--text-secondary)]">Break Time</span>
               </div>
               <p className="text-[var(--text-primary)] text-3xl font-semibold">
-                {session.breakTime} min
+                {session.break_time} min
               </p>
               <p className=" text-[var(--text-secondary)]">
-                {session.breakCount} break{session.breakCount !== 1 ? "s" : ""}
+                {session.break_count} break
+                {session.break_count !== 1 ? "s" : ""}
               </p>
             </div>
           </div>
@@ -100,14 +99,13 @@ export function SessionDetailModal({
             />
           </div>
         </div>
-
-        {/* Break Timeline */}
+        Break Timeline
         <div className="p-6 rounded-2xl mb-6 bg-[var(--warm-neutral)]">
           <h3 className="mb-4" style={{ color: "var(--text-primary)" }}>
             Break Timeline
           </h3>
           <div className="space-y-3">
-            {session.breakTimeline.map((brk, index) => (
+            {session.breaks.map((brk, index) => (
               <div
                 key={index}
                 className="flex items-center gap-4 p-3 rounded-lg bg-white"
@@ -118,33 +116,34 @@ export function SessionDetailModal({
                     Break {index + 1}
                   </p>
                   <p className="text-[var(--text-secondary)] ">
-                    {formatDate(brk.time)}
+                    {formatDate(new Date(brk.start_time))}
                   </p>
                 </div>
                 <span className="text-[var(--text-primary)] font-semibold mr-2">
-                  {brk.duration} min
+                  {(new Date(brk.end_time).getTime() -
+                    new Date(brk.start_time).getTime()) /
+                    1000 /
+                    60}{" "}
+                  min
                 </span>
               </div>
             ))}
           </div>
         </div>
-
         {/* Distractions */}
-        {session.distractions.length > 0 && (
-          <div className="p-6 rounded-2xl bg-[var(--warm-neutral)]">
-            <div className="flex items-center gap-2 mb-4">
-              <AlertCircle className="w-5 h-5 text-[var(--text-secondary)]" />
-              <h3 className="text-[var(--text-primary)]">Distractions</h3>
-            </div>
-            <div className="space-y-2">
-              {session.distractions.map((distraction, index) => (
-                <div key={index} className="p-3 rounded-lg bg-white">
-                  <p className="text-[var(--text-primary)]">{distraction}</p>
-                </div>
-              ))}
-            </div>
+        <div className="p-6 rounded-2xl bg-[var(--warm-neutral)]">
+          <div className="flex items-center gap-2 mb-4">
+            <AlertCircle className="w-5 h-5 text-[var(--text-secondary)]" />
+            <h3 className="text-[var(--text-primary)]">Distractions</h3>
           </div>
-        )}
+          <div className="space-y-2">
+            {session.distractions.map((distraction, index) => (
+              <div key={index} className="p-3 rounded-lg bg-white">
+                <p className="text-[var(--text-primary)]">{distraction.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

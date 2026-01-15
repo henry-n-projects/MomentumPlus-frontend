@@ -1,22 +1,20 @@
 import { useState } from "react";
-import { SessionCard, type Session } from "../components/history/SesssionCard";
+import { SessionCard } from "../components/history/SesssionCard";
 import { SessionDetailModal } from "../components/history/SessionDetailModal";
 import { HistoryFilters } from "../components/history/HistoryFilters";
 import { useHistoryList } from "../hooks/useHistory";
+import type { SessionHistory } from "../types/history";
 
 function App() {
-  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [selectedSession, setSelectedSession] = useState<SessionHistory | null>(
+    null
+  );
   const [selectedDateRange, setSelectedDateRange] = useState(7);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const historyListData = useHistoryList(selectedDateRange, selectedTag);
 
-  const tagsData = historyListData.data
-    ? historyListData.data.data.tags.map((t) => ({
-        tagId: t.id,
-        name: t.name,
-      }))
-    : [];
+  const tagsData = historyListData.data ? historyListData.data.data.tags : [];
   const sessionsList = historyListData.data?.data.sessions ?? [];
 
   return (
@@ -61,12 +59,12 @@ function App() {
         )}
 
         {/* Detail Modal */}
-        {/* {selectedSession && (
+        {selectedSession && (
           <SessionDetailModal
             session={selectedSession}
             onClose={() => setSelectedSession(null)}
           />
-        )} */}
+        )}
       </div>
     </div>
   );

@@ -1,21 +1,10 @@
 import { Clock, Tag } from "lucide-react";
 import { formatDate, formatTime } from "../../lib/utils";
 import type { TagType } from "../../types/tag";
-
-export interface Session {
-  id: string;
-  name: string;
-  start_at: string;
-  end_at: string;
-  focus_minutes: number;
-  break_time: number;
-  break_count: number;
-  distraction_count: number;
-  tag: TagType | null;
-}
+import type { SessionHistory } from "../../types/history";
 
 interface SessionCardProps {
-  session: Session;
+  session: SessionHistory;
   onClick: () => void;
 }
 

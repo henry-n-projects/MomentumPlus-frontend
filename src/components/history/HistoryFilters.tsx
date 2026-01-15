@@ -2,7 +2,7 @@ import { Calendar, Tag } from "lucide-react";
 
 interface HistoryFiltersProps {
   tags: {
-    tagId: string;
+    id: string;
     name: string;
   }[];
   onDateRangeChange: (days: number) => void;
@@ -65,7 +65,7 @@ export function HistoryFilters({
         >
           <option value="all">All tags</option>
           {tags.map((tag) => (
-            <option key={tag.tagId} value={tag.tagId}>
+            <option key={tag.id} value={tag.id}>
               {tag.name}
             </option>
           ))}

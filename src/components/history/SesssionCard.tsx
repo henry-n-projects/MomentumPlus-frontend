@@ -1,26 +1,25 @@
 import { Clock, Tag } from "lucide-react";
 import { formatDate, formatTime } from "../../lib/utils";
+import type { TagType } from "../../types/tag";
 
-export interface PomodoroSession {
+export interface Session {
   id: string;
-  startTime: Date;
-  endTime: Date;
-  totalDuration: number; // in minutes
-  breakTime: number; // in minutes
-  tag: string;
-  distractions: string[];
-  breakCount: number;
-  breakTimeline: { time: Date; duration: number }[];
+  name: string;
+  start_at: string;
+  end_at: string;
+  focus_minutes: number;
+  break_time: number;
+  break_count: number;
+  distraction_count: number;
+  tag: TagType | null;
 }
 
 interface SessionCardProps {
-  session: PomodoroSession;
+  session: Session;
   onClick: () => void;
 }
 
 export function SessionCard({ session, onClick }: SessionCardProps) {
-  const focusTime = session.totalDuration - session.breakTime;
-
   return (
     <div
       onClick={onClick}
@@ -30,12 +29,21 @@ export function SessionCard({ session, onClick }: SessionCardProps) {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Tag className="w-4 h-4" style={{ color: "var(--accent-purple)" }} />
-          <span className="px-3 py-1 rounded-full bg-[var(--soft-blue-light)] text-[var(--text-primary)] ">
-            {session.tag}
-          </span>
+          {session.tag ? (
+            <span
+              className="px-3 py-1 rounded-full text-[var(--text-primary)]"
+              style={{ backgroundColor: session.tag.color }}
+            >
+              {session.tag.name}
+            </span>
+          ) : (
+            <span className="px-3 py-1 rounded-full bg-gray-200 text-gray-600">
+              Untagged
+            </span>
+          )}
         </div>
         <span className="text-[var(--text-secondary)] text-sm">
-          {formatDate(session.startTime)}
+          {formatDate(new Date(session.start_at))}
         </span>
       </div>
 
@@ -43,8 +51,8 @@ export function SessionCard({ session, onClick }: SessionCardProps) {
       <div className="flex items-center gap-2 mb-3">
         <Clock className="w-4 h-4 text-[var(--text-secondary)]" />
         <span className="text-[var(--text-secondary)] text-sm">
-          {formatTime(session.startTime) + " - "}
-          {formatTime(session.endTime)}
+          {formatTime(new Date(session.start_at)) + " - "}
+          {formatTime(new Date(session.end_at))}
         </span>
       </div>
 
@@ -53,32 +61,29 @@ export function SessionCard({ session, onClick }: SessionCardProps) {
         <div>
           <p className="text-[var(--text-secondary)] ">Focus Time</p>
           <p className="text-[var(--text-primary)] font-semibold">
-            {focusTime} min
+            {Math.round(session.focus_minutes * 10) / 10} min
           </p>
         </div>
         <div>
           <p className="text-[var(--text-secondary)] ">Breaks</p>
           <p className="text-[var(--text-primary)] font-semibold">
-            {session.breakCount}
+            {session.break_count}
           </p>
         </div>
         <div>
           <p className="text-[var(--text-secondary)] ">Break Time</p>
           <p className="text-[var(--text-primary)] font-semibold">
-            {session.breakTime} min
+            {session.break_time} min
           </p>
         </div>
       </div>
 
       {/* Distractions Count */}
-      {session.distractions.length > 0 && (
-        <div className="mt-4 px-3 py-2 rounded-lg bg-[var(--warm-neutral)]">
-          <span className="text-[var(--text-secondary)] ">
-            {session.distractions.length} distraction
-            {session.distractions.length !== 1 ? "s" : ""} logged
-          </span>
-        </div>
-      )}
+      <div className="mt-4 px-3 py-2 rounded-lg bg-[var(--warm-neutral)]">
+        <span className="text-[var(--text-secondary)] ">
+          {session.distraction_count} logged
+        </span>
+      </div>
     </div>
   );
 }

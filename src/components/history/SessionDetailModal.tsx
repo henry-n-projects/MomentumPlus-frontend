@@ -1,9 +1,9 @@
 import { X, Clock, Coffee, AlertCircle } from "lucide-react";
-import { type PomodoroSession } from "./SesssionCard";
+import { type Session } from "./SesssionCard";
 import { formatDate, formatTime } from "../../lib/utils";
 
 interface SessionDetailModalProps {
-  session: PomodoroSession;
+  session: Session;
   onClose: () => void;
 }
 

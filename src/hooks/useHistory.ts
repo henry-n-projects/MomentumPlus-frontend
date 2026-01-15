@@ -5,10 +5,16 @@ import type {
 } from "../types/history";
 import { getHistoryList, getSessionHistory } from "../lib/api/history/api";
 
-export function useHistoryList(days: number, id: string) {
-  useQuery<AllSessionsHistoryResponse>({
-    queryKey: ["history"],
-    queryFn: () => getHistoryList(days, id),
+export function useHistoryList(days: number, tagId: string | null) {
+  const params = new URLSearchParams();
+  params.set("days", String(days));
+
+  if (tagId) {
+    params.set("tagId", tagId);
+  }
+  return useQuery<AllSessionsHistoryResponse>({
+    queryKey: ["history", days, tagId],
+    queryFn: () => getHistoryList(params),
   });
 }
 

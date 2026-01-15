@@ -17,7 +17,12 @@ export interface AllSessionsHistoryResponse {
       break_time: number;
       break_count: number;
       distraction_count: number;
-      tag: TagType;
+      tag: TagType | null;
+    }[];
+    tags: {
+      id: string;
+      name: string;
+      color: string;
     }[];
   };
 }

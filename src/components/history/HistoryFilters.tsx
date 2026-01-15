@@ -1,9 +1,12 @@
 import { Calendar, Tag } from "lucide-react";
 
 interface HistoryFiltersProps {
-  tags: string[];
+  tags: {
+    tagId: string;
+    name: string;
+  }[];
   onDateRangeChange: (days: number) => void;
-  onTagChange: (tag: string | null) => void;
+  onTagChange: (tagId: string | null) => void;
   selectedDateRange: number;
   selectedTag: string | null;
 }
@@ -62,8 +65,8 @@ export function HistoryFilters({
         >
           <option value="all">All tags</option>
           {tags.map((tag) => (
-            <option key={tag} value={tag}>
-              {tag}
+            <option key={tag.tagId} value={tag.tagId}>
+              {tag.name}
             </option>
           ))}
         </select>

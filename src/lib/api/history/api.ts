@@ -1,6 +1,6 @@
-export async function getHistoryList(days: number, tagId: string) {
+export async function getHistoryList(params: URLSearchParams) {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/history?days=${days}&${tagId}`,
+    `${import.meta.env.VITE_API_URL}/history?${params.toString()}`,
     {
       credentials: "include",
     }
@@ -9,10 +9,12 @@ export async function getHistoryList(days: number, tagId: string) {
   if (!res.ok) {
     throw new Error("Failed to fetch history list");
   }
+
+  console.log(`${import.meta.env.VITE_API_URL}/history?${params.toString()}`);
   return res.json();
 }
 
-export async function getSessionList(Id: string) {
+export async function getSessionHistory(Id: string) {
   const res = await fetch(
     `${import.meta.env.VITE_API_URL}/history?days=${Id}`,
     {

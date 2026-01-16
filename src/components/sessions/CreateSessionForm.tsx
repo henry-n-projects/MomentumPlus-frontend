@@ -16,7 +16,7 @@ interface SessionFormProps {
   onCreateSession: (session: AddSessionBody) => void;
 }
 
-export function SessionForm({ tags, onCreateSession }: SessionFormProps) {
+export function CreateSessionForm({ tags, onCreateSession }: SessionFormProps) {
   const [sessionName, setSessionName] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");

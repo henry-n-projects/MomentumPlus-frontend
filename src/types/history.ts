@@ -30,6 +30,7 @@ export interface AllSessionsHistoryResponse {
     tags: {
       id: string;
       name: string;
+      color: string;
     }[];
   };
 }

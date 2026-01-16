@@ -82,8 +82,6 @@ export default function StatsGrid({
           </div>
           <p className="text-textSecondary">total minutes this week</p>
         </div>
-
-        <p className="text-[var(--accent-purple)]">↑ 12% from last week</p>
       </div>
 
       {/* Today's Sessions */}

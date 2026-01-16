@@ -1,9 +1,10 @@
-import { Tag } from "lucide-react";
+import { Filter } from "lucide-react";
 
 interface TagFiltersProps {
   tags: {
     id: string;
     name: string;
+    color: string;
   }[];
   onTagChange: (tagId: string | null) => void;
   selectedTag: string | null;
@@ -18,7 +19,7 @@ export function TagFilters({
     <div className="flex flex-wrap gap-3 mb-6 ">
       {/* Tag Filter */}
       <div className="flex items-center gap-2">
-        <Tag className="w-5 h-5 text-[var(--text-secondary)]" />
+        <Filter className="w-5 h-5 text-[var(--text-secondary)]" />
         <select
           value={selectedTag ?? "all"}
           onChange={(e) =>

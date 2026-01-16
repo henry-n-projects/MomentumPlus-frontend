@@ -12,7 +12,7 @@ export function SessionDetailModal({
   onClose,
 }: SessionDetailModalProps) {
   const focusPercentage = (
-    (session.focus_minutes / session.focus_minutes + session.break_time) *
+    (session.focus_minutes / (session.focus_minutes + session.break_time)) *
     100
   ).toFixed(0);
 
@@ -62,7 +62,7 @@ export function SessionDetailModal({
                 </span>
               </div>
               <p className="text-[var(--text-primary)] text-3xl font-semibold">
-                {session.focus_minutes} min
+                {Math.round(session.focus_minutes * 10) / 10} min
               </p>
               <p className="text-[var(--text-secondary)] ">
                 {focusPercentage}% of session
@@ -74,7 +74,7 @@ export function SessionDetailModal({
                 <span className="text-[var(--text-secondary)]">Break Time</span>
               </div>
               <p className="text-[var(--text-primary)] text-3xl font-semibold">
-                {session.break_time} min
+                {Math.round(session.break_time)} min
               </p>
               <p className=" text-[var(--text-secondary)]">
                 {session.break_count} break
@@ -120,10 +120,12 @@ export function SessionDetailModal({
                   </p>
                 </div>
                 <span className="text-[var(--text-primary)] font-semibold mr-2">
-                  {(new Date(brk.end_time).getTime() -
-                    new Date(brk.start_time).getTime()) /
-                    1000 /
-                    60}{" "}
+                  {Math.round(
+                    (new Date(brk.end_time).getTime() -
+                      new Date(brk.start_time).getTime()) /
+                      1000 /
+                      60
+                  )}{" "}
                   min
                 </span>
               </div>

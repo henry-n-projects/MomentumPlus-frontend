@@ -6,7 +6,6 @@ import {
   useAddTag,
   useDeleteSession,
   useGetTags,
-  useUpcomingSessions,
   useUpdateSession,
 } from "../hooks/useSessions";
 import type {
@@ -19,6 +18,7 @@ import { ListFilter } from "lucide-react";
 import { useState } from "react";
 import { SessionUpdateForm } from "../components/sessions/UpdateSessionForm";
 import type { SessionAndTag } from "../types/record";
+import { useScheduledSessions } from "../hooks/useRecord";
 
 export default function Sessions() {
   const [filterTagName, setFilterTagName] = useState<string>("");
@@ -27,7 +27,7 @@ export default function Sessions() {
   // Fetch users tags
   const { data: tagsData } = useGetTags();
   const tags = tagsData?.data.tags ?? [];
-  const { data: scheduledSessionsData } = useUpcomingSessions();
+  const { data: scheduledSessionsData } = useScheduledSessions();
   const scheduledSessions = scheduledSessionsData?.data ?? [];
 
   const { mutate: addTag } = useAddTag();

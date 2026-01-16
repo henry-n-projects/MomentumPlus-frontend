@@ -8,16 +8,12 @@ import { useAnalytics } from "../hooks/useAnalytics";
 import { TimePeriodSelector } from "../components/analytics/TimePeriodSelector";
 import { useMemo, useState } from "react";
 
-type TimePeriod = "week" | "month";
+type TimePeriod = 7 | 30 | 90;
 
-const PeriodToDays: Record<TimePeriod, number> = {
-  week: 7,
-  month: 30,
-};
 export default function App() {
-  const [timePeriod, setTimePeriod] = useState<TimePeriod>("week");
-  const days = PeriodToDays[timePeriod];
-  const { data } = useAnalytics(days);
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>(7);
+  //const days = timePeriod;
+  const { data } = useAnalytics(timePeriod);
 
   const focusTimeByTagData = useMemo(() => {
     if (!data) return [];
@@ -80,7 +76,7 @@ export default function App() {
                   : 0
               }
               icon={<Target size={24} style={{ color: "var(--soft-blue)" }} />}
-              subtitle={`from last ${days} days`}
+              subtitle={`from last ${timePeriod} days`}
             />
 
             <AnalyticsCard
@@ -92,7 +88,7 @@ export default function App() {
                   style={{ color: "var(--accent-green)" }}
                 />
               }
-              subtitle={`from last ${days} days`}
+              subtitle={`from last ${timePeriod} days`}
             />
 
             <AnalyticsCard
@@ -103,10 +99,10 @@ export default function App() {
               icon={
                 <TrendingUp
                   size={24}
-                  style={{ color: "var(--accent-purple" }}
+                  style={{ color: "var(--accent-purple)" }}
                 />
               }
-              subtitle={`minutes from last ${days} days`}
+              subtitle={`minutes from last ${timePeriod} days`}
             />
           </div>
         </div>

@@ -15,14 +15,6 @@ import {
   updateSession,
 } from "../lib/api/sessions/api";
 
-export function useUpcomingSessions() {
-  return useQuery<SessionsResponse>({
-    queryKey: ["sessions", "upcoming"],
-    queryFn: () => api.get("/sessions"),
-    refetchInterval: 60_000,
-  });
-}
-
 export function usePastScheduledSessions() {
   return useQuery<SessionsResponse>({
     queryKey: ["sessions", "past"],

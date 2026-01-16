@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { SessionCard } from "../components/history/SesssionCard";
 import { SessionDetailModal } from "../components/history/SessionDetailModal";
-import { HistoryFilters } from "../components/history/HistoryFilters";
+import { TagFilters } from "../components/history/TagFilters";
 import { useHistoryList } from "../hooks/useHistory";
 import type { SessionHistory } from "../types/history";
+import { TimePeriodSelector } from "../components/analytics/TimePeriodSelector";
+import { Calendar } from "lucide-react";
 
 function App() {
   const [selectedSession, setSelectedSession] = useState<SessionHistory | null>(
     null
   );
-  const [selectedDateRange, setSelectedDateRange] = useState(7);
+  type TimePeriod = 7 | 30 | 90;
+  const [selectedDateRange, setSelectedDateRange] = useState<TimePeriod>(7);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const historyListData = useHistoryList(selectedDateRange, selectedTag);
@@ -31,13 +34,25 @@ function App() {
         </div>
 
         {/* Filters */}
-        <HistoryFilters
-          tags={tagsData}
-          selectedDateRange={selectedDateRange}
-          selectedTag={selectedTag}
-          onDateRangeChange={setSelectedDateRange}
-          onTagChange={setSelectedTag}
-        />
+        <div className="flex items-center justify-between mb-6">
+          {/* Left: Date range */}
+          <div className="flex items-center gap-2 h-10">
+            <Calendar className="w-5 h-5 text-[var(--text-secondary)]" />
+            <TimePeriodSelector
+              selected={selectedDateRange}
+              onChange={setSelectedDateRange}
+            />
+          </div>
+
+          {/* Right: Tag filter */}
+          <div className="flex items-center h-10">
+            <TagFilters
+              tags={tagsData}
+              selectedTag={selectedTag}
+              onTagChange={setSelectedTag}
+            />
+          </div>
+        </div>
 
         {/* Sessions List */}
         {sessionsList.length > 0 ? (

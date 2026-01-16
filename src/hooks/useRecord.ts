@@ -47,7 +47,7 @@ export function useStartSession() {
       queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
       // Refresh active session info if you use it
       queryClient.invalidateQueries({ queryKey: ["active_session"] });
-      queryClient.invalidateQueries({ queryKey: ["sessions", "upcoming"] });
+      queryClient.invalidateQueries({ queryKey: ["sessions", "scheduled"] });
     },
   });
 }
@@ -61,6 +61,8 @@ export function useEndSession() {
       queryClient.invalidateQueries({ queryKey: ["active_session"] });
       queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
       queryClient.invalidateQueries({ queryKey: ["sessions", "scheduled"] });
+      queryClient.invalidateQueries({ queryKey: ["analytics"] });
+      queryClient.invalidateQueries({ queryKey: ["history"] });
     },
   });
 }

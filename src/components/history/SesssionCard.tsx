@@ -1,6 +1,5 @@
 import { Clock, Tag } from "lucide-react";
 import { formatDate, formatTime } from "../../lib/utils";
-import type { TagType } from "../../types/tag";
 import type { SessionHistory } from "../../types/history";
 
 interface SessionCardProps {

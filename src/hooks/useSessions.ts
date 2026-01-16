@@ -12,6 +12,7 @@ import {
   addTag,
   createTag,
   deleteSession,
+  deleteTag,
   updateSession,
 } from "../lib/api/sessions/api";
 
@@ -100,6 +101,20 @@ export function useAddTag() {
     mutationFn: (body: AddTagBody) => addTag(body),
     onSuccess: (_data) => {
       queryClient.invalidateQueries({ queryKey: ["tags"] });
+    },
+  });
+}
+
+export function useDeleteTag() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (tagId: String) => deleteTag(tagId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tags"] });
+      queryClient.invalidateQueries({ queryKey: ["sessions"] });
+      queryClient.invalidateQueries({ queryKey: ["analytics"] });
+      queryClient.invalidateQueries({ queryKey: ["history"] });
     },
   });
 }

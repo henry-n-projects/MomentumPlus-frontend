@@ -90,7 +90,7 @@ export async function deleteSession(sessionId: string): Promise<void> {
 }
 
 export async function addTag(body: AddTagBody): Promise<AddTagResponse> {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/sessions/add/tags`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/sessions/add/tag`, {
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     method: "POST",
@@ -103,4 +103,27 @@ export async function addTag(body: AddTagBody): Promise<AddTagResponse> {
   }
 
   return res.json();
+}
+
+export async function deleteTag(id: String): Promise<void> {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/sessions/delete/tag/${id}`,
+    {
+      credentials: "include",
+      method: "DELETE",
+    }
+  );
+
+  if (!res.ok) {
+    let message = "Failed to delete tag";
+
+    try {
+      const err = await res.json();
+      message = err.message ?? message;
+    } catch {}
+
+    throw new Error(message);
+  }
+
+  return;
 }

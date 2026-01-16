@@ -5,6 +5,7 @@ import {
   useAddSession,
   useAddTag,
   useDeleteSession,
+  useDeleteTag,
   useGetTags,
   useUpdateSession,
 } from "../hooks/useSessions";
@@ -89,6 +90,20 @@ export default function Sessions() {
     });
   };
 
+  const { mutate: deleteTag } = useDeleteTag();
+  const handleDeleteTag = (tagId: String) => {
+    deleteTag(tagId, {
+      onSuccess: () => {
+        toast.success("tag deleted");
+      },
+      onError: (error: any) => {
+        toast.error(
+          error?.response?.data?.message ?? "Cannot delete tag in use"
+        );
+      },
+    });
+  };
+
   const filteredSessions =
     tagId === null
       ? scheduledSessions
@@ -129,14 +144,11 @@ export default function Sessions() {
 
           {/* RIGHT COLUMN — Actions */}
           <div className="space-y-6">
-            {/* Add Tag */}
-            <section>
+            <div className=" flex justify-start gap-2">
               <AddTag onAddTag={handleAddTag} />
-            </section>
-            {/* Remove Tag */}
-            <section>
-              <RemoveTag onRemoveTag={handleAddTag} tags={tags} />
-            </section>
+
+              <RemoveTag onRemoveTag={handleDeleteTag} tags={tags} />
+            </div>
 
             {/* Create Session */}
             <section>
@@ -145,8 +157,6 @@ export default function Sessions() {
                 onCreateSession={handleAddSession}
               />
             </section>
-
-            {/* Update Session */}
           </div>
         </div>
       </div>

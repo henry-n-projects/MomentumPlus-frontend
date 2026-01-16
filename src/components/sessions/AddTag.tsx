@@ -39,8 +39,14 @@ export function AddTag({ onAddTag }: AddTagProps) {
   return (
     <div className="space-y-4">
       {isCreating && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-500/60">
-          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl p-8 shadow-xl">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-500/60"
+          onClick={() => setIsCreating(false)}
+        >
+          <div
+            className="w-full max-w-2xl bg-white rounded-3xl p-8 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-start justify-between mb-6">
               <h3 className="text-xl font-semibold text[var(--text-primary)] mb-6">
                 Create Tag

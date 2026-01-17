@@ -4,18 +4,22 @@ import Sidebar from "../components/navbars/SideBar";
 
 export default function ProtectedLayout() {
   const { data: user, isLoading } = useCurrentUser();
+
   if (isLoading) return null;
 
-  // Validate User is logged in else go to home
   if (!user) {
     return <Navigate to="/" replace />;
   }
 
-  return (
-    <div className="flex min-h-screen">
-      <Sidebar />
+  const handleLogout = () => {
+    window.location.href = "/";
+  };
 
-      <main className="relative flex-1 ">
+  return (
+    <div className="min-h-screen">
+      <Sidebar user={user} onLogout={handleLogout} />
+
+      <main className="ml-60 overflow-y-auto min-h-screen">
         <Outlet />
       </main>
     </div>

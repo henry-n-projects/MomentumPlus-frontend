@@ -41,7 +41,7 @@ export default function StatsGrid({
           </div>
           <p className="text-textSecondary">
             {weekProgress.completed_count} of {weekProgress.scheduled_count}{" "}
-            days completed
+            sessions completed
           </p>
         </div>
 

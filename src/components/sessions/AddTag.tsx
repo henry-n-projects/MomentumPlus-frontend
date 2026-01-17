@@ -47,9 +47,9 @@ export function AddTag({ onAddTag }: AddTagProps) {
             className="w-full max-w-2xl bg-white rounded-3xl p-8 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between mb-6">
+            <div className="flex items-start justify-between">
               <h3 className="text-xl font-semibold text[var(--text-primary)] mb-6">
-                Create Tag
+                Add Tag
               </h3>
               <button
                 onClick={() => {

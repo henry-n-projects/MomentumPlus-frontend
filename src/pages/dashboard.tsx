@@ -84,11 +84,13 @@ export default function Dashboard() {
           weeklyFocusMinutes={weeklyFocusMinutes}
           todayCount={todayCount}
         />
-
-        <ActivityGraph weeklyActivity={weekly_activities} />
-        {/*add "no schedueld sessions today , create one now" div if today.sessions.length === 0*/}
-        <div className="space-y-4">
-          <TodaySessionList todaySessions={todaySessions} />
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="w-full lg:w-1/2">
+            <ActivityGraph weeklyActivity={weekly_activities} />
+          </div>
+          <div className="w-full md:w-1/2">
+            <TodaySessionList todaySessions={todaySessions} />
+          </div>
         </div>
       </div>
     </div>

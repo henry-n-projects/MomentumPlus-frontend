@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-
 import TopBar from "../components/navbars/TopBar";
 export default function PublicLayout() {
   return (

@@ -13,8 +13,12 @@ export function RemoveTag({ onRemoveTag, tags }: RemoveTagProps) {
   const [selectedTagId, setSelectedTagId] = useState<String>();
   const handleRemoveTag = (tagId: String) => {
     onRemoveTag(tagId);
-    setSelectedTagId(undefined);
+    handleClose();
+  };
+
+  const handleClose = () => {
     setIsDeleting(false);
+    setSelectedTagId(undefined);
   };
 
   return (
@@ -22,46 +26,50 @@ export function RemoveTag({ onRemoveTag, tags }: RemoveTagProps) {
       {isDeleting && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-500/60"
-          onClick={() => setIsDeleting(false)}
+          onClick={() => handleClose()}
         >
           <div
             className="w-full max-w-2xl bg-white rounded-3xl p-8 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between mb-6">
-              <h3 className="text-xl font-semibold text[var(--text-primary)] mb-6">
+            <div className="flex items-start justify-between">
+              <h3 className="text-xl font-semibold text[var(--text-primary)] mb-2">
                 Delete Tag
               </h3>
               <button
                 onClick={() => {
-                  setIsDeleting(false);
+                  handleClose();
                 }}
                 className="text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
+
             <div className="space-y-3">
-              {tags.map((tag) => (
-                <button
-                  key={tag.id}
-                  type="button"
-                  onClick={() => setSelectedTagId(tag.id)}
-                  className={`px-3 py-1.5 rounded-full transition-all ${
-                    selectedTagId === tag.id
-                      ? "ring-2 ring-offset-2 ring-offset-white"
-                      : ""
-                  }`}
-                  style={{
-                    backgroundColor: tag.color,
-                    color: "var(--text-primary)",
-                    fontWeight: 500,
-                    fontSize: "14px",
-                  }}
-                >
-                  {tag.name}
-                </button>
-              ))}
+              {tags.length > 0 &&
+                tags.map((tag) => (
+                  <button
+                    key={tag.id}
+                    type="button"
+                    onClick={() => setSelectedTagId(tag.id)}
+                    className={`px-3 py-1.5 rounded-full transition-all font-normal text-sm text-[var(--text-primary)] mr-2 mb-2 ${
+                      selectedTagId === tag.id
+                        ? "ring-2 ring-offset-2 ring-offset-white"
+                        : ""
+                    }`}
+                    style={{
+                      backgroundColor: tag.color,
+                    }}
+                  >
+                    {tag.name}
+                  </button>
+                ))}
+              {tags.length === 0 && (
+                <p className="text-sm text-[var(--accent-red)] mt-2">
+                  Please create at least one tag first
+                </p>
+              )}
             </div>
 
             <div className="flex gap-3 pt-2">
@@ -96,7 +104,7 @@ export function RemoveTag({ onRemoveTag, tags }: RemoveTagProps) {
           whileHover={{ scale: 1.03 }}
         >
           <Minus className="w-4" />
-          Remove a Tag
+          Delete a Tag
         </motion.button>
       )}
     </div>

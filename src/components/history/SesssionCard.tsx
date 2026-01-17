@@ -1,4 +1,4 @@
-import { Clock, Tag } from "lucide-react";
+import { Clock } from "lucide-react";
 import { formatDate, formatTime } from "../../lib/utils";
 import type { SessionHistory } from "../../types/history";
 
@@ -16,19 +16,7 @@ export function SessionCard({ session, onClick }: SessionCardProps) {
       {/* Header with Tag */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Tag className="w-4 h-4" style={{ color: "var(--accent-purple)" }} />
-          {session.tag ? (
-            <span
-              className="px-3 py-1 rounded-full text-[var(--text-primary)]"
-              style={{ backgroundColor: session.tag.color }}
-            >
-              {session.tag.name}
-            </span>
-          ) : (
-            <span className="px-3 py-1 rounded-full bg-gray-200 text-gray-600">
-              Untagged
-            </span>
-          )}
+          <p>{session.name}</p>
         </div>
         <span className="text-[var(--text-secondary)] text-sm">
           {formatDate(new Date(session.start_at))}
@@ -36,12 +24,25 @@ export function SessionCard({ session, onClick }: SessionCardProps) {
       </div>
 
       {/* Time Range */}
-      <div className="flex items-center gap-2 mb-3">
-        <Clock className="w-4 h-4 text-[var(--text-secondary)]" />
-        <span className="text-[var(--text-secondary)] text-sm">
-          {formatTime(new Date(session.start_at)) + " - "}
-          {formatTime(new Date(session.end_at))}
-        </span>
+      <div className="flex justify-between gap-2 mb-3">
+        <div className="flex items-center gap-2">
+          <Clock className="w-4 h-4 text-[var(--text-secondary)]" />
+          <span className="text-[var(--text-secondary)] text-sm">
+            {formatTime(new Date(session.start_at)) + " - "}
+            {formatTime(new Date(session.end_at))}
+          </span>
+        </div>
+
+        <div>
+          {session.tag && (
+            <span
+              className="px-2 py-1 text-sm rounded-full text-[var(--text-primary)]"
+              style={{ backgroundColor: session.tag.color }}
+            >
+              {session.tag.name}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Metrics */}
@@ -69,7 +70,7 @@ export function SessionCard({ session, onClick }: SessionCardProps) {
       {/* Distractions Count */}
       <div className="mt-4 px-3 py-2 rounded-lg bg-[var(--warm-neutral)]">
         <span className="text-[var(--text-secondary)] ">
-          {session.distraction_count} logged
+          {session.distraction_count} distractions logged
         </span>
       </div>
     </div>

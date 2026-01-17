@@ -28,7 +28,9 @@ export function SessionDetailModal({
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-[var(--text-primary)] mb-2">Session Details</h2>
+            <h2 className="font-semibold text-lg text-[var(--text-primary)] mb-2">
+              {session.name}
+            </h2>
             <p className="text-[var(--text-secondary)]">
               {formatDate(new Date(session.start_at)) + `: `}
               {formatTime(new Date(session.start_at)) + ` - `}
@@ -44,7 +46,7 @@ export function SessionDetailModal({
           <span
             className="px-4 py-2 rounded-full text-[var(--text-primary)] text-base"
             style={{
-              backgroundColor: "var(--soft-blue-light)",
+              backgroundColor: session.tag?.color,
             }}
           >
             {session.tag?.name}
@@ -116,7 +118,8 @@ export function SessionDetailModal({
                     Break {index + 1}
                   </p>
                   <p className="text-[var(--text-secondary)] ">
-                    {formatDate(new Date(brk.start_time))}
+                    {formatTime(new Date(brk.start_time)) + " - "}
+                    {formatTime(new Date(brk.end_time))}
                   </p>
                 </div>
                 <span className="text-[var(--text-primary)] font-semibold mr-2">

@@ -38,8 +38,11 @@ export default function Sessions() {
       onSuccess: () => {
         toast.success("Tag created");
       },
-      onError: () => {
-        toast.error("Failed to create tag");
+      onError: (err: unknown) => {
+        const message =
+          err instanceof Error ? err.message : "Failed to create tag";
+
+        toast.error(`${message}`);
       },
     });
   };

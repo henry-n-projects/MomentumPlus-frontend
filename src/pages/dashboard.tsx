@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
 import { useDashboard } from "../hooks/useDashboard";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useCurrentUser } from "../hooks/useUser";
 import { TodaySessionList } from "../components/dashboard/SessionList";
 import { ActivityGraph } from "../components/dashboard/ActivityGraph";
 import StatsGrid from "../components/dashboard/StatsGrid";

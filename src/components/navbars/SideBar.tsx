@@ -20,18 +20,23 @@ const navItems = [
 interface SidebarProps {
   user: UserObject;
   onLogout: () => void;
+  isPendingLogout: boolean;
 }
 
-export default function Sidebar({ user, onLogout }: SidebarProps) {
+export default function Sidebar({
+  user,
+  onLogout,
+  isPendingLogout,
+}: SidebarProps) {
   return (
     <aside className="fixed inset-y-0 left-0 w-60 bg-white border-r border-gray-200 p-8 z-40">
       <nav className=" flex h-full flex-col space-y-6">
         {/* Brand */}
         <Link
-          to="/dashboard"
+          to="/"
           className="text-2xl font-semibold tracking-tight text-textPrimary"
         >
-          Kronus<span className="text-softBlue">+</span>
+          TrackStar<span className="text-softBlue">+</span>
         </Link>
 
         {/* Nav items */}
@@ -90,8 +95,9 @@ export default function Sidebar({ user, onLogout }: SidebarProps) {
       transition
       hover:scale-[1.02]
     "
+            disabled={isPendingLogout}
           >
-            Logout
+            {isPendingLogout ? "Logging out..." : "Logout"}
           </button>
         </div>
       </nav>

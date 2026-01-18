@@ -12,9 +12,7 @@ type TimePeriod = 7 | 30 | 90;
 
 export default function App() {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(7);
-  //const days = timePeriod;
   const { data } = useAnalytics(timePeriod);
-
   const focusTimeByTagData = useMemo(() => {
     if (!data) return [];
 

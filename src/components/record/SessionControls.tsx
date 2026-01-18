@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 interface SessionControlProps {
   isRunning: boolean;
   isOnBreak: boolean;
-  canStart: Boolean;
+  canStart: boolean;
   onStart: () => void;
   onStartBreak: () => void;
   onReturnFromBreak: () => void;

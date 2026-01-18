@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { BackgroundDots } from "./BackgroundDots";
 import { PomodoroPreview } from "./PomodoroPreview";
-import { useCurrentUser } from "../../../hooks/useCurrentUser";
+import { useCurrentUser } from "../../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 
 export function HeroSection() {

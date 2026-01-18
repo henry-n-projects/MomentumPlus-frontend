@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useCurrentUser } from "../../hooks/useUser";
 import { useUserTimezone } from "../../hooks/useUserTimezone";
 import { motion } from "motion/react";
 import avatarPlaceholder from "../../assets/avatar-placeholder.png";
+
 export default function TopBar() {
   const { data: user } = useCurrentUser();
   const isAuthenticated = Boolean(user);
   useUserTimezone;
-  console.log(user?.timezone);
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-md border-b border-[var(--warm-neutral-dark)] shadow-sm">
       <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
@@ -16,7 +16,8 @@ export default function TopBar() {
           to="/"
           className="text-2xl font-semibold tracking-tight text-textPrimary"
         >
-          Kronus<span className="text-softBlue">+</span>
+          TrackStar
+          <span className="text-softBlue">+</span>
         </Link>
 
         {/* Right Side */}

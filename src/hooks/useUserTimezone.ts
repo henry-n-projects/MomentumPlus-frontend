@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useCurrentUser } from "./useUser";
 
 export function useUserTimezone() {
   const { data: user, isLoading } = useCurrentUser();

@@ -10,7 +10,6 @@ export async function getHistoryList(params: URLSearchParams) {
     throw new Error("Failed to fetch history list");
   }
 
-  console.log(`${import.meta.env.VITE_API_URL}/history?${params.toString()}`);
   return res.json();
 }
 

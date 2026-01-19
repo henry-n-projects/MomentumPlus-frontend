@@ -36,7 +36,7 @@ export default function Sidebar({
           to="/"
           className="text-2xl font-semibold tracking-tight text-textPrimary"
         >
-          TrackStar<span className="text-softBlue">+</span>
+          Momentum<span className="text-softBlue">+</span>
         </Link>
 
         {/* Nav items */}

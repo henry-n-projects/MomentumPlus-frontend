@@ -30,7 +30,7 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
         >
-          Focus, reimagined.
+          Structured focus.
         </motion.h1>
 
         <motion.p

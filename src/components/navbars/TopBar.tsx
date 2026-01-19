@@ -16,7 +16,7 @@ export default function TopBar() {
           to="/"
           className="text-2xl font-semibold tracking-tight text-textPrimary"
         >
-          TrackStar
+          Momentum
           <span className="text-softBlue">+</span>
         </Link>
 

@@ -8,14 +8,14 @@ interface AddTagProps {
 }
 
 const PRESET_COLORS = [
-  "#A3C9E0", // Soft Blue
-  "#C8B6E2", // Accent Purple
-  "#D9ECF2", // Soft Blue Light
+  "#e0a3a3", // red
+  "#e0bda3", // orange
+  "#e0daa3", // yellow
+  "#a6e0a3", // green
+  "#A3C9E0", // blue
+  "#C8B6E2", // purple
+  "#FFB6C1", // pink
   "#E5D7CF", // Warm Neutral Dark
-  "#FFB6C1", // Light Pink
-  "#FFDAB9", // Peach
-  "#B0E0E6", // Powder Blue
-  "#DDA0DD", // Plum
 ];
 
 export function AddTag({ onAddTag }: AddTagProps) {

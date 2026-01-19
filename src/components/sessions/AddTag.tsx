@@ -9,8 +9,8 @@ interface AddTagProps {
 
 const PRESET_COLORS = [
   "#e0a3a3", // red
-  "#e0bda3", // orange
-  "#e0daa3", // yellow
+  "#f2cb90", // orange
+  "#efe79a", // yellow
   "#a6e0a3", // green
   "#A3C9E0", // blue
   "#C8B6E2", // purple
